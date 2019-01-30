@@ -24,7 +24,7 @@ Inserts data into the specified stream. Throws an exception if data is already p
 
 **Http**
 
-        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/InsertValue
+        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 Content is serialized event of type T
 
@@ -91,7 +91,7 @@ Inserts items into the specified stream. Throws an exception if data is already 
 
 **Http**
 
-        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/InsertValues
+        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 
 Content is serialized list of events of type T	
@@ -183,7 +183,8 @@ Modifies the specified stream event. PatchValue affects only the data item param
 
 **Http**
 
-        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/PatchValue?select={selectExpression}
+        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?select={selectExpression}
 
 
 Content is serialized patch property
@@ -239,7 +240,8 @@ Patches values of the selected fields for multiple events in the stream.
 
 **Http**
 
-        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/PatchValues?select={selectExpression}
+        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?select={selectExpression}
 
 Content is serialized list of patch property values
 
@@ -298,7 +300,8 @@ Removes the event at the index from the specified stream. Different overloads ar
 
 **Http**
 
-        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/RemoveValue?index={index}
+        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?index={index}
 
 
 **Parameters**
@@ -344,7 +347,8 @@ Removes the event at each index from the specified stream. Different overloads a
 
 **Http**
 
-        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/RemoveValues?index={index}
+        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?index={index}
 
 
 **Parameters**
@@ -394,7 +398,8 @@ Removes a range of values at and between the given indices.
 
 **Http**
 
-        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/RemoveWindowValues?startIndex={startIndex}&endIndex={endIndex}
+        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?startIndex={startIndex}&endIndex={endIndex}
 
 
 **Parameters**
@@ -442,7 +447,8 @@ Writes an item over an existing event in the specified stream.
 
 **Http**
 
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/ReplaceValue
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?allowCreate=false
 
 Content is serialized replacement object
 
@@ -484,7 +490,8 @@ Writes **items** over existing events in the specified stream.
 
 **Http**
 
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/ReplaceValues
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		?allowCreate=false
 
 Content is serialized list of replacement values
 
@@ -530,7 +537,7 @@ Writes **item** to the specified stream.
 
 **Http**
 
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/UpdateValue
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 Content is serialized updated value
 
@@ -574,7 +581,7 @@ Writes items to the specified stream.
 
 **Http**
 
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/UpdateValues
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 
 Content is serialized list of updated values	
@@ -606,3 +613,7 @@ Security
   indexes. If any item fails to write, the entire operation is rolled back and
   no events are written to the stream. The index (of the *items* IEnumerable) that caused the issue is
   included in the error response.
+  
+  ***********************
+
+MOTODO: Add sections on multi-stream calls
