@@ -837,7 +837,7 @@ Note that State is not included in the JSON as its value is the default value.
       string endIndex, int count, string streamViewId = null);
    Task<IEnumerable<T>> GetValuesAsync<T, T1>(string streamId, T1 startIndex, 
       T1 endIndex, int count, string streamViewId = null);
-   Task<IEnumerable<T>> GetValuesAsync<T, T1, T2>string streamId, Tuple<T1, T2> startIndex, 
+   Task<IEnumerable<T>> GetValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> startIndex, 
       Tuple<T1, T2> endIndex, int count, string streamViewId = null);
 ```
 
