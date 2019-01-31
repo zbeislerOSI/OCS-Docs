@@ -90,69 +90,65 @@ Samples use the following types:
 * Type with a simple index, named *Simple*:
 
 **.NET**
+```csharp
+public enum State 
+{
+   Ok,
+   Warning,
+   Alarm
+}
 
-
-      public enum State 
-      {
-        Ok,
-        Warning,
-        Alarm
-      }
-
-      public class Simple
-      {
-        [SdsMember(IsKey = true, Order = 0) ] 
-        public DateTime Time { get; set; }
-        public State State { get; set; }
-        public Double Measurement { get; set; }
-      }
-
+public class Simple
+{
+   [SdsMember(IsKey = true, Order = 0) ] 
+   public DateTime Time { get; set; }
+   public State State { get; set; }
+   public Double Measurement { get; set; }
+}
+```
 **Python**
+```python
+class State(Enum):
+  Ok = 0
+  Warning = 1
+  Alarm = 2
 
+class Simple(object):
+  Time = property(getTime, setTime)
+  def getTime(self):
+    return self.__time
+  def setTime(self, time):
+    self.__time = time
 
-      class State(Enum):
-        Ok = 0
-        Warning = 1
-        Alarm = 2
+  State = property(getState, setState)
+  def getState(self):
+    return self.__state
+  def setState(self, state):
+    self.__state = state
 
-      class Simple(object):
-        Time = property(getTime, setTime)
-        def getTime(self):
-          return self.__time
-        def setTime(self, time):
-          self.__time = time
-
-        State = property(getState, setState)
-        def getState(self):
-          return self.__state
-        def setState(self, state):
-          self.__state = state
-
-        Measurement = property(getValue, setValue)
-        def getValue(self):
-          return self.__measurement
-        def setValue(self, measurement):
-          self.__measurement = measurement
-
+  Measurement = property(getValue, setValue)
+  def getValue(self):
+    return self.__measurement
+  def setValue(self, measurement):
+    self.__measurement = measurement
+```
 **JavaScript**
+```javascript
+var State =
+{
+  Ok: 0,
+  Warning: 1,
+  Aalrm: 2,
+}
 
-
-      var State =
-      {
-        Ok: 0,
-        Warning: 1,
-        Aalrm: 2,
-      }
-
-      var Simple = function () {
-        this.Time = null;
-        this.State = null;
-        this.Value = null;
-      }
-
+var Simple = function () {
+  this.Time = null;
+  this.State = null;
+  this.Value = null;
+}
+```
 
 The values produced by the above code is as follows:
-
 
       11/23/2017 12:00:00 PM: Ok  0
       11/23/2017  1:00:00 PM: Ok 10
@@ -162,71 +158,67 @@ The values produced by the above code is as follows:
 
 * Type with Compound Index, named DerivedCompoundIndex
 
-.NET
+**.NET**
+```csharp
+public class Simple
+{
+   [SdsMember(IsKey = true, Order = 0)]
+   public DateTime Time { get; set; }
+   public State State { get; set; }
+   public Double Measurement { get; set; }
+}
 
+public class DerivedCompoundIndex : Simple
+{
+   [SdsMember(IsKey = true, Order = 1)]
+   public DateTime Recorded { get; set; }
+}
+```
+**Python**
+```python
+class Simple(object):
+# First-order Key property
+Time = property(getTime, setTime)
+def getTime(self):
+  return self.__time
+def setTime(self, time):
+  self.__time = time
 
-      public class Simple
-      {
-        [SdsMember(IsKey = true, Order = 0)]
-        public DateTime Time { get; set; }
-        public State State { get; set; }
-        public Double Measurement { get; set; }
-      }
+State = property(getState, setState)
+def getState(self):
+  return self.__state
+def setState(self, state):
+  self.__state = state
 
-      public class DerivedCompoundIndex : Simple
-      {
-        [SdsMember(IsKey = true, Order = 1)]
-        public DateTime Recorded { get; set; }
-      }
+Measurement = property(getValue, setValue)
+def getValue(self):
+  return self.__measurement
+def setValue(self, measurement):
+  self.__measurement = measurement
 
-Python
+class DerivedCompoundIndex(Simple):
+# Second-order Key property
+@property
+def Recorded(self):
+  return self.__recorded
+ @Recorded.setter
+def Recorded(self, recorded):
+  self.__recorded = recorded
+```
+**JavaScript**
+```javascript
+var Simple = function () {
+  this.Time = null;
+  this.State = null;
+  this.Value = null;
+}
 
-
-      class Simple(object):
-      # First-order Key property
-      Time = property(getTime, setTime)
-      def getTime(self):
-        return self.__time
-      def setTime(self, time):
-        self.__time = time
-
-      State = property(getState, setState)
-      def getState(self):
-        return self.__state
-      def setState(self, state):
-        self.__state = state
-
-      Measurement = property(getValue, setValue)
-      def getValue(self):
-        return self.__measurement
-      def setValue(self, measurement):
-        self.__measurement = measurement
-
-      class DerivedCompoundIndex(Simple):
-      # Second-order Key property
-      @property
-      def Recorded(self):
-        return self.__recorded
-       @Recorded.setter
-      def Recorded(self, recorded):
-        self.__recorded = recorded
-
-JavaScript
-
-
-      var Simple = function () {
-        this.Time = null;
-        this.State = null;
-        this.Value = null;
-      }
-
-      var DerivedCompoundIndex = function() {
-        Simple.call(this);
-        this.Recorded = null;
-      }
-
+var DerivedCompoundIndex = function() {
+  Simple.call(this);
+  this.Recorded = null;
+}
+```
 Has values as follows:
-
 
       1/20/2017 1:00:00 AM : 1/20/2017 12:00:00 AM 	0
       1/20/2017 1:00:00 AM : 1/20/2017  1:00:00 AM 	2

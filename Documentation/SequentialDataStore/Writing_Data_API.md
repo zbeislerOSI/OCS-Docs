@@ -61,20 +61,19 @@ Security
   How the data is serialized depends upon the type of event you are inserting. For example, the following code 
   shows a single WaveData event serialized as JSON. See the OCS code samples for the complete WaveData example.
 
-  ::
-
-  	{
-		"Order":2,	
-		"Tau":0.25722883666666846,	
-		"Radians":1.6162164471269089,	
-		"Sin":1.9979373673043652,	
-		"Cos":-0.090809010174665111,	
-		"Tan":-44.003064529862513,	
-		"Sinh":4.8353589272389,	
-		"Cosh":5.2326566823391856,	
-		"Tanh":1.8481468289554672
-	}
-
+```json
+   {
+      "Order":2,	
+      "Tau":0.25722883666666846,	
+      "Radians":1.6162164471269089,	
+      "Sin":1.9979373673043652,	
+      "Cos":-0.090809010174665111,	
+      "Tan":-44.003064529862513,	
+      "Sinh":4.8353589272389,	
+      "Cosh":5.2326566823391856,	
+      "Tanh":1.8481468289554672
+   }
+```
 
 **********************
 
@@ -85,13 +84,13 @@ Security
 Inserts items into the specified stream. Throws an exception if data is already present at an index used in one of the ‘items'.
 
 
-**Syntax**
+**Syntax**  
 
-        Task InsertValuesAsync<T>(string streamId, IList<T> items);
+    Task InsertValuesAsync<T>(string streamId, IList<T> items);
 
 **Http**
 
-        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+    POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 
 Content is serialized list of events of type T	
@@ -126,43 +125,43 @@ An IEnumerable of all behavior objects
   of three WaveData events that are properly formatted for insertion. See the SDS code samples for 
 
   the complete WaveData example.
-
-    	[
-    		{
-    			"Order":2,
-    			"Tau":0.25722883666666846,
-    			"Radians":1.6162164471269089,
-    			"Sin":1.9979373673043652,
-    			"Cos":-0.090809010174665111,
-    			"Tan":-44.003064529862513,
-    			"Sinh":4.8353589272389,
-    			"Cosh":5.2326566823391856,
-    			"Tanh":1.8481468289554672
-    		}, 
-    		{
-    			"Order":4,
-    			"Tau":0.25724560000002383,
-    			"Radians":1.6163217742567466,
-    			"Sin":1.9979277915696148,
-    			"Cos":-0.091019446679060964,
-    			"Tan":-43.901119254534827,
-    			"Sinh":4.8359100947709592,
-    			"Cosh":5.233166005842703,
-    			"Tanh":1.8481776000882766
-    		}, 
-    		{
-    			"Order":6,
-    			"Tau":0.25724560000002383,
-    			"Radians":1.6163217742567466,
-    			"Sin":1.9979277915696148,
-    			"Cos":-0.091019446679060964,
-    			"Tan":-43.901119254534827,
-    			"Sinh":4.8359100947709592,
-    			"Cosh":5.233166005842703,
-    			"Tanh":1.8481776000882766
-    		}
-    	]
-
+```json
+[
+    {
+        "Order":2,
+        "Tau":0.25722883666666846,
+        "Radians":1.6162164471269089,
+        "Sin":1.9979373673043652,
+        "Cos":-0.090809010174665111,
+        "Tan":-44.003064529862513,
+        "Sinh":4.8353589272389,
+        "Cosh":5.2326566823391856,
+        "Tanh":1.8481468289554672
+    }, 
+    {
+        "Order":4,
+        "Tau":0.25724560000002383,
+        "Radians":1.6163217742567466,
+        "Sin":1.9979277915696148,
+        "Cos":-0.091019446679060964,
+        "Tan":-43.901119254534827,
+        "Sinh":4.8359100947709592,
+        "Cosh":5.233166005842703,
+        "Tanh":1.8481776000882766
+    }, 
+    {
+        "Order":6,
+        "Tau":0.25724560000002383,
+        "Radians":1.6163217742567466,
+        "Sin":1.9979277915696148,
+        "Cos":-0.091019446679060964,
+        "Tan":-43.901119254534827,
+        "Sinh":4.8359100947709592,
+        "Cosh":5.233166005842703,
+        "Tanh":1.8481776000882766
+    }
+]
+```
 
 Security
   Allowed by administrator accounts
@@ -178,13 +177,13 @@ Modifies the specified stream event. PatchValue affects only the data item param
 
 
 **Syntax**
-
-        Task PatchValueAsync(string streamId, string selectExpression, T item);
-
+```csharp
+    Task PatchValueAsync(string streamId, string selectExpression, T item);
+```
 **Http**
 
-        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?select={selectExpression}
+       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		    ?select={selectExpression}
 
 
 Content is serialized patch property
@@ -220,10 +219,10 @@ Security
   Allowed by administrator accounts
 
 **Example**
-
-        var obj = new { TimeId = DateTime.UtcNow(), Value = 10 };
-        await _dataService.PatchValueAsync(streamId, “Value”, obj);  
-
+```csharp
+    var obj = new { TimeId = DateTime.UtcNow(), Value = 10 };
+    await _dataService.PatchValueAsync(streamId, “Value”, obj);  
+```
 
 **********************
 
@@ -235,13 +234,13 @@ Patches values of the selected fields for multiple events in the stream.
 
 
 **Syntax**
-
-        Task PatchValuesAsync(string streamId, string selectExpression, IList<T> items);
-
+```csharp
+    Task PatchValuesAsync(string streamId, string selectExpression, IList<T> items);
+```
 **Http**
 
-        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?select={selectExpression}
+       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		    ?select={selectExpression}
 
 Content is serialized list of patch property values
 
@@ -293,15 +292,15 @@ Removes the event at the index from the specified stream. Different overloads ar
 
 
 **Syntax**
-
-        Task RemoveValueAsync(string streamId, string index);
-        Task RemoveValueAsync<T1>(string streamId, T1 index);
-        Task RemoveValueAsync<T1, T2>(string streamId, Tuple<T1, T2> index);
-
+```csharp
+    Task RemoveValueAsync(string streamId, string index);
+    Task RemoveValueAsync<T1>(string streamId, T1 index);
+    Task RemoveValueAsync<T1, T2>(string streamId, Tuple<T1, T2> index);
+```
 **Http**
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?index={index}
+		    ?index={index}
 
 
 **Parameters**
@@ -340,15 +339,15 @@ Removes the event at each index from the specified stream. Different overloads a
 
 
 **Syntax**
-
-        Task RemoveValuesAsync(string streamId, IEnumerable<string> index);
-        Task RemoveValuesAsync<T1>(string streamId, IEnumerable<T1> index);
-        Task RemoveValuesAsync<T1, T2>(string streamId, IEnumerable<Tuple<T1, T2>> index);
-
+```csharp
+    Task RemoveValuesAsync(string streamId, IEnumerable<string> index);
+    Task RemoveValuesAsync<T1>(string streamId, IEnumerable<T1> index);
+    Task RemoveValuesAsync<T1, T2>(string streamId, IEnumerable<Tuple<T1, T2>> index);
+```
 **Http**
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?index={index}
+		    ?index={index}
 
 
 **Parameters**
@@ -390,16 +389,15 @@ Removes a range of values at and between the given indices.
 
 
 **Syntax**
-
-        Task RemoveWindowValuesAsync(string streamId, string startIndex, string endIndex);
-        Task RemoveWindowValuesAsync<T1>(string streamId, T1 startIndex, T1 endIndex);
-        Task RemoveWindowValuesAsync<T1, T2>(string streamId, Tuple<T1, T2> startIndex, Tuple<T1, T2> endIndex);
-
-
+```csharp
+    Task RemoveWindowValuesAsync(string streamId, string startIndex, string endIndex);
+    Task RemoveWindowValuesAsync<T1>(string streamId, T1 startIndex, T1 endIndex);
+    Task RemoveWindowValuesAsync<T1, T2>(string streamId, Tuple<T1, T2> startIndex, Tuple<T1, T2> endIndex);
+```
 **Http**
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?startIndex={startIndex}&endIndex={endIndex}
+		    ?startIndex={startIndex}&endIndex={endIndex}
 
 
 **Parameters**
@@ -442,13 +440,13 @@ Writes an item over an existing event in the specified stream.
 
 
 **Syntax**
-
-        Task ReplaceValueAsync<T>(string streamId, T item);
-
+```csharp
+    Task ReplaceValueAsync<T>(string streamId, T item);
+```
 **Http**
 
         PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?allowCreate=false
+		    ?allowCreate=false
 
 Content is serialized replacement object
 
@@ -485,13 +483,13 @@ Writes **items** over existing events in the specified stream.
 
 
 **Syntax**
-
-        Task ReplaceValuesAsync<T>(string streamId, IList<T> items);
-
+```csharp
+    Task ReplaceValuesAsync<T>(string streamId, IList<T> items);
+```
 **Http**
 
         PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		?allowCreate=false
+		    ?allowCreate=false
 
 Content is serialized list of replacement values
 
@@ -532,9 +530,9 @@ Writes **item** to the specified stream.
 
 
 **Syntax**
-
-        Task UpdateValueAsync<T>(string streamId, T item);
-
+```csharp
+    Task UpdateValueAsync<T>(string streamId, T item);
+```
 **Http**
 
         PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
@@ -576,9 +574,9 @@ Writes items to the specified stream.
 
 
 **Syntax**
-
-        Task UpdateValuesAsync<T>(string streamId, IList<T> items);
-
+```csharp
+    Task UpdateValuesAsync<T>(string streamId, IList<T> items);
+```
 **Http**
 
         PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
@@ -616,4 +614,4 @@ Security
   
   ***********************
 
-MOTODO: Add sections on multi-stream calls
+MOTODO: Add sections on multi-stream calls Insert and update
