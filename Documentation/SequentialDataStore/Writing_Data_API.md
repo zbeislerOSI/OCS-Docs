@@ -6,12 +6,121 @@ API calls for writing data
 ==========================
 
 Reading and writing data with the SDS Client Libraries is performed through 
-the ``ISdsDataService`` interface, which is accessed with the ``SdsService.GetDataService( )`` 
+the ``ISdsDataService`` interface, which is accessed with the ``SdsService.GetDataService()`` 
 helper.
+*****
+#### Sample Types
 
+Many of the API methods described below contain sample JSON and sample code. 
 
-***********************
+When specifying a parameter of type enum, the API accepts both the name of the field and the numeric value of the field. 
+Samples vary to highlight enum flexibility.
 
+The code samples will using the following Types:  
+  * ``Simple``, a type with a single index  
+  * ``DerivedComplexType``, a type with a compound index   
+
+These types are defined below in .NET, Python, and Javascript:
+
+##### .NET
+```csharp
+public enum State
+{
+   Ok,
+   Warning,
+   Alarm
+}
+
+public class Simple
+{
+   [SdsMember(IsKey = true, Order = 0) ]
+   public DateTime Time { get; set; }
+   public State State { get; set; }
+   [SdsMember(Uom = "meter")]
+   public Double Measurement { get; set; }
+}
+
+public class DerivedCompoundIndex : Simple
+{
+   [SdsMember(IsKey = true, Order = 1)]
+   public DateTime Recorded { get; set; }
+}
+```
+##### Python
+```python
+class State(Enum):
+  Ok = 0
+  Warning = 1
+  Alarm = 2
+
+class Simple(object):
+  Time = property(getTime, setTime)
+  def getTime(self):
+    return self.__time
+  def setTime(self, time):
+    self.__time = time
+
+  State = property(getState, setState)
+  def getState(self):
+    return self.__state
+  def setState(self, state):
+    self.__state = state
+
+  Measurement = property(getValue, setValue)
+  def getValue(self):
+    return self.__measurement
+  def setValue(self, measurement):
+    self.__measurement = measurement
+
+class DerivedCompoundIndex(Simple):
+  # Second-order Key property
+  @property
+  def Recorded(self):
+    return self.__recorded
+  @Recorded.setter
+  def Recorded(self, recorded):
+    self.__recorded = recorded
+```
+##### JavaScript
+```javascript
+var State =
+{
+  Ok: 0,
+  Warning: 1,
+  Alarm: 2,
+}
+
+var Simple = function () {
+  this.Time = null;
+  this.State = null;
+  this.Value = null;
+}
+
+var DerivedCompoundIndex = function() {
+  Simple.call(this);
+  this.Recorded = null;
+}
+```
+
+``Simple`` has values as follows:
+
+      11/23/2017 12:00:00 PM: Ok  0
+      11/23/2017  1:00:00 PM: Ok 10
+      11/23/2017  2:00:00 PM: Ok 20
+      11/23/2017  3:00:00 PM: Ok 30
+      11/23/2017  4:00:00 PM: Ok 40
+
+``DerivedCompoundIndex`` has values as follows:
+
+      1/20/2017 1:00:00 AM : 1/20/2017 12:00:00 AM 	0
+      1/20/2017 1:00:00 AM : 1/20/2017  1:00:00 AM 	2
+      1/20/2017 1:00:00 AM : 1/20/2017  2:00:00 PM 	5
+      1/20/2017 2:00:00 AM : 1/20/2017 12:00:00 AM 	1
+      1/20/2017 2:00:00 AM : 1/20/2017  1:00:00 AM 	3
+      1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 AM 	4
+      1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 PM 	6
+
+*****
 
 ``InsertValueAsync()``
 ----------------
@@ -19,9 +128,9 @@ helper.
 Inserts data into the specified stream. Throws an exception if data is already present at the index used in ‘item’.
 
 **Syntax**
-
-        Task InsertValueAsync<T>(string streamId, T item);
-
+```csharp
+    Task InsertValueAsync<T>(string streamId, T item);
+```
 **Http**
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
@@ -85,12 +194,12 @@ Inserts items into the specified stream. Throws an exception if data is already 
 
 
 **Syntax**  
-
+```csharp
     Task InsertValuesAsync<T>(string streamId, IList<T> items);
-
+```
 **Http**
 
-    POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 
 Content is serialized list of events of type T	
@@ -184,7 +293,6 @@ Modifies the specified stream event. PatchValue affects only the data item param
 
        PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 		    ?select={selectExpression}
-
 
 Content is serialized patch property
 

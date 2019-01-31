@@ -91,7 +91,7 @@ Read characteristics applied to indexes between, before, or after data when the 
 [`GetRangeValuesAsync`](xref:sdsReadingDataApi#get-range-values)  
 Read characteristics applied to indexes between, before, or after data when the calls Boundary parameter is set to ExactOrCalculated.
 
-SdsStreamView and reading data
+Transforming Data
 ------------------------
 
 All reads support specifying an SdsStreamView identifier in the query string to shape the results of the read:
@@ -167,3 +167,5 @@ SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (Uom) to stream d
 | InterpolationMode | SdsInterpolationMode | N/A         | Currently not supported in context of data reads     |
 
 This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects. See [API calls for reading data](xref:sdsReadingDataApi) for more information.
+
+***********************

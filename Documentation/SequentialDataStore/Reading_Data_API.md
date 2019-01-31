@@ -2,20 +2,22 @@
 uid: sdsReadingDataApi
 ---
 # API calls for reading data
-Reading and writing data with the SDS Client Libraries is performed through the ``ISdsDataService`` interface, which can be accessed with the ``SdsService.GetDataService( )`` helper.
-***********************
+Reading and writing data with the SDS Client Libraries is performed through the ``ISdsDataService`` interface, which can be accessed with the ``SdsService.GetDataService()`` helper.
+*****
+#### Sample Types
 
-## Sample Types
 Many of the API methods described below contain sample JSON and sample code. 
 
 When specifying a parameter of type enum, the API accepts both the name of the field and the numeric value of the field. 
 Samples vary to highlight enum flexibility.
 
-Samples use the following types:
+The code samples will using the following Types:  
+  * ``Simple``, a type with a single index  
+  * ``DerivedComplexType``, a type with a compound index   
 
-### Type with a simple index, named *Simple*:
+These types are defined below in .NET, Python, and Javascript:
 
-#### .NET
+##### .NET
 ```csharp
 public enum State
 {
@@ -32,67 +34,6 @@ public class Simple
    [SdsMember(Uom = "meter")]
    public Double Measurement { get; set; }
 }
-```
-#### Python
-```python
-class State(Enum):
-  Ok = 0
-  Warning = 1
-  Alarm = 2
-
-class Simple(object):
-  Time = property(getTime, setTime)
-  def getTime(self):
-    return self.__time
-  def setTime(self, time):
-    self.__time = time
-
-  State = property(getState, setState)
-  def getState(self):
-    return self.__state
-  def setState(self, state):
-    self.__state = state
-
-  Measurement = property(getValue, setValue)
-  def getValue(self):
-    return self.__measurement
-  def setValue(self, measurement):
-    self.__measurement = measurement
-```
-#### JavaScript
-```javascript
-var State =
-{
-  Ok: 0,
-  Warning: 1,
-  Alarm: 2,
-}
-
-var Simple = function () {
-  this.Time = null;
-  this.State = null;
-  this.Value = null;
-}
-```
-Has values as follows:
-
-      11/23/2017 12:00:00 PM: Ok  0
-      11/23/2017  1:00:00 PM: Ok 10
-      11/23/2017  2:00:00 PM: Ok 20
-      11/23/2017  3:00:00 PM: Ok 30
-      11/23/2017  4:00:00 PM: Ok 40
-
-### Type with Compound Index, named ``DerivedCompoundIndex``
-
-#### .NET
-```csharp
-public class Simple
-{
-    [SdsMember(IsKey = true, Order = 0)]
-    public DateTime Time { get; set; }
-    public State State { get; set; }
-    public Double Measurement { get; set; }
-}
 
 public class DerivedCompoundIndex : Simple
 {
@@ -100,10 +41,14 @@ public class DerivedCompoundIndex : Simple
    public DateTime Recorded { get; set; }
 }
 ```
-#### Python
+##### Python
 ```python
+class State(Enum):
+  Ok = 0
+  Warning = 1
+  Alarm = 2
+
 class Simple(object):
-  # First-order Key property
   Time = property(getTime, setTime)
   def getTime(self):
     return self.__time
@@ -131,8 +76,15 @@ class DerivedCompoundIndex(Simple):
   def Recorded(self, recorded):
     self.__recorded = recorded
 ```
-#### JavaScript
+##### JavaScript
 ```javascript
+var State =
+{
+  Ok: 0,
+  Warning: 1,
+  Alarm: 2,
+}
+
 var Simple = function () {
   this.Time = null;
   this.State = null;
@@ -144,7 +96,16 @@ var DerivedCompoundIndex = function() {
   this.Recorded = null;
 }
 ```
-Has values as follows:
+
+``Simple`` has values as follows:
+
+      11/23/2017 12:00:00 PM: Ok  0
+      11/23/2017  1:00:00 PM: Ok 10
+      11/23/2017  2:00:00 PM: Ok 20
+      11/23/2017  3:00:00 PM: Ok 30
+      11/23/2017  4:00:00 PM: Ok 40
+
+``DerivedCompoundIndex`` has values as follows:
 
       1/20/2017 1:00:00 AM : 1/20/2017 12:00:00 AM 	0
       1/20/2017 1:00:00 AM : 1/20/2017  1:00:00 AM 	2
@@ -154,9 +115,9 @@ Has values as follows:
       1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 AM 	4
       1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 PM 	6
 
-All times are represented at offset 0, GMT.
+*****
 
-***********************
+All times are represented at offset 0, GMT.
 
 ## ``Get Value``
 
@@ -168,8 +129,8 @@ Get Value supports two ways to retrieve an event:
 
 ### Request (Standard) 
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValue
-         ?index={index}&streamViewId={streamViewId}
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Interpolated
+         ?index={index}
 
 **Request Parameters**
 
@@ -185,36 +146,33 @@ The stream identifier
 ``string index``  
 The index
 
-``string streamViewId``  
-Optional stream view identifier
-
 
 **Response**
 
   The response includes a status code and a response body containing a serialized event.
-  Consider a stream of type Simple with the default InterpolationMode of Continuous and 
-  ExtrapolationMode of All. In the following request, the specified index matches an existing stored event:
+  Consider a stream of type ``Simple`` with the default ``InterpolationMode`` of ``Continuous`` and 
+  ``ExtrapolationMode`` of ``All``. In the following request, the specified index matches an existing stored event:
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/GetValue 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/Interpolated 
          ?index=2017-11-23T13:00:00Z
 
 The response will contain the event stored at the specified index:
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      {  
-         "Time":"2017-11-23T13:00:00Z",
-         "Measurement":10.0
-      }
+   HTTP/1.1 200
+   Content-Type: application/json
+   
+   {  
+      "Time":"2017-11-23T13:00:00Z",
+      "Measurement":10.0
+   }
 ```
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 The following request specifies an index for which no stored event exists:
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/GetValue 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/Interpolated 
           ?index=2017-11-23T13:30:00Z
 
 Because the index is a valid type for interpolation and the stream type specifies a mode of interpolate, 
@@ -222,26 +180,23 @@ this request receives a response with an event interpolated at the specified ind
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      {  
-         "Time":"2017-11-23T13:30:00Z",
-         "Measurement":15.0
-      }
+   {  
+      "Time":"2017-11-23T13:30:00Z",
+      "Measurement":15.0
+   }
 ```
 **.NET Library**
 ```csharp
-Task<T> GetValueAsync<T>(string streamId, string index, 
-   string streamViewId = null);
-Task<T> GetValueAsync<T, T1>(string streamId, Tuple<T1> index, 
-   string streamViewId = null);
-Task<T> GetValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, 
-   string streamViewId = null);
+   Task<T> GetValueAsync<T>(string streamId, string index, 
+      string streamViewId = null);
+   Task<T> GetValueAsync<T, T1>(string streamId, Tuple<T1> index, 
+      string streamViewId = null);
+   Task<T> GetValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, 
+      string streamViewId = null);
 ```
 <a name="getvalueuomconversion"></a>
 
-### Request (Uom Conversion)
+### Request (Stream Views & Uom Conversion) - MOTODO
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValue
             ?index={index}&streamViewId={streamViewId}
@@ -267,12 +222,12 @@ Optional stream view identifier
 
 The Request Body contains a collection of `SdsStreamPropertyOverride` objects. The example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
 ```json
-    [
-      {
-        "SdsTypePropertyId" : "Measurement",
-        "Uom" : "centimeter" 
-      }
-    ]
+   [
+     {
+       "SdsTypePropertyId" : "Measurement",
+       "Uom" : "centimeter" 
+     }
+   ]
 ```
 
 **Response**
@@ -280,21 +235,21 @@ The Request Body contains a collection of `SdsStreamPropertyOverride` objects. T
 The response includes a status code and response body containing a serialized event similar to the standard request above (without Uom conversion). In this response, the system will have applied the conversion factor for the base unit (in this case Meters) to the `Measurement` property of the event.
 
 **Response body**
-
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      {  
-         "Time":"2017-11-23T13:00:00Z",
-         "Measurement":1000.0 
-      }
-
+```json
+   HTTP/1.1 200
+   Content-Type: application/json
+   
+   {  
+      "Time":"2017-11-23T13:00:00Z",
+      "Measurement":1000.0 
+   }
+```
 **.NET Library**
-
-      Task<T> GetValueAsync<T>(string streamId, string index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
-      Task<T> GetValueAsync<T, T1>(string streamId, Tuple<T1> index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
-      Task<T> GetValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
-
+```csharp
+   Task<T> GetValueAsync<T>(string streamId, string index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+   Task<T> GetValueAsync<T, T1>(string streamId, Tuple<T1> index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+   Task<T> GetValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+```
 ***********************
 
 ## ``Get First Value``
@@ -306,8 +261,7 @@ Get First Value supports two ways to retrieve an event:
 <a name="getfirstvaluestandard"></a>
 ### Request (Standard)
 
-        GET	api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetFirstValue
-            ?streamViewId={streamViewId}
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/First
 
 **Request Parameters**
 
@@ -320,19 +274,16 @@ The namespace identifier
 ``string streamId``  
 The stream identifier
 
-``string streamViewId``  
-Optional stream view identifier
-
 **Response**
 
   The response includes a status code and a response body containing a serialized event.
 
 **.NET Library**
-
-      Task<T> GetFirstValueAsync<T>(string streamId, string streamViewId = null);
-
+```csharp
+   Task<T> GetFirstValueAsync<T>(string streamId, string streamViewId = null);
+```
 <a name="getfirstvalueuomconversion"></a>
-### Request (Uom Conversion)
+### Request (Stream Views & Uom Conversion) - MOTODO
 
       POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetFirstValue
          ?streamViewId={streamViewId}
@@ -381,8 +332,7 @@ Get Last Value supports two ways to retrieve an event:
 
 <a name="getlastvaluestandard"></a>
 ### Request (Standard)
-        GET	api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetLastValue
-            ?streamViewId={streamViewId}
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Last
 
 **Request Parameters**
 
@@ -395,10 +345,6 @@ The namespace identifier
 ``string streamId``  
 The stream identifier
 
-``string streamViewId``  
-Optional stream view identifier
-
-
 **Response**
 
   The response includes a status code and a response body containing a serialized event.
@@ -410,7 +356,7 @@ Optional stream view identifier
 ```
 
 <a name="getlastvalueuomconversion"></a>
-### Request (Uom Conversion)
+### Request (Stream Views & Uom Conversion) - MOTODO
       POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetLastValue
             ?streamViewId={streamViewId}
 
@@ -451,147 +397,6 @@ The response includes a status code and a response body containing a serialized 
 ```
 ***********************
 
-## ``Get Distinct Value``
-
-Get Distinct Value supports two ways to retrieve an event:
-* [Standard](#getdistinctvaluestandard): Returns the value at the specified index. If no value exists at the specified index, 
-Get Distinct Value returns HTTP Status Code Not Found, 404.  The stream’s read characteristics 
-do not affect Get Distinct Value.
-* [Uom Conversion](#getdistinctvalueuomconversion): Same as Standard, but with unit conversion(s) applied to data when the SdsStream or SdsType contains unit of measure information. See  [Units of Measure](xref:unitsOfMeasure) for additional information
-
-<a name="getdistinctvaluestandard"></a>
-### Request (Standard)
-
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetDistinctValue
-         ?index={index}&streamViewId={streamViewId}
-
-**Request Parameters**
-
-``string tenantId``  
-  The tenant identifier
-
-``string namespaceId``  
-  The namespace identifier
-
-``string streamId``  
-  The stream identifier
-
-``string index``  
-  The index
-
-``string streamViewId``  
-  Optional stream view identifier
-
-
-**Response**
-
-  The response includes a status code and a response body containing a serialized event.
-
-  For a stream of type Simple, when making a Get Distinct Value request at an existing stored index: 
-
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/GetDistinctValue?index=2017-11-23T13:00:00Z 
-
-The event at that index is returned in the response:
-
-**Response body**
-
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      {  
-         "Time":"2017-11-23T13:00:00Z",
-         "Measurement":10.0
-      }
-
-Note that State is not included in the JSON as its value is the default value.
-
-For a request at an index for which no stored event exists:
-
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-        GetDistinctValue?index=2017-11-23T13:30:00Z
-
-No distinct value is found at the specified index, and an error response is returned:
-
-**Response body**
-
-      HTTP/1.1 404
-      Content-Type: application/json
-
-      {  
-         "Message":"Resource not found" 
-      }
-
-
-**.NET Library**
-```csharp
-   Task<T> GetDistinctValueAsync<T>(string streamId, string index, 
-      string streamViewId = null);
-   Task<T> GetDistinctValueAsync<T, T1>(string streamId, Tuple<T1> index, 
-      string streamViewId = null);
-   Task<T> GetDistinctValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, 
-      string streamViewId = null);
-```
-
-<a name="getdistinctvalueuomconversion"></a>
-### Request (Uom Conversion)
-
-      POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetDistinctValue
-         ?index={index}&streamViewId={streamViewId}
-
-**Request Parameters**
-
-``string tenantId``  
-  The tenant identifier
-
-``string namespaceId``  
-  The namespace identifier
-
-``string streamId``  
-  The stream identifier
-
-``string index``  
-  The index
-
-``string streamViewId``  
-  Optional stream view identifier
-
-**Request Body**
-
-The Request Body contains a collection of `SdsStreamPropertyOverride` objects. The example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
-```json
-    [
-      {
-        "SdsTypePropertyId" : "Measurement",
-        "Uom" : "centimeter" 
-      }
-    ]
-```
-
-**Response**
-
-The response includes a status code and response body containing a serialized event similar to the standard request above (without Uom conversion). In this response, the system will have applied the conversion factor for the base unit (in this case Meters) to the Measurement property of the event.
-
-**Response body**
-
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      {  
-         "Time":"2017-11-23T13:00:00Z",
-         "Measurement":1000.0
-      }
-
-**.NET Library**
-```csharp
-   Task<T> GetDistinctValueAsync<T>(string streamId, string index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      string streamViewId = null);
-   Task<T> GetDistinctValueAsync<T, T1>(string streamId, Tuple<T1> index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      string streamViewId = null);
-   Task<T> GetDistinctValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      string streamViewId = null);
-```
-***********************
-
 ## ``Find Distinct Value``
 Get Last Value supports two ways to retrieve an event:
 * [Standard](#finddistinctvaluestandard): Returns a stored event found based on the specified SdsSearchMode and index. 
@@ -600,8 +405,8 @@ Get Last Value supports two ways to retrieve an event:
 <a name="finddistinctvaluestandard"></a>
 ### Request (Standard)
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/FindDistinctValue
-         ?index={index}&mode={mode}&streamViewId={streamViewId}
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+         ?index={index}&searchMode={searchMode}
 
 **Request Parameters**
 
@@ -617,12 +422,10 @@ The stream identifier
 ``string index``  
 The index
 
-``string mode``  
-The SdsSearchMode
+``string searchMode``  
+The SdsSearchMode, the default is ``exact``
 
-``string streamViewId``  
-Optional stream view identifier
-
+MOTODO: insert a table or explanation on search modes, if it doesn't already exist
 
 **Response**
 
@@ -630,15 +433,15 @@ Optional stream view identifier
 
 For a stream of type Simple the following request, 
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-          FindDistinctValue?index=2017-11-23T13:00:00Z&mode=Next
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+          ?index=2017-11-23T13:00:00Z&searchMode=Next
 
 The request has an index that matches the index of an existing event, but because  
 an SdsSearchMode of ``next`` was specified, the response contains the next event in the stream after the 
 specified index:
 
 **Response body**
-
+```json
       HTTP/1.1 200
       Content-Type: application/json
 
@@ -647,20 +450,20 @@ specified index:
          "Time":"2017-11-23T14:00:00Z",
          "Measurement":20.0
       }
+```
 
-
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 For the following request,
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-        FindDistinctValue?index=2017-11-23T13:30:00Z&mode=Next
+      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+        ?index=2017-11-23T13:30:00Z&searchMode=Next
 
 The request specifies an index that does not match an index of an existing event. 
 The next event in the stream is retrieved.
 
 **Response body**
-
+```json
       HTTP/1.1 200
       Content-Type: application/json
 
@@ -669,21 +472,21 @@ The next event in the stream is retrieved.
          "Time":"2017-11-23T14:00:00Z",
          "Measurement":20.0
       }
-
+```
 **.NET Library**
 ```csharp
    Task<T> FindDistinctValueAsync<T>(string streamId, string index, 
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1>(string streamId, Tuple<T1> index, 
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, 
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
 ```
 <a name="finddistinctvalueuomconversion"></a>
-### Request (Uom Conversion)
+### Request (Stream Views & Uom Conversion) - MOTODO
 
       POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/FindDistinctValue
-         ?index={index}&mode={mode}&streamViewId={streamViewId}
+         ?index={index}&searchMode={searchMode}&streamViewId={streamViewId}
 
 **Request Parameters**
 
@@ -722,7 +525,7 @@ The Request Body contains a collection of `SdsStreamPropertyOverride` objects. T
 The response includes a status code and response body containing a serialized event similar to the standard request above (without Uom conversion). In this response, the system will have applied the conversion factor for the base unit (in this case Meters) to the `Measurement` property of the event.
 
 **Response body**
-      
+```json
       HTTP/1.1 200
       Content-Type: application/json
 
@@ -731,17 +534,16 @@ The response includes a status code and response body containing a serialized ev
          "Time":"2017-11-23T14:00:00Z",
          "Measurement":2000.0
       }
-
+```
 
 **.NET Library**
-
 ```csharp
    Task<T> FindDistinctValueAsync<T>(string streamId, string index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1>(string streamId, Tuple<T1> index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, IList<SdsStreamPropertyOverride> propertyOverrides,
-      SdsSearchMode mode, string streamViewId = null);
+      SdsSearchMode searchMode, string streamViewId = null);
 ```
 
 ***********************
@@ -766,10 +568,17 @@ Get Values supports six ways of specifying which events to return.
 * [Filtered with Uom Conversion](#getvaluesfiltereduomconversion): Same as Filtered, but with unit conversion(s) applied to data when the SdsStream or SdsType contains unit of measure information. Note that the filter is applied *before* any unit conversions. See [Units of Measure](xref:unitsOfMeasure) for additional information
 
 <a name="getvaluesrangedstandard"></a>
-### Request (Ranged)
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValues
-      ?startIndex={startIndex}&endIndex={endIndex}&count={count}&streamViewId={streamViewId}
+## Interpolated
+These calls will return values based on the read modes and request specifications. These can be interpolated events.
+
+### Requests
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Interpolated
+          ?index={index}
+
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Interpolated
+          ?startIndex={startIndex}&endIndex={endIndex}&count={count}
+      
 
 **Request Parameters**
 
@@ -791,9 +600,6 @@ The index defining the end of the range
 ``int count``  
 The number of events to return. Read characteristics of the stream determine how the form of the event.
 
-``string streamViewId``  
-Optional stream view identifier
-
 
 **Response**
 
@@ -801,14 +607,14 @@ Optional stream view identifier
 
   For a stream of type Simple, the following request, 
 
-      api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data/GetValues 
+      GET api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data/Interpolated 
           ?startIndex=2017-11-23T13:00:00Z&endIndex=2017-11-23T15:00:00Z&count=3
 
 For this request, the start and end fall exactly on event indexes and the number of events 
 from start to end match the count of three (3).
 
 **Response body**
-
+```json
       HTTP/1.1 200
       Content-Type: application/json
 
@@ -826,10 +632,9 @@ from start to end match the count of three (3).
             "Measurement":30.0
          }
       ] 
+```
 
-
-Note that State is not included in the JSON as its value is the default value.
-
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 **.NET Library**
 ```csharp
@@ -841,11 +646,24 @@ Note that State is not included in the JSON as its value is the default value.
       Tuple<T1, T2> endIndex, int count, string streamViewId = null);
 ```
 
+#### Not Interpolated
+These calls only return events that exist. They will not contain interpolated values.
+
+### Request (Single Index)
+
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+          ?index={index}&searchMode={searchMode} -- see FindDistinctValue()
+
 <a name="getvaluesindexcollectionstandard"></a>
 ### Request (Index collection)
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValues
-            ?index={index}[&index={index} …]&streamViewId={streamViewId}
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+            ?index={index}[&index={index} …]
+MOTODO, is this possible:
+
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+            ?index={index}[&index={index} …]&searchMode={searchMode}
+
 
 **Request Parameters**
 
@@ -861,9 +679,6 @@ The stream identifier
 ``string index``  
 One or more indexes of values to retrieve
 
-``string streamViewId``  
-Optional stream view identifier
-
 
 **Response**
 
@@ -871,7 +686,7 @@ Optional stream view identifier
 
   For a stream of type Simple, the following request, 
 
-      api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data/GetValues 
+      GET api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?index=2017-11-23T12:30:00Z&index=2017-11-23T13:00:00Z&index=2017-11-23T14:00:00Z
 
 For this request, the response contains events for each of the three specified indexes.
@@ -897,7 +712,7 @@ For this request, the response contains events for each of the three specified i
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 
 **.NET Library**
@@ -913,8 +728,8 @@ Note that State is not included in the JSON as its value is the default value.
 <a name="getvaluesfilteredstandard"></a>
 ### Request (Filtered)
 
-        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/ 
-           GetValues?filter={filter}&streamViewId={streamViewId}
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data 
+           ?filter={filter}
 
 **Request Parameters**
 
@@ -930,9 +745,6 @@ The stream identifier
 ``string filter``  
 The filter expression (see [Filter expressions](xref:sdsFilterExpressions))
 
-``string streamViewId``  
-Optional stream view identifier
-
 
 **Response**
 
@@ -940,14 +752,14 @@ Optional stream view identifier
 
   For a stream of type Simple, the following request, 
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/GetValues 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?filter=Measurement gt 10
 
 The events in the stream whose Measurement is less than or equal to 10 are not returned.
 
 
 **Response body**
-
+```json
       HTTP/1.1 200
       Content-Type: application/json
 
@@ -965,10 +777,9 @@ The events in the stream whose Measurement is less than or equal to 10 are not r
             "Measurement":40.0
          }
       ] 
+```
 
-
-
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 
 **.NET Library**
@@ -977,8 +788,59 @@ Note that State is not included in the JSON as its value is the default value.
       string streamViewId = null);
 ```
 
+### Request (Window)
+All values within the start and end index (including the start and end? is that specified by read modes?):
+
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+          ?startIndex={startIndex}&endIndex={endIndex}
+
+**Request Parameters**
+
+``string tenantId``  
+The tenant identifier
+
+``string namespaceId``  
+The namespace identifier
+
+``string streamId``  
+The stream identifier
+
+``string startIndex``  
+The index defining the beginning of the range
+
+``string endIndex``  
+The index defining the end of the range  
+
+``int count``  
+The number of events to return. Read characteristics of the stream determine how the form of the event.
+
+
+### Request (Range)
+Number of values requested start at the start index:
+
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+          ?startIndex={startIndex}&count={count}
+
+**Request Parameters**
+
+``string tenantId``  
+The tenant identifier
+
+``string namespaceId``  
+The namespace identifier
+
+``string streamId``  
+The stream identifier
+
+``string startIndex``  
+The index defining the beginning of the range
+
+``int count``  
+The number of events to return. Read characteristics of the stream determine how the form of the event.
+
+
 <a name="getvaluesrangeduomconversion"></a>
-### Request (Ranged with Uom Conversion)
+### Request (Ranged with Uom Conversion) - MOTODO
 
       POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValues
             ?startIndex={startIndex}&endIndex={endIndex}&count={count}&streamViewId={streamViewId}
@@ -1130,7 +992,7 @@ The response includes a status code and response body containing a serialized co
 ### Request (Filtered with Uom Conversion)
 
       POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetValues
-      ?filter={filter}&streamViewId={streamViewId}
+        ?filter={filter}&streamViewId={streamViewId}
 
 
 **Request Parameters**
@@ -1201,7 +1063,7 @@ Get Range Values supports two ways to retrieve events:
 * [Uom Conversion](#getrangevaluesuomconversion): Same as Standard, but with unit conversion(s) applied to data when the SdsStream or SdsType contains unit of measure information. See  [Units of Measure](xref:unitsOfMeasure) for additional information 
 
 <a name="getrangevaluesstandard"></a>
-### Request (Standard)
+### Request (Standard) MOTODO: Verify options for /Data and /Data/Interpolated 
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetRangeValues
             ?startIndex={startIndex}&count={count}&skip={skip}&reversed={reversed} 
@@ -1278,7 +1140,7 @@ Optional stream view identifier
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 To reverse the direction of the request, set reversed to true. This request will 
 return up to 100 events starting at 13:00 and extending back toward the start of the stream:
@@ -1303,7 +1165,7 @@ return up to 100 events starting at 13:00 and extending back toward the start of
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value. 
+Note that ``State`` is not included in the JSON as its value is the default value. 
 Further, Measurement is not include in the second, 12:00:00, event as zero is the default value for numbers.
 
 The following request specifies a boundary type of Outside for a reversed-direction range request. 
@@ -1339,12 +1201,12 @@ it would mean one event before the specified start index.
 The event outside of the index is the next event or the event at 14:00 because the 
 request operates in reverse.
 
-Note that State is not included in the JSON as its value is the default value. Further 
+Note that ``State`` is not included in the JSON as its value is the default value. Further 
 Measurement is not included in the last event as its value is default.
 
 Adding a filter to the request means only events that meet the filter criteria are returned:
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
           GetRangeValues?startIndex=2017-11-23T13:00:00Z&count=100&reversed=true 
           &boundaryType=2&filter=Measurement gt 10
 
@@ -1372,8 +1234,8 @@ Adding a filter to the request means only events that meet the filter criteria a
       int count, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1>(string streamId, T1 startIndex, 
       int count, string streamViewId = null);
-   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> 
-      startIndex, int count, string streamViewId = null);
+   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> startIndex, 
+      int count, string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeValuesAsync<T>(string streamId, string startIndex, 
       int count, bool reversed, string streamViewId = null);
@@ -1393,9 +1255,9 @@ Adding a filter to the request means only events that meet the filter criteria a
       int skip, int count, bool reversed, SdsBoundaryType boundaryType, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1>(string streamId, T1 startIndex, 
       int skip, int count, bool reversed, SdsBoundaryType boundaryType, string streamViewId = null);
-   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> 
-      startIndex, int skip, int count, bool reversed, SdsBoundaryType 
-      boundaryType, string streamViewId = null);
+   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> startIndex, 
+      int skip, int count, bool reversed, SdsBoundaryType boundaryType, 
+      string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeFilteredValuesAsync<T>(string streamId, string startIndex, 
       int skip, int count, bool reversed, SdsBoundaryType boundaryType, string filter, 
@@ -1499,609 +1361,43 @@ The response includes a status code and response body containing a serialized co
       startIndex, int count, string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeValuesAsync<T>(string streamId, string startIndex, 
-       int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1>(string streamId, T1 startIndex, 
-       int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, 
-       Tuple<T1, T2> startIndex, int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, 
-       string streamViewId = null);
+      Tuple<T1, T2> startIndex, int count, bool reversed, IList<SdsStreamPropertyOverride> propertyOverrides, 
+      string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeValuesAsync<T>(string streamId, string startIndex, 
-       int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1>(string streamId, T1 startIndex, 
-       int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, 
-       Tuple<T1, T2> startIndex, int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
-       string streamViewId = null);
+      Tuple<T1, T2> startIndex, int count, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
+      string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeValuesAsync<T>(string streamId, string startIndex, 
-       int skip, int count, bool reversed, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
-       string streamViewId = null);
+      int skip, int count, bool reversed, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
+      string streamViewId = null);
    Task<IEnumerable<T>> GetRangeValuesAsync<T, T1>(string streamId, T1 startIndex, 
-       int skip, int count, bool reversed, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
-       string streamViewId = null);
-   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> 
-       startIndex, int skip, int count, bool reversed, SdsBoundaryType 
-       boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      int skip, int count, bool reversed, SdsBoundaryType boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, 
+      string streamViewId = null);
+   Task<IEnumerable<T>> GetRangeValuesAsync<T, T1, T2>(string streamId, Tuple<T1, T2> startIndex, 
+      int skip, int count, bool reversed, SdsBoundaryType 
+      boundaryType, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
 
    Task<IEnumerable<T>> GetRangeFilteredValuesAsync<T>(string streamId, string startIndex, 
-       int skip, int count, bool reversed, SdsBoundaryType boundaryType, string filter, 
-       IList<SdsStreamPropertyOverride> propertyOverrides,
-       string streamViewId = null);
+      int skip, int count, bool reversed, SdsBoundaryType boundaryType, string filter, 
+      IList<SdsStreamPropertyOverride> propertyOverrides,
+      string streamViewId = null);
    Task<IEnumerable<T>> GetRangeFilteredValuesAsync<T, T1>(string streamId, T1 startIndex, 
-       int skip, int count, bool reversed, SdsBoundaryType boundaryType, string filter, 
-       IList<SdsStreamPropertyOverride> propertyOverrides,
-       string streamViewId = null);
+      int skip, int count, bool reversed, SdsBoundaryType boundaryType, string filter, 
+      IList<SdsStreamPropertyOverride> propertyOverrides,
+      string streamViewId = null);
    Task<IEnumerable<T>> GetRangeFilteredValuesAsync<T, T1, T2>(string streamId, 
-       Tuple<T1, T2> startIndex, int skip, int count, bool reversed, SdsBoundaryType boundaryType, 
-       string filter, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
+      Tuple<T1, T2> startIndex, int skip, int count, bool reversed, SdsBoundaryType boundaryType, 
+      string filter, IList<SdsStreamPropertyOverride> propertyOverrides, string streamViewId = null);
 ```
-
-***********************
-
-``Get Data Joins Values``
---------------------
-
-Get Data Joins Values returns multiple data streams specified in your API call. 
-
-To join multiple streams, for example Simple1 and Simple2, assume that Simple 1 presents the following data:
-
-```json  
-  [  
-     {  
-        "Time":"2017-11-23T11:00:00Z",
-        "Measurement":10.0
-     },
-     {  
-        "Time":"2017-11-23T13:00:00Z",
-        "Measurement":20.0
-     },
-     {  
-        "Time":"2017-11-23T14:00:00Z",
-        "Measurement":30.0
-     },
-     {  "Time":"2017-11-23T16:00:00Z",
-        "Measurement":40.0
-     }
-  ] 
-```
-
-And assume that Simple2 presents the following data:
-
-```json
-  [  
-     {  
-        "Time":"2017-11-23T12:00:00Z",
-        "Measurement":50.0
-     },
-     {  
-        "Time":"2017-11-23T14:00:00Z",
-        "Measurement":60.0
-     },
-     {  
-        "Time":"2017-11-23T15:00:00Z",
-        "Measurement":70.0
-     },
-     {  "Time":"2017-11-23T17:00:00Z",
-        "Measurement":80.0
-     }
-  ] 
-```
-
-**GET Requests**
-
-The following are responses for various Joins request options:
-
-
-**InnerJoin Request**
-
-      GET /api/Tenants/{tenantId}/Namespaces/{namespaceId}/Data/
-            GetWindowValues?streams=Simple1,Simple2&joinMode=inner
-            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier
-  
-``string namespaceId``  
-  The namespace identifier
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-**Response body**
-
-```json
-  [  
-    [
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 30
-        },
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 60
-        }
-    ]
-  ] 
-```
-
-Measurements from both streams with common indexes.
-
-**OuterJoin Request**
-
-      GET /api/Tenants/{tenantId}/Namespaces/{namespaceId}/Data/
-            GetWindowValues?streams=Simple1,Simple2&joinMode=outer
-            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier
-  
-``string namespaceId``  
-  The namespace identifier
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-**Response body**
-```json
-  [  
-    [
-      {  
-            "Time": "2017-11-23T11:00:00Z",
-            "Measurement": 10
-        },
-        null
-    ],
-    [
-        null,
-        {
-            "Time": "2017-11-23T12:00:00Z",
-            "Measurement": 50
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T13:00:00Z",
-            "Measurement": 20
-        },
-        null
-    ],
-    [
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 30
-        },
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 60
-        }
-    ],
-    [
-        null,
-        {
-            "Time": "2017-11-23T15:00:00Z",
-            "Measurement": 70
-     },
-   ],
-   [
-     {  
-            "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-     },
-        null
-   ],
-        null,
-        {
-            "Time":"2017-11-23T17:00:00Z",
-            "Measurement":80.0
-      }
-    ]
-  ] 
-```
- 
-All Measurements from both Streams, with default values at indexes where a Stream does not have a value.
-
-
-**InterpolatedJoin Request**
-
-      GET /api/Tenants/{tenantId}/Namespaces/{namespaceId}/Data/
-            GetWindowValues?streams=Simple1,Simple2&joinMode=interpolated
-            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier  
-  
-``string namespaceId``  
-  The namespace identifier  
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-
-**Response body**
-
-```json
-  [  
-    [
-      {  
-            "Time": "2017-11-23T11:00:00Z",
-            "Measurement": 10
-        },
-        {
-            "Time": "2017-11-23T11:00:00Z",
-            "Measurement": 50
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T12:00:00Z",
-            "Measurement": 15
-        },
-        {
-            "Time": "2017-11-23T12:00:00Z",
-            "Measurement": 50
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T13:00:00Z",
-            "Measurement": 20
-        },
-        {
-            "Time": "2017-11-23T13:00:00Z",
-            "Measurement": 55
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 30
-        },
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 60
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T15:00:00Z",
-            "Measurement": 35
-        },
-        {
-            "Time": "2017-11-23T15:00:00Z",
-            "Measurement": 70
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T16:00:00Z",
-            "Measurement": 40
-        },
-        {
-            "Time": "2017-11-23T16:00:00Z",
-            "Measurement": 75
-        }
-    ],
-    [
-        {
-            "Time": "2017-11-23T17:00:00Z",
-            "Measurement": 40
-        },
-        {
-            "Time": "2017-11-23T17:00:00Z",
-            "Measurement": 80
-      }
-    ]
-  ] 
-```
-
-
-All Measurements from both Streams with missing values interpolated. If the missing values are between valid Measurements within a Stream, they are interpolated. If the missing values are outside of the boundary values, they are extrapolated.
-
-**MergeLeftJoin Request**
-
-      GET /api/Tenants/{tenantId}/Namespaces/{namespaceId}/Data/
-            GetWindowValues?streams=Simple1,Simple2&joinMode=mergeleft
-            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier
-  
-``string namespaceId``  
-  The namespace identifier
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-
-**Response body**
-```json
-  [  
-      {  
-        "Time": "2017-11-23T11:00:00Z",
-        "Measurement": 10
-    },
-    {
-        "Time": "2017-11-23T12:00:00Z",
-        "Measurement": 50
-    },
-    {
-        "Time": "2017-11-23T13:00:00Z",
-        "Measurement": 20
-    },
-    {
-        "Time": "2017-11-23T14:00:00Z",
-        "Measurement": 30
-    },
-    {
-        "Time": "2017-11-23T15:00:00Z",
-        "Measurement": 70
-    },
-    {
-        "Time": "2017-11-23T16:00:00Z",
-        "Measurement": 40
-    },
-    {
-        "Time": "2017-11-23T17:00:00Z",
-        "Measurement": 80
-      }
-  ] 
-```
-
-This is similar to OuterJoin, but value at each index is the first available value at that index when iterating the given list of streams from left to right.
-
-
-**MergeRightJoin Request**
-
-      GET /api/Tenants/{tenantId}/Namespaces/{namespaceId}/Data/
-            GetWindowValues?streams=Simple1,Simple2&joinMode=mergeright
-            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
-
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier
-  
-``string namespaceId``  
-  The namespace identifier
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-
-**Response body**
-```json
-  [  
-    {
-        "Time": "2017-11-23T11:00:00Z",
-        "Measurement": 10
-    },
-    {
-        "Time": "2017-11-23T12:00:00Z",
-        "Measurement": 50
-    },
-    {
-        "Time": "2017-11-23T13:00:00Z",
-        "Measurement": 20
-    },
-    {
-        "Time": "2017-11-23T14:00:00Z",
-        "Measurement": 60
-    },
-    {
-        "Time": "2017-11-23T15:00:00Z",
-        "Measurement": 70
-    },
-    {
-        "Time": "2017-11-23T16:00:00Z",
-        "Measurement": 40
-    },
-    {
-        "Time": "2017-11-23T17:00:00Z",
-        "Measurement": 80
-    }
-  ] 
-  ```
-
-This is similar to OuterJoin, but value at each index is the first available value at that index when iterating the given list of streams from right to left.
-
-
-**POST Requests**
-
-For POST requests, the response formats are similar to GET requests, but the request format is different. Except the joinMode, all other options are specified in the body.
-
-
-
-**Request body**
-```json
-  [  
-      {  
-		"StreamId": "Simple1",
-		"Options": {
-			"StartIndex": "2017-11-23T11:00:00Z",
-			"EndIndex": "2017-11-23T14:00:00Z",
-			"StartBoundaryType": "Exact",
-			"EndBoundaryType": "Exact",
-			"Count": 100,
-			"Filter": ""
-		}
-	},
-	{
-		"StreamId": "Simple2",
-		"Options": {
-			"StartIndex": "2017-11-23T15:00:00Z",
-			"EndIndex": "2017-11-23T17:00:00Z",
-			"StartBoundaryType": "Exact",
-			"EndBoundaryType": "Exact",
-			"Count": 100,
-			"Filter": ""
-		}
-      }
-  ] 
-```
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier
-  
-``string namespaceId``  
-  The namespace identifier
-  
-``string streamId``  
-  The stream identifier
-  
-``SdsJoinMode joinMode``  
-  Type of join, i.e. inner, outer, etc.
-
-
-**Response**
-
-  The response includes a status code and a response body containing multiple serialized events.
-
-
-**Response body**
-```json
-  [  
-    [
-        {
-            "Time": "2017-11-23T11:00:00Z",
-            "Measurement": 10
-        },
-        null
-    ],
-    [
-        {
-            "Time": "2017-11-23T13:00:00Z",
-            "Measurement": 20
-        },
-        null
-    ],
-    [
-        {
-            "Time": "2017-11-23T14:00:00Z",
-            "Measurement": 30
-        },
-        null
-    ],
-    [
-        null,
-        {
-            "Time": "2017-11-23T15:00:00Z",
-            "Measurement": 70
-        }
-    ],
-    [
-        null,
-        {
-            "Time": "2017-11-23T17:00:00Z",
-            "Measurement": 80
-        }
-    ]
-  ] 
-```
-
-Notice that not all the values from Streams were included since they are restricted by individual queries for each Stream.
-
-**.NET Library**
-```csharp
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, string endIndex);
-       
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, string endIndex, int count);
-        
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, string endIndex, SdsBoundaryType boundaryType, 
-      string filter);
-
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, string endIndex, SdsBoundaryType boundaryType, 
-      string filter, int count);
-        
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
-      SdsBoundaryType endBoundaryType, string filter);
-        
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
-      SdsJoinType joinMode, string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
-      SdsBoundaryType endBoundaryType, string filter, int count);
-        
-   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(SdsJoinType joinMode, IList<SdsStreamQuery> 
-      sdsStreamsQueryOptions);
-
-   Task<IList<T>> GetMergeValuesAsync<T>(SdsMergeType joinMode, IList<SdsStreamQuery> 
-      sdsStreamsQueryOptions);
-        
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, string endIndex);
-        
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, string endIndex, int count);
-        
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, string endIndex, SdsBoundaryType boundaryType, string filter);
-
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, string endIndex, SdsBoundaryType boundaryType, string filter, int count);
-        
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
-      SdsBoundaryType endBoundaryType, string filter);
-        
-   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
-      string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
-      SdsBoundaryType endBoundaryType, string filter, int count);
- ```
-
-***********************
 
 ## ``Get Window Values``
 Get Window Values supports two ways of retrieving events:
@@ -2126,25 +1422,22 @@ For the first request, specify a null or empty string for the ContinuationToken.
 <a name="getwindowvaluesstandard"></a>
 ### Request (Standard)
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetWindowValues 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&endIndex={endIndex}&boundaryType={boundaryType} 
-          &filter={filter}&count={count}&streamViewId={streamViewId}
+          &filter={filter}&count={count}
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetWindowValues 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&startBoundaryType={startBoundaryType} 
           &endIndex={endIndex}&endBoundaryType={endBoundaryType}&filter={filter}&count={count} 
-          &streamViewId={streamViewId}
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetWindowValues 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&endIndex={endIndex}&boundaryType={boundaryType} 
-          &filter={filter}&count={count}&continuationToken={continuationToken}&streamViewId={streamViewId}
+          &filter={filter}&count={count}&continuationToken={continuationToken}
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/GetWindowValues 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&startBoundaryType={startBoundaryType} 
           &endIndex={endIndex}&endBoundaryType={endBoundaryType}&filter={filter}&count={count} 
-          &continuationToken={continuationToken}&streamViewId={streamViewId}
-
-
+          &continuationToken={continuationToken}
 
 **Request Parameters**
 
@@ -2178,19 +1471,14 @@ Optional SdsBoundaryType specifies the last value in the result in relation to t
 ``string filter``  
 Optional filter expression
 
-``string streamViewId``  
-Optional stream view identifier
-
-
-
 **Response**
 
 The response includes a status code and a response body containing a serialized collection of events.
 
 For a stream of type Simple, the following requests all stored events between 13:30 and 15:30: 
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-          GetWindowValues?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+          ?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z
 
 The response will contain the event stored at the specified index:
 
@@ -2214,13 +1502,13 @@ The response will contain the event stored at the specified index:
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 When the request is modified to specify a boundary type of Outside, the value 
 before 13:30 and the value after 15:30 are included:
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-          GetWindowValues?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z 
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+          ?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z 
           &boundaryType=2
 
 
@@ -2252,7 +1540,7 @@ before 13:30 and the value after 15:30 are included:
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value. 
+Note that ``State`` is not included in the JSON as its value is the default value. 
 Further, Measurement is not include in the second, 12:00:00, event as zero is the default 
 value for numbers.
 
@@ -2260,8 +1548,8 @@ If instead a start boundary of Inside, only values inside the start boundary (af
 are included in the result. With an end boundary of Outside one value outside the end index 
 (after 15:30) is included:
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-          GetWindowValues?startIndex=2017-11-23T12:30:00Z&&startBoundaryType=1 
+      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+          ?startIndex=2017-11-23T12:30:00Z&&startBoundaryType=1 
           &endIndex=2017-11-23T15:30:00Z&endBoundaryType=2
 
 **Response body**
@@ -2289,17 +1577,17 @@ are included in the result. With an end boundary of Outside one value outside th
       ] 
 ```
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 In order to page the results of the request, a continuation token may be specified. 
 This requests the first page of the first two stored events between start index and 
 end index by indicating count is 2 and continuationToken is an empty string:
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/ 
-          GetWindowValues?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z 
-          &count=2&continuationToken=
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
+          ?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z 
+          &count=2&continuationToken={MOTODO - insert continuation token)
 
-*Response body**
+**Response body**
 ```json
       HTTP/1.1 200
       Content-Type: application/json
@@ -2319,7 +1607,7 @@ end index by indicating count is 2 and continuationToken is an empty string:
       } 
 ```
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 This Get Window Values request uses the continuation token from the previous 
 page to request the next page of stored events:
@@ -2347,7 +1635,7 @@ page to request the next page of stored events:
 In this case, the results contain the final event. The returned continuation token is null 
 (not shown because it null is the default value for a JSON string). 
 
-Note that State is not included in the JSON as its value is the default value.
+Note that ``State`` is not included in the JSON as its value is the default value.
 
 
 
@@ -3022,4 +2310,507 @@ Task<IEnumerable<SdsInterval<T>>> GetFilteredIntervalsAsync<T, T1, T2>(string st
    Tuple<T1, T2> startIndex, Tuple<T1, T2> endIndex, int count, 
    string filter, string streamViewId = null);
 ```
+***********************
+
+
+***********************
+
+``Get Data Joins Values``
+--------------------
+
+Get Data Joins Values returns multiple data streams specified in your API call. 
+
+### GET Request
+
+    GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams={streams}&joinMode={joinMode}
+            &startIndex={startIndex}&endIndex={endIndex}
+
+**Parameters**
+
+``string tenantId``  
+The tenant identifier
+  
+``string namespaceId``  
+The namespace identifier
+  
+``string streams``  
+Commas separated list of stream identifiers
+  
+``SdsJoinMode joinMode``  
+Type of join, i.e. inner, outer, etc.
+
+``string startIndex``  
+Index identifying the beginning of the series of events to return
+
+``string endIndex``  
+Index identifying the end of the series of events to return
+
+**Response**
+
+The response includes a status code and a response body containing multiple serialized events.
+
+#### Examples
+
+To join multiple streams, for example Simple1 and Simple2, assume that Simple 1 presents the following data:
+
+```json  
+  [  
+     {  
+        "Time":"2017-11-23T11:00:00Z",
+        "Measurement":10.0
+     },
+     {  
+        "Time":"2017-11-23T13:00:00Z",
+        "Measurement":20.0
+     },
+     {  
+        "Time":"2017-11-23T14:00:00Z",
+        "Measurement":30.0
+     },
+     {  "Time":"2017-11-23T16:00:00Z",
+        "Measurement":40.0
+     }
+  ] 
+```
+
+And assume that Simple2 presents the following data:
+
+```json
+  [  
+     {  
+        "Time":"2017-11-23T12:00:00Z",
+        "Measurement":50.0
+     },
+     {  
+        "Time":"2017-11-23T14:00:00Z",
+        "Measurement":60.0
+     },
+     {  
+        "Time":"2017-11-23T15:00:00Z",
+        "Measurement":70.0
+     },
+     {  "Time":"2017-11-23T17:00:00Z",
+        "Measurement":80.0
+     }
+  ] 
+```
+
+The following are responses for various Joins request options:
+
+##### InnerJoin Request
+
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams=Simple1,Simple2&joinMode=inner
+            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
+
+**Response**  
+Measurements from both streams with common indexes.
+
+**Response body**
+
+```json
+  [  
+    [
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 30
+        },
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 60
+        }
+    ]
+  ] 
+```
+
+##### **OuterJoin Request**
+
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams=Simple1,Simple2&joinMode=outer
+            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
+
+**Response**  
+All Measurements from both Streams, with default values at indexes where a Stream does not have a value.
+
+
+**Response body**
+```json
+  [  
+    [
+      {  
+            "Time": "2017-11-23T11:00:00Z",
+            "Measurement": 10
+        },
+        null
+    ],
+    [
+        null,
+        {
+            "Time": "2017-11-23T12:00:00Z",
+            "Measurement": 50
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T13:00:00Z",
+            "Measurement": 20
+        },
+        null
+    ],
+    [
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 30
+        },
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 60
+        }
+    ],
+    [
+        null,
+        {
+            "Time": "2017-11-23T15:00:00Z",
+            "Measurement": 70
+     },
+   ],
+   [
+     {  
+            "Time":"2017-11-23T16:00:00Z",
+            "Measurement":40.0
+     },
+        null
+   ],
+        null,
+        {
+            "Time":"2017-11-23T17:00:00Z",
+            "Measurement":80.0
+      }
+    ]
+  ] 
+```
+
+
+##### **InterpolatedJoin Request**
+
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams=Simple1,Simple2&joinMode=interpolated
+            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
+
+**Response**  
+All Measurements from both Streams with missing values interpolated. If the missing values are between valid Measurements within a Stream, they are interpolated. If the missing values are outside of the boundary values, they are extrapolated.
+
+**Response body**
+
+```json
+  [  
+    [
+      {  
+            "Time": "2017-11-23T11:00:00Z",
+            "Measurement": 10
+        },
+        {
+            "Time": "2017-11-23T11:00:00Z",
+            "Measurement": 50
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T12:00:00Z",
+            "Measurement": 15
+        },
+        {
+            "Time": "2017-11-23T12:00:00Z",
+            "Measurement": 50
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T13:00:00Z",
+            "Measurement": 20
+        },
+        {
+            "Time": "2017-11-23T13:00:00Z",
+            "Measurement": 55
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 30
+        },
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 60
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T15:00:00Z",
+            "Measurement": 35
+        },
+        {
+            "Time": "2017-11-23T15:00:00Z",
+            "Measurement": 70
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T16:00:00Z",
+            "Measurement": 40
+        },
+        {
+            "Time": "2017-11-23T16:00:00Z",
+            "Measurement": 75
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T17:00:00Z",
+            "Measurement": 40
+        },
+        {
+            "Time": "2017-11-23T17:00:00Z",
+            "Measurement": 80
+      }
+    ]
+  ] 
+```
+
+##### **MergeLeftJoin Request**
+
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams=Simple1,Simple2&joinMode=mergeleft
+            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
+
+**Response**  
+This is similar to [OuterJoin](#outerjoin-request), but value at each index is the first available value at that index when iterating the given list of streams from left to right.
+
+**Response body**
+```json
+  [  
+      {  
+        "Time": "2017-11-23T11:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T12:00:00Z",
+        "Measurement": 50
+    },
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 70
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "Measurement": 40
+    },
+    {
+        "Time": "2017-11-23T17:00:00Z",
+        "Measurement": 80
+      }
+  ] 
+```
+
+#### **MergeRightJoin Request**
+
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?streams=Simple1,Simple2&joinMode=mergeright
+            &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
+
+**Response**  
+This is similar to [OuterJoin](#outerjoin-request), but value at each index is the first available value at that index when iterating the given list of streams from right to left.
+
+**Response body**
+```json
+  [  
+    {
+        "Time": "2017-11-23T11:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T12:00:00Z",
+        "Measurement": 50
+    },
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 60
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 70
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "Measurement": 40
+    },
+    {
+        "Time": "2017-11-23T17:00:00Z",
+        "Measurement": 80
+    }
+  ] 
+  ```
+
+
+
+### POST Requests  
+
+        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+            ?joinMode={joinMode}
+
+**Parameters**
+
+``string tenantId``  
+The tenant identifier
+  
+``string namespaceId``  
+The namespace identifier
+  
+``SdsJoinMode joinMode``  
+Type of join, i.e. inner, outer, etc.
+
+For POST requests, the response formats are similar to GET requests, but the request format is different. Except the joinMode, all other options are specified in the body.
+
+MOTODO: The transitions in to examples need to be better
+
+**Request Body**
+```json
+  [  
+      {  
+		"StreamId": "Simple1",
+		"Options": {
+			"StartIndex": "2017-11-23T11:00:00Z",
+			"EndIndex": "2017-11-23T14:00:00Z",
+			"StartBoundaryType": "Exact",
+			"EndBoundaryType": "Exact",
+			"Count": 100,
+			"Filter": ""
+		}
+	},
+	{
+		"StreamId": "Simple2",
+		"Options": {
+			"StartIndex": "2017-11-23T15:00:00Z",
+			"EndIndex": "2017-11-23T17:00:00Z",
+			"StartBoundaryType": "Exact",
+			"EndBoundaryType": "Exact",
+			"Count": 100,
+			"Filter": ""
+		}
+      }
+  ] 
+```
+
+**Response**
+
+ The response includes a status code and a response body containing multiple serialized events.
+
+
+**Response body**
+```json
+  [  
+    [
+        {
+            "Time": "2017-11-23T11:00:00Z",
+            "Measurement": 10
+        },
+        null
+    ],
+    [
+        {
+            "Time": "2017-11-23T13:00:00Z",
+            "Measurement": 20
+        },
+        null
+    ],
+    [
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "Measurement": 30
+        },
+        null
+    ],
+    [
+        null,
+        {
+            "Time": "2017-11-23T15:00:00Z",
+            "Measurement": 70
+        }
+    ],
+    [
+        null,
+        {
+            "Time": "2017-11-23T17:00:00Z",
+            "Measurement": 80
+        }
+    ]
+  ] 
+```
+
+Notice that not all the values from Streams were included since they are restricted by individual queries for each Stream.
+
+**.NET Library**
+```csharp
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, string endIndex);
+       
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, string endIndex, int count);
+        
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, string endIndex, SdsBoundaryType boundaryType, 
+      string filter);
+
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, string endIndex, SdsBoundaryType boundaryType, 
+      string filter, int count);
+        
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
+      SdsBoundaryType endBoundaryType, string filter);
+        
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(IEnumerable<string> streams, 
+      SdsJoinType joinMode, string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
+      SdsBoundaryType endBoundaryType, string filter, int count);
+        
+   Task<IEnumerable<IList<T>>> GetJoinValuesAsync<T>(SdsJoinType joinMode, IList<SdsStreamQuery> 
+      sdsStreamsQueryOptions);
+
+   Task<IList<T>> GetMergeValuesAsync<T>(SdsMergeType joinMode, IList<SdsStreamQuery> 
+      sdsStreamsQueryOptions);
+        
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, string endIndex);
+        
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, string endIndex, int count);
+        
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, string endIndex, SdsBoundaryType boundaryType, string filter);
+
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, string endIndex, SdsBoundaryType boundaryType, string filter, int count);
+        
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
+      SdsBoundaryType endBoundaryType, string filter);
+        
+   Task<IList<T>> GetMergeValuesAsync<T>(IEnumerable<string> streams, SdsMergeType joinMode, 
+      string startIndex, SdsBoundaryType startBoundaryType, string endIndex, 
+      SdsBoundaryType endBoundaryType, string filter, int count);
+ ```
+
 ***********************
