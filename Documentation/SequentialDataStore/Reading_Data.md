@@ -9,7 +9,7 @@ The .NET and REST APIs provide programmatic access to read and write data. This 
 the APIs used to read [Stream](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes),  
 [Stream Views](xref:sdsViews), [Filter expressions](xref:sdsFilterExpressions), and [Table format](xref:sdsTableFormat).
 
-If you are working in a .NET environment, convenient SDS Client libraries are available. 
+If you are working in a .NET environment, convenient SDS Client Libraries are available. 
 The ``ISdsDataServiceinterface``, which is accessed using the ``SdsService.GetDataService()`` helper, 
 defines the functions that are available.
 
@@ -33,8 +33,7 @@ In addition, the following methods support reading multiple values:
 
 All reads are HTTP GET actions. Reading data involves getting events from streams. The base reading URI is as follows:
 
-``api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data``
-
+        api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
 **where:**
 
@@ -77,33 +76,6 @@ the type of the index and the interpolation and extrapolation modes of the SdsTy
 determine the read characteristics. For more information on read characteristics, 
 see [Types](xref:sdsTypes) and [Streams](xref:sdsStreams).
 
-**Methods affected by Read Characteristics**
-
-[`GetValueAsync`](xref:sdsReadingDataApi#get-value)  
-Read characteristics are applied when the index is between, before, or after all data.
-
-[`GetValuesAsync`](xref:sdsReadingDataApi#get-values)  
-Read characteristics applied when an index determined by the call is between, before, or after all data.
-
-[`GetWindowValuesAsync`](xref:sdsReadingDataApi#get-window-values)  
-Read characteristics applied to indexes between, before, or after data when the calls Boundary parameter is set to ExactOrCalculated.
-
-[`GetRangeValuesAsync`](xref:sdsReadingDataApi#get-range-values)  
-Read characteristics applied to indexes between, before, or after data when the calls Boundary parameter is set to ExactOrCalculated.
-
-Transforming Data
-------------------------
-
-All reads support specifying an SdsStreamView identifier in the query string to shape the results of the read:
-
-``streamViewId={streamViewId}``
-
-Working with stream views is covered in detail in the [Stream Views](xref:sdsViews) section.
-
-When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
-determine what is returned. The read characteristics are discussed in the *Get Value*, 
-*GetValues* and *GetWindowValues* code samples.
-
 Filter Expressions
 ------------------
 
@@ -127,7 +99,6 @@ Specifying a form of type ``table-headers``, ``?form=tableh``, results in a coll
 contains a column header list.
 
 Table formats are covered in detail in the [Table format](xref:sdsTableFormat) section.
-
 
 SdsBoundaryType
 --------------
@@ -156,9 +127,35 @@ available SdsSearchModes:
 | ExactOrPrevious | 3       | If a stored event exists at the specified index, that event is returned. Otherwise the previous event in the stream is returned. |
 | Previous | 4              | Returns the stored event before the specified index. |
 
-## Unit conversion of data
-SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (Uom) to stream data. If stream data has Uom information associated, SDS supports reading data with unit conversions applied. On each read data request, unit conversions are specified by a user defined collection of `SdsStreamPropertyOverride` objects in read requests. The `SdsStreamPropertyOverride` object has the following structure:
 
+*****
+
+Transforming Data
+------------------------
+
+SDS supports the following data transformations:
+* [Reading with SdsStreamViews](#reading-with-sdsstreamviews): Changing the shape of the returned data
+* [Unit of Measure Conversions](#unit-conversion-of-data): Coverting the unit of measure of the data  
+
+Transforming data involves getting events from streams. The base transformation URI is as follows:
+
+
+#### Reading with SdsStreamViews
+When reading with an SdsStreamView, the data read is converted to the *target type* specified in the SdsStreamView. Working with stream views is covered in detail in the [Stream Views](xref:sdsViews) section.
+
+All stream view transformations are GET HTTP requests. The base stream view transfromation URI is as follows
+
+        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
+
+The stream view is specified by appending the stream view identifier to requests to the transformation endpoitn
+
+All types of data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
+
+When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
+determine what is returned. The read characteristics are discussed in the code samples.
+
+### Unit conversion of data
+SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (Uom) to stream data. If stream data has Uom information associated, SDS supports reading data with unit conversions applied. On each read data request, unit conversions are specified by a user defined collection of `SdsStreamPropertyOverride` objects in read requests. The `SdsStreamPropertyOverride` object has the following structure:
 
 | Property          | Type                 | Optionality | Details                                              |
 | ----------------- | -------------------- | ----------- | ---------------------------------------------------- |
@@ -167,5 +164,11 @@ SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (Uom) to stream d
 | InterpolationMode | SdsInterpolationMode | N/A         | Currently not supported in context of data reads     |
 
 This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects. See [API calls for reading data](xref:sdsReadingDataApi) for more information.
+
+All unit conversions are POST HTTP requests. The unit conversion transfromation URI is as follows
+
+        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
+
+MOTODO: Make this better
 
 ***********************

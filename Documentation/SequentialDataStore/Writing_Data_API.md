@@ -135,7 +135,7 @@ Inserts data into the specified stream. Throws an exception if data is already p
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
-Content is serialized event of type T
+Content is serialized event of type ``T``
 
 **Parameters**
 
@@ -151,8 +151,7 @@ Content is serialized event of type T
 ``T item``  
   The event to insert, where T is the type of the event and the stream  
 
-
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -193,7 +192,7 @@ Security
 Inserts items into the specified stream. Throws an exception if data is already present at an index used in one of the ‘items'.
 
 
-**Syntax**  
+**.NET Library**  
 ```csharp
     Task InsertValuesAsync<T>(string streamId, IList<T> items);
 ```
@@ -201,9 +200,7 @@ Inserts items into the specified stream. Throws an exception if data is already 
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
-
-Content is serialized list of events of type T	
-
+Content is serialized list of events of type ``T``	
 
 **Parameters**
 
@@ -220,7 +217,7 @@ Content is serialized list of events of type T
   The list of events to insert, where T is the type of the stream and events
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 **Notes**  
@@ -229,8 +226,8 @@ An IEnumerable of all behavior objects
   insertions are made. The streamId and index that caused the issue are
   included in the error response.
 
-  For HTTP requests, the values to be inserted must be formatted as a serialized JSON array of type T. JSON arrays are 
-  comma-delimited lists of type T enclosed within square brackets. The following code shows a list 
+  For HTTP requests, the values to be inserted must be formatted as a serialized JSON array of type ``T``. JSON arrays are 
+  comma-delimited lists of type ``T`` enclosed within square brackets. The following code shows a list 
   of three WaveData events that are properly formatted for insertion. See the SDS code samples for 
 
   the complete WaveData example.
@@ -284,8 +281,7 @@ Security
 
 Modifies the specified stream event. PatchValue affects only the data item parameters that are included in the call.
 
-
-**Syntax**
+**.NET Library**
 ```csharp
     Task PatchValueAsync(string streamId, string selectExpression, T item);
 ```
@@ -314,7 +310,7 @@ Content is serialized patch property
   Object with index and new values to patch in the stream.
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 **Notes**  
@@ -341,7 +337,7 @@ Security
 Patches values of the selected fields for multiple events in the stream.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task PatchValuesAsync(string streamId, string selectExpression, IList<T> items);
 ```
@@ -371,7 +367,7 @@ Content is serialized list of patch property values
   List which contain indexes and new values to patch in the stream.
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -399,7 +395,7 @@ Security
 Removes the event at the index from the specified stream. Different overloads are available to make it easier to indicate the index where you want to remove a data event. This method throws an exception if there is no data at the specified index.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task RemoveValueAsync(string streamId, string index);
     Task RemoveValueAsync<T1>(string streamId, T1 index);
@@ -409,7 +405,6 @@ Removes the event at the index from the specified stream. Different overloads ar
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 		    ?index={index}
-
 
 **Parameters**
 
@@ -426,7 +421,7 @@ Removes the event at the index from the specified stream. Different overloads ar
   String representation of the index in the stream to be deleted.
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -446,7 +441,7 @@ Precision is taken into account when finding a value. If the index is a DateTime
 Removes the event at each index from the specified stream. Different overloads are available to make it easier to indicate the index where you want to remove a data event. 
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task RemoveValuesAsync(string streamId, IEnumerable<string> index);
     Task RemoveValuesAsync<T1>(string streamId, IEnumerable<T1> index);
@@ -473,7 +468,7 @@ Removes the event at each index from the specified stream. Different overloads a
   List of indices at which to remove events in the stream  
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -496,7 +491,7 @@ If any individual event fails to be removed, the entire RemoveValues
 Removes a range of values at and between the given indices.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task RemoveWindowValuesAsync(string streamId, string startIndex, string endIndex);
     Task RemoveWindowValuesAsync<T1>(string streamId, T1 startIndex, T1 endIndex);
@@ -527,7 +522,7 @@ Removes a range of values at and between the given indices.
 
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -547,7 +542,7 @@ If any individual event fails to be removed, the entire operation is
 Writes an item over an existing event in the specified stream.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task ReplaceValueAsync<T>(string streamId, T item);
 ```
@@ -571,7 +566,7 @@ Content is serialized replacement object
   The stream identifier for the request  
   
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -590,7 +585,7 @@ Throws an exception if the stream does not have an event to be replaced at the
 Writes **items** over existing events in the specified stream.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task ReplaceValuesAsync<T>(string streamId, IList<T> items);
 ```
@@ -617,7 +612,7 @@ Content is serialized list of replacement values
   List of new items to replace existing items in the stream  
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -637,7 +632,7 @@ Throws an exception if any index does not have a value to be replaced. If any in
 Writes **item** to the specified stream.
 
 
-**Syntax**
+**.NET Library**
 ```csharp
     Task UpdateValueAsync<T>(string streamId, T item);
 ```
@@ -663,7 +658,7 @@ Content is serialized updated value
   Event to write to the stream  
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
@@ -680,15 +675,13 @@ Security
 
 Writes items to the specified stream.
 
-
-**Syntax**
+**.NET Library**
 ```csharp
     Task UpdateValuesAsync<T>(string streamId, IList<T> items);
 ```
 **Http**
 
         PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-
 
 Content is serialized list of updated values	
 
@@ -707,19 +700,59 @@ Content is serialized list of updated values
   Events to write to the stream  
 
 
-**Returns**  
+**Response**  
 An IEnumerable of all behavior objects
 
 Security
   Allowed by administrator accounts
 
- **Notes**
-  ``UpdateValues`` performs an insert
-  or a replace depending on whether an event already exists at the item's
-  indexes. If any item fails to write, the entire operation is rolled back and
-  no events are written to the stream. The index (of the *items* IEnumerable) that caused the issue is
-  included in the error response.
+**Notes**
+``UpdateValues`` performs an insert or a replace depending on whether an event already exists at the item's
+indexes. If any item fails to write, the entire operation is rolled back and
+no events are written to the stream. The index (of the *items* IEnumerable) that caused the issue is
+included in the error response.
   
-  ***********************
+***********************
 
-MOTODO: Add sections on multi-stream calls Insert and update
+Bulk Data Writes
+--------------------
+
+SDS provides the ability to write to multiple streams with one request. 
+
+#### Bulk Insert Values
+
+        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
+
+Content is serialized list of streams and lists of values
+
+**Parameters**
+
+``string tenantId``  
+The tenant identifier
+  
+``string namespaceId``  
+The namespace identifier
+
+**Response**
+
+An IEnumerable of all behavior objects
+
+#### Bulk Update Values
+
+        PUT api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
+
+Content is serialized list of streams and lists of values
+
+**Parameters**
+
+``string tenantId``  
+The tenant identifier
+  
+``string namespaceId``  
+The namespace identifier
+
+**Response**
+
+An IEnumerable of all behavior objects
+
+MOTODO: Add more documentation here
