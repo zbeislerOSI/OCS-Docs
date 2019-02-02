@@ -4,233 +4,43 @@ uid: sdsWritingDataApi
 
 API calls for writing data
 ==========================
-
-Reading and writing data with the SDS Client Libraries is performed through 
-the ``ISdsDataService`` interface, which is accessed with the ``SdsService.GetDataService()`` 
-helper.
-*****
-#### Sample Types
-
-Many of the API methods described below contain sample JSON and sample code. 
-
-When specifying a parameter of type enum, the API accepts both the name of the field and the numeric value of the field. 
-Samples vary to highlight enum flexibility.
-
-The code samples will using the following Types:  
-  * ``Simple``, a type with a single index  
-  * ``DerivedComplexType``, a type with a compound index   
-
-These types are defined below in .NET, Python, and Javascript:
-
-##### .NET
-```csharp
-public enum State
-{
-   Ok,
-   Warning,
-   Alarm
-}
-
-public class Simple
-{
-   [SdsMember(IsKey = true, Order = 0) ]
-   public DateTime Time { get; set; }
-   public State State { get; set; }
-   [SdsMember(Uom = "meter")]
-   public Double Measurement { get; set; }
-}
-
-public class DerivedCompoundIndex : Simple
-{
-   [SdsMember(IsKey = true, Order = 1)]
-   public DateTime Recorded { get; set; }
-}
-```
-##### Python
-```python
-class State(Enum):
-  Ok = 0
-  Warning = 1
-  Alarm = 2
-
-class Simple(object):
-  Time = property(getTime, setTime)
-  def getTime(self):
-    return self.__time
-  def setTime(self, time):
-    self.__time = time
-
-  State = property(getState, setState)
-  def getState(self):
-    return self.__state
-  def setState(self, state):
-    self.__state = state
-
-  Measurement = property(getValue, setValue)
-  def getValue(self):
-    return self.__measurement
-  def setValue(self, measurement):
-    self.__measurement = measurement
-
-class DerivedCompoundIndex(Simple):
-  # Second-order Key property
-  @property
-  def Recorded(self):
-    return self.__recorded
-  @Recorded.setter
-  def Recorded(self, recorded):
-    self.__recorded = recorded
-```
-##### JavaScript
-```javascript
-var State =
-{
-  Ok: 0,
-  Warning: 1,
-  Alarm: 2,
-}
-
-var Simple = function () {
-  this.Time = null;
-  this.State = null;
-  this.Value = null;
-}
-
-var DerivedCompoundIndex = function() {
-  Simple.call(this);
-  this.Recorded = null;
-}
-```
-
-``Simple`` has values as follows:
-
-      11/23/2017 12:00:00 PM: Ok  0
-      11/23/2017  1:00:00 PM: Ok 10
-      11/23/2017  2:00:00 PM: Ok 20
-      11/23/2017  3:00:00 PM: Ok 30
-      11/23/2017  4:00:00 PM: Ok 40
-
-``DerivedCompoundIndex`` has values as follows:
-
-      1/20/2017 1:00:00 AM : 1/20/2017 12:00:00 AM 	0
-      1/20/2017 1:00:00 AM : 1/20/2017  1:00:00 AM 	2
-      1/20/2017 1:00:00 AM : 1/20/2017  2:00:00 PM 	5
-      1/20/2017 2:00:00 AM : 1/20/2017 12:00:00 AM 	1
-      1/20/2017 2:00:00 AM : 1/20/2017  1:00:00 AM 	3
-      1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 AM 	4
-      1/20/2017 2:00:00 AM : 1/20/2017  2:00:00 PM 	6
+MOTODO TOC (action, short description):
 
 *****
 
-``InsertValueAsync()``
+`Insert Values`
 ----------------
 
-Inserts data into the specified stream. Throws an exception if data is already present at the index used in ‘item’.
+Inserts data into the specified stream. Returns an error if data is already present at the index of any event.
 
-**Syntax**
-```csharp
-    Task InsertValueAsync<T>(string streamId, T item);
-```
-**Http**
+**Request**
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
-Content is serialized event of type ``T``
-
-**Parameters**
-
+**Parameters**  
 ``string tenantId``  
-  The tenant identifier for the request  
+The tenant identifier  
   
 ``string namespaceId``  
-  The namespace identifier for the request 
+The namespace identifier  
   
 ``string streamId``  
-  The stream identifier for the request  
-  
-``T item``  
-  The event to insert, where T is the type of the event and the stream  
+The stream identifier  
+
+**Request Body**
+A serialized list of one or more events of the stream type
 
 **Response**  
-An IEnumerable of all behavior objects
+An array of stuff MOTODO: Description
 
-Security
-  Allowed by administrator accounts
+**_Notes_**  
+This request will return an error if an event already exists for any index in the request. If any individual index encounters a problem, the entire operation is rolled back and no insertions are made. The streamId and index that caused the issue are included in the error response.
 
-**Notes**  
-``InsertValue`` throws an exception if an event already exists at the specified index.
+The events to be inserted must be formatted as a serialized JSON array of the stream's type. JSON arrays are comma-delimited lists of a type enclosed within square brackets. The following code shows a list of three WaveData events that are properly formatted for insertion. See the [OCS-Samples](https://github.com/osisoft/OCS-Samples) for the complete example.
 
-  For HTTP requests, the message content (the event) must be serialized in JSON format. JSON objects 
-  consist of a series of name-value property pairs enclosed within brackets. 
+You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
 
-  You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
-
-
-  How the data is serialized depends upon the type of event you are inserting. For example, the following code 
-  shows a single WaveData event serialized as JSON. See the OCS code samples for the complete WaveData example.
-
-```json
-   {
-      "Order":2,	
-      "Tau":0.25722883666666846,	
-      "Radians":1.6162164471269089,	
-      "Sin":1.9979373673043652,	
-      "Cos":-0.090809010174665111,	
-      "Tan":-44.003064529862513,	
-      "Sinh":4.8353589272389,	
-      "Cosh":5.2326566823391856,	
-      "Tanh":1.8481468289554672
-   }
-```
-
-**********************
-
-
-``InsertValuesAsync()``
-----------------
-
-Inserts items into the specified stream. Throws an exception if data is already present at an index used in one of the ‘items'.
-
-
-**.NET Library**  
-```csharp
-    Task InsertValuesAsync<T>(string streamId, IList<T> items);
-```
-**Http**
-
-        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-
-Content is serialized list of events of type ``T``	
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request
-  
-``string streamId``  
-  The stream identifier for the request
-  
-``T items``  
-  The list of events to insert, where T is the type of the stream and events
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-**Notes**  
-``InsertValuesAsync`` throws an exception if any index in **items** already has an event. If any individual
-  index encounters a problem, the entire operation is rolled back and no
-  insertions are made. The streamId and index that caused the issue are
-  included in the error response.
-
-  For HTTP requests, the values to be inserted must be formatted as a serialized JSON array of type ``T``. JSON arrays are 
-  comma-delimited lists of type ``T`` enclosed within square brackets. The following code shows a list 
-  of three WaveData events that are properly formatted for insertion. See the SDS code samples for 
-
-  the complete WaveData example.
+For HTTP requests, the events to be inserted must be formatted as a serialized JSON array of type ``T``. JSON arrays are comma-delimited lists of type ``T`` enclosed within square brackets. The following code shows a list  of three WaveData events that are properly formatted for insertion. See the SDS code samples for the complete WaveData example.
 ```json
 [
     {
@@ -269,227 +79,136 @@ An IEnumerable of all behavior objects
 ]
 ```
 
-Security
-  Allowed by administrator accounts
-
+**.NET Library**
+```csharp
+    Task InsertValueAsync<T>(string streamId, T item);
+    Task InsertValuesAsync<T>(string streamId, IList<T> items);
+```
 
 **********************
 
-
-``PatchValueAsync()``
+`Patch Values`
 ----------------
 
-Modifies the specified stream event. PatchValue affects only the data item parameters that are included in the call.
+Modifies the specified stream event(s). Patching affects only the data item parameters that are included in the call.
+
+**Request**
+
+       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		    ?select={selectExpression}
+
+**Parameters**  
+``string tenantId``  
+The tenant identifier
+  
+``string namespaceId``  
+The namespace identifier  
+  
+``string streamId``  
+The stream identifier 
+  
+``string selectExpression``  
+CSV list of strings that indicates the event fields that will be changed in stream events.  
+
+**Request Body**  
+A serialized list of one or more patch property events
+
+**Response**  
+An array of stuff MOTODO: Description
+
+**_Notes_**  
+Patching is used to patch the events of the selected fields for one or more events in the stream. Only the fields indicated in **selectExpression** are modified. The events to be modified are indicated by the index value of each member of the **items** collection. The individual events in **items** also hold the new events.
+
+If there is a problem patching any individual event, the entire operation is rolled back and the error will indicate the streamId and index of the problem.  
 
 **.NET Library**
 ```csharp
     Task PatchValueAsync(string streamId, string selectExpression, T item);
-```
-**Http**
-
-       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?select={selectExpression}
-
-Content is serialized patch property
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``string selectExpression``  
-  CSV list of strings that indicates the event fields that will be changed in stream events.  
-  
-``T item``  
-  Object with index and new values to patch in the stream.
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-**Notes**  
-``PatchValue`` is used to modify the stream events. Only the values 
-  for fields specified in the SelectExpression are taken from the item 
-  and replaced (patched) in the stream using the item index.
-
-
-Security
-  Allowed by administrator accounts
-
-**Example**
-```csharp
-    var obj = new { TimeId = DateTime.UtcNow(), Value = 10 };
-    await _dataService.PatchValueAsync(streamId, “Value”, obj);  
+    Task PatchValuesAsync(string streamId, string selectExpression, IList<T> items);
 ```
 
 **********************
 
-
-``PatchValuesAsync()``
+``Remove Values``
 ----------------
 
-Patches values of the selected fields for multiple events in the stream.
+There are two options for specifying which events to remove from a stream:
+* [Index Collection](#removeindexcollection): One or more indexes can be specified in the request. 
+* [Window](#removewindow): A window can be specified with a start index and end index.
 
+<a name="removeindexcollection"></a>
+### `Index Collection`
 
-**.NET Library**
-```csharp
-    Task PatchValuesAsync(string streamId, string selectExpression, IList<T> items);
-```
-**Http**
+Removes the event at each index from the specified stream. Different overloads are available to make it easier to indicate the index where you want to remove a data event. 
 
-       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?select={selectExpression}
+**Request**  
 
-Content is serialized list of patch property values
+        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		    ?index={index}[&index={index} …]
 
-
-**Parameters**
-
+**Parameters**  
 ``string tenantId``  
-  The tenant identifier for the request  
+The tenant identifier  
   
 ``string namespaceId``  
-  The namespace identifier for the request  
+The namespace identifier   
   
 ``string streamId``  
-  The stream identifier for the request  
+The stream identifier  
   
-``string selectExpression``  
-  CSV list strings that indicates the event fields that will be changed in stream events  
-  
-``T items``  
-  List which contain indexes and new values to patch in the stream.
-
+``string index``  
+One or more indexes of events to remove
 
 **Response**  
-An IEnumerable of all behavior objects
+An array of stuff MOTODO: Description
 
-Security
-  Allowed by administrator accounts
+**_Notes_**  
+If any individual event fails to be removed, the entire operation is rolled back and no events are removed. The streamId and index that caused the issue are included in the error response. 
 
-**Notes**  
-``PatchValues`` is used to patch the values of the selected
-  fields for multiple events in the stream. Only the fields indicated in
-  **selectExpression** are modified. The events to be modified are indicated
-  by the index value of each member of the **items** collection. The
-  individual events in **items** also hold the new values.
-
-  **PatchValues** may be thought of as a series of PatchValue calls. If there
-  is a problem patching any individual event, the entire operation is
-  rolled back and the error will indicate the streamId and index of the
-  problem.  
-
-
-***********************
-
-
-``RemoveValueAsync()``
-----------------
-
-Removes the event at the index from the specified stream. Different overloads are available to make it easier to indicate the index where you want to remove a data event. This method throws an exception if there is no data at the specified index.
-
+If you attempt to remove events at indexes that have no events, an error is returned. If this occurs, you can use [Window](#removewindow) request format to remove any events from a specified ‘window’ of indexes, which will not return an error if no data is found.
 
 **.NET Library**
 ```csharp
     Task RemoveValueAsync(string streamId, string index);
     Task RemoveValueAsync<T1>(string streamId, T1 index);
     Task RemoveValueAsync<T1, T2>(string streamId, Tuple<T1, T2> index);
-```
-**Http**
 
-        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?index={index}
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``index``  
-  String representation of the index in the stream to be deleted.
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-**Notes**  
-Precision is taken into account when finding a value. If the index is a DateTime,
-  use the round-trip format specifier: ``DateTime.ToString(“o”)``.  
-
-
-***********************
-
-
-``RemoveValuesAsync()``
-----------------
-
-Removes the event at each index from the specified stream. Different overloads are available to make it easier to indicate the index where you want to remove a data event. 
-
-
-**.NET Library**
-```csharp
     Task RemoveValuesAsync(string streamId, IEnumerable<string> index);
     Task RemoveValuesAsync<T1>(string streamId, IEnumerable<T1> index);
-    Task RemoveValuesAsync<T1, T2>(string streamId, IEnumerable<Tuple<T1, T2>> index);
+    Task RemoveValuesAsync<T1, T2>(string streamId, IEnumerable<Tuple<T1, T2>> 
 ```
-**Http**
+
+<a name="removewindow"></a>
+### `Window`
+
+Removes events at and between the start index and end index.
+
+**Request**
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?index={index}
+		    ?startIndex={startIndex}&endIndex={endIndex}
 
-
-**Parameters**
-
+**Parameters**  
 ``string tenantId``  
-  The tenant identifier for the request  
+The tenant identifier  
   
 ``string namespaceId``  
-  The namespace identifier for the request  
+The namespace identifier   
   
 ``string streamId``  
-  The stream identifier for the request  
+The stream identifier  
   
-``index``  
-  List of indices at which to remove events in the stream  
+``string startIndex``  
+The index defining the beginning of the window
 
+``string endIndex``  
+The index defining the end of the window  
 
 **Response**  
-An IEnumerable of all behavior objects
+An array of stuff MOTODO: Description
 
-Security
-  Allowed by administrator accounts
-
-**Notes**  
-If any individual event fails to be removed, the entire RemoveValues
-  operation is rolled back and no events are removed. The streamId and index
-  that caused the issue are included in the error response. 
-
-  If you attempt to remove events at indexes that have no events, an exception is thrown. If this occurs, you can use the ‘RemoveWindowValues’ call to remove any events from a specified ‘window’ of indexes, which will not throw exceptions if no data is found.
-
-
-***********************
-
-
-``RemoveWindowValuesAsync()``
-----------------
-
-Removes a range of values at and between the given indices.
-
+**_Notes_**  
+If any individual event fails to be removed, the entire operation is rolled back and no removes are done.
 
 **.NET Library**
 ```csharp
@@ -497,262 +216,127 @@ Removes a range of values at and between the given indices.
     Task RemoveWindowValuesAsync<T1>(string streamId, T1 startIndex, T1 endIndex);
     Task RemoveWindowValuesAsync<T1, T2>(string streamId, Tuple<T1, T2> startIndex, Tuple<T1, T2> endIndex);
 ```
-**Http**
-
-        DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?startIndex={startIndex}&endIndex={endIndex}
-
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``startIndex``  
-  String representation of the starting index value  
-  
-``endIndex``  
-  String representation of the ending index value  
-
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-**Notes**  
-If any individual event fails to be removed, the entire operation is
-  rolled back and no removes are done.
-
 
 ***********************  
 
-
-``ReplaceValueAsync()``
+``Replace Values``
 ----------------
 
-Writes an item over an existing event in the specified stream.
+Writes one or more events over existing events in the specified stream.
 
+**Request**
+
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+		    ?allowCreate=false
+
+**Parameters**  
+``string tenantId``  
+The tenant identifier  
+  
+``string namespaceId``  
+The namespace identifier   
+  
+``string streamId``  
+The stream identifier  
+ 
+**Request Body**
+A serialized list of one or more events of the stream type
+
+**Response**  
+An array of stuff MOTODO: Description
+
+**_Notes_**  
+This request returns an error if the stream does not have an event to be replaced at the specified index. If any individual event fails to be replaced, the entire operation is rolled back and no replaces are performed. The index that caused the issue and the streamId are included in the error response.
 
 **.NET Library**
 ```csharp
     Task ReplaceValueAsync<T>(string streamId, T item);
-```
-**Http**
-
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?allowCreate=false
-
-Content is serialized replacement object
-
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-**Notes**  
-Throws an exception if the stream does not have an event to be replaced at the
-  specified index. Overloads are available to help you set the indexes you want removed.
-
-***********************
-
-
-``ReplaceValuesAsync()``
-----------------
-
-Writes **items** over existing events in the specified stream.
-
-
-**.NET Library**
-```csharp
     Task ReplaceValuesAsync<T>(string streamId, IList<T> items);
 ```
-**Http**
-
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?allowCreate=false
-
-Content is serialized list of replacement values
-
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``T items``  
-  List of new items to replace existing items in the stream  
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-
-**Notes**  
-Throws an exception if any index does not have a value to be replaced. If any individual event fails to be replaced, the entire operation is rolled back and no replaces are performed. The index (of the *items* IEnumerable) that caused the issue and the streamId are included in the error response.
-
 
 ***********************
 
-
-``UpdateValueAsync()``
+`Update Values`
 ----------------
 
-Writes **item** to the specified stream.
+Writes one or more events to the specified stream.
 
+**Request**
+
+        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+
+**Parameters**  
+``string tenantId``  
+The tenant identifier  
+  
+``string namespaceId``  
+The namespace identifier   
+  
+``string streamId``  
+The stream identifier  
+
+**Request Body**  
+A serialized list of one or more events of the stream type
+
+**Response**  
+An array of stuff MOTODO: Description
+
+**_Notes_**  
+This request performs an insert or a replace depending on whether an event already exists at the event indexes. If any item fails to write, the entire operation is rolled back and
+no events are written to the stream. The index that caused the issue is included in the error response.
 
 **.NET Library**
 ```csharp
     Task UpdateValueAsync<T>(string streamId, T item);
-```
-**Http**
-
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-
-Content is serialized updated value
-
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``T item``  
-  Event to write to the stream  
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-**Notes**  
-``UpdateValue`` performs an insert or a replace depending on whether an event already exists at the index in the stream.
-
-
-***********************
-
-``UpdateValuesAsync()``
-----------------
-
-Writes items to the specified stream.
-
-**.NET Library**
-```csharp
     Task UpdateValuesAsync<T>(string streamId, IList<T> items);
 ```
-**Http**
 
-        PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-
-Content is serialized list of updated values	
-
-**Parameters**
-
-``string tenantId``  
-  The tenant identifier for the request  
-  
-``string namespaceId``  
-  The namespace identifier for the request  
-  
-``string streamId``  
-  The stream identifier for the request  
-  
-``T items``  
-  Events to write to the stream  
-
-
-**Response**  
-An IEnumerable of all behavior objects
-
-Security
-  Allowed by administrator accounts
-
-**Notes**
-``UpdateValues`` performs an insert or a replace depending on whether an event already exists at the item's
-indexes. If any item fails to write, the entire operation is rolled back and
-no events are written to the stream. The index (of the *items* IEnumerable) that caused the issue is
-included in the error response.
-  
 ***********************
 
-Bulk Data Writes
---------------------
+`Bulk Insert Values`
+----------------
 
-SDS provides the ability to write to multiple streams with one request. 
+Writes specified events to multiple streams.
 
-#### Bulk Insert Values
+**Request**
 
         POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
 
-Content is serialized list of streams and lists of values
-
-**Parameters**
-
+**Parameters**  
 ``string tenantId``  
 The tenant identifier
   
 ``string namespaceId``  
 The namespace identifier
 
-**Response**
+**Request Body**  
+A serialized list of streams and lists of events
 
-An IEnumerable of all behavior objects
+**Response**  
+An array of stuff MOTODO: Description
 
-#### Bulk Update Values
+*****
+
+`Bulk Insert Values`
+----------------
+
+Updates specified events for multiple streams.
+
+**Request**  
 
         PUT api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
 
-Content is serialized list of streams and lists of values
-
-**Parameters**
-
+**Parameters**  
 ``string tenantId``  
 The tenant identifier
   
 ``string namespaceId``  
 The namespace identifier
 
-**Response**
+**Request Body**  
+A serialized list of streams and lists of events
 
-An IEnumerable of all behavior objects
+**Response**  
+An array of stuff MOTODO: Description
 
 MOTODO: Add more documentation here
