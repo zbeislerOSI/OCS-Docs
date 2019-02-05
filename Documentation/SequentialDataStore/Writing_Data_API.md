@@ -2,14 +2,11 @@
 uid: sdsWritingDataApi
 ---
 
-API calls for writing data
-==========================
-MOTODO TOC (action, short description):
-
+# API calls for writing data
+  
 *****
 
-`Insert Values`
-----------------
+## `Insert Values`
 
 Inserts data into the specified stream. Returns an error if data is already present at the index of any event.
 
@@ -31,7 +28,7 @@ The stream identifier
 A serialized list of one or more events of the stream type
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 This request will return an error if an event already exists for any index in the request. If any individual index encounters a problem, the entire operation is rolled back and no insertions are made. The streamId and index that caused the issue are included in the error response.
@@ -87,8 +84,7 @@ For HTTP requests, the events to be inserted must be formatted as a serialized J
 
 **********************
 
-`Patch Values`
-----------------
+## `Patch Values`
 
 Modifies the specified stream event(s). Patching affects only the data item parameters that are included in the call.
 
@@ -114,7 +110,7 @@ CSV list of strings that indicates the event fields that will be changed in stre
 A serialized list of one or more patch property events
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 Patching is used to patch the events of the selected fields for one or more events in the stream. Only the fields indicated in **selectExpression** are modified. The events to be modified are indicated by the index value of each member of the **items** collection. The individual events in **items** also hold the new events.
@@ -129,8 +125,7 @@ If there is a problem patching any individual event, the entire operation is rol
 
 **********************
 
-``Remove Values``
-----------------
+## ``Remove Values``
 
 There are two options for specifying which events to remove from a stream:
 * [Index Collection](#removeindexcollection): One or more indexes can be specified in the request. 
@@ -160,7 +155,7 @@ The stream identifier
 One or more indexes of events to remove
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 If any individual event fails to be removed, the entire operation is rolled back and no events are removed. The streamId and index that caused the issue are included in the error response. 
@@ -179,6 +174,7 @@ If you attempt to remove events at indexes that have no events, an error is retu
 ```
 
 <a name="removewindow"></a>
+
 ### `Window`
 
 Removes events at and between the start index and end index.
@@ -205,7 +201,7 @@ The index defining the beginning of the window
 The index defining the end of the window  
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 If any individual event fails to be removed, the entire operation is rolled back and no removes are done.
@@ -219,8 +215,7 @@ If any individual event fails to be removed, the entire operation is rolled back
 
 ***********************  
 
-``Replace Values``
-----------------
+## ``Replace Values``
 
 Writes one or more events over existing events in the specified stream.
 
@@ -243,7 +238,7 @@ The stream identifier
 A serialized list of one or more events of the stream type
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 This request returns an error if the stream does not have an event to be replaced at the specified index. If any individual event fails to be replaced, the entire operation is rolled back and no replaces are performed. The index that caused the issue and the streamId are included in the error response.
@@ -256,8 +251,7 @@ This request returns an error if the stream does not have an event to be replace
 
 ***********************
 
-`Update Values`
-----------------
+## `Update Values`
 
 Writes one or more events to the specified stream.
 
@@ -279,7 +273,7 @@ The stream identifier
 A serialized list of one or more events of the stream type
 
 **Response**  
-An array of stuff MOTODO: Description
+The response includes a status code
 
 **_Notes_**  
 This request performs an insert or a replace depending on whether an event already exists at the event indexes. If any item fails to write, the entire operation is rolled back and
@@ -293,8 +287,7 @@ no events are written to the stream. The index that caused the issue is included
 
 ***********************
 
-`Bulk Insert Values`
-----------------
+## `Bulk Insert Values`
 
 Writes specified events to multiple streams.
 
@@ -317,8 +310,7 @@ An array of stuff MOTODO: Description
 
 *****
 
-`Bulk Insert Values`
-----------------
+## `Bulk Insert Values`
 
 Updates specified events for multiple streams.
 
@@ -338,5 +330,3 @@ A serialized list of streams and lists of events
 
 **Response**  
 An array of stuff MOTODO: Description
-
-MOTODO: Add more documentation here

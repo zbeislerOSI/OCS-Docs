@@ -77,6 +77,5 @@ with indexes can be found on the [Indexes](xref:sdsIndexes) page.
 To specify compound indexes in the URI, specify each field that composes the index, in the specified order, 
 separated by the pipe character, ‘|’.
 
-
 ***********************
-MOTODO: Add a section about multi-stream data writes
+

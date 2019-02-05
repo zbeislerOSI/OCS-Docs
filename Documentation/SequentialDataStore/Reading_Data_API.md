@@ -2,7 +2,6 @@
 uid: sdsReadingDataApi
 ---
 # API calls for reading data
-Reading and writing data with the SDS Client Libraries is performed through the ``ISdsDataService`` interface, which can be accessed with the ``SdsService.GetDataService()`` helper.
 
 *****
 #### Example Type, Stream, and Data
@@ -168,10 +167,10 @@ The index
 ``string searchMode``  
 The [SdsSearchMode](xref:sdsReadingData#sdssearchmode), the default is ``exact``
 
-MOTODO: insert a table or explanation on search modes, if it doesn't already exist
-
 **Response**
-The response includes a status code and a response body containing a serialized event.
+The response includes a status code and a response body containing a serialized collection with one event. 
+
+Depending on the request `index` and `searchMode`, it is possible to have an empty collection returned.
 
 **Example**  
 
@@ -226,89 +225,20 @@ The next event in the stream is retrieved.
 ```
 ****
 
-``Get Values``
---------------
+## ``Get Values``
 
 Returns a collection of *stored* values at indexes based on request parameters. 
 
 SDS supports four ways of specifying which stored events to return:
 
-* [Index Collection](#getvaluesindexcollectionmaybe): Multiple indexes can be passed to the request in order to retrieve events at exactly those indexes. MOTODO verify if this is true
 * [Filtered](#getvaluesfiltered): A filtered request accepts a [filter expression](xref:sdsFilterExpressions).
 * [Range](#getvaluesrange): A range request accepts a start index and a count.
-* [Window](#getvalueswindow): A window request accepts a start index, end index, and count. This request has an optional continuation token for large collections of events.
-
-<a name="getvaluesindexcollectionmaybe"></a>
-#### Index Collection Request  
-MOTODO: Is this possible
-
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-            ?index={index}[&index={index} …]
-
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-            ?index={index}[&index={index} …]&searchMode={searchMode}
-
-**Parameters**  
-``string tenantId``  
-The tenant identifier
-
-``string namespaceId``  
-The namespace identifier
-
-``string streamId``  
-The stream identifier
-
-``string index``  
-One or more indexes of values to retrieve
-
-**Response**  
- The response includes a status code and a response body containing a serialized collection of events.
-
-**Example**  
-
-      GET api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data 
-          ?index=2017-11-23T12:30:00Z&index=2017-11-23T13:00:00Z&index=2017-11-23T14:00:00Z
-
-For this request, the response contains events for each of the three specified indexes.
-
-**Response body**
-```json
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      [  
-         {  
-            "Time":"2017-11-23T12:30:00Z",
-            "Measurement":5.0
-         },
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         }
-      ] 
-```
-
-Note that `State` is not included in the JSON as its value is the default value.
-
-**.NET Library**
-```csharp
-   Task<IEnumerable<T>> GetValuesAsync<T>(string streamId, IEnumerable<string> index, 
-      string streamViewId = null);
-   Task<IEnumerable<T>> GetValuesAsync<T, T1>(string streamId, IEnumerable<T1> index,
-      string streamViewId = null);
-   Task<IEnumerable<T>> GetValuesAsync<T, T1, T2>(string streamId, 
-      IEnumerable<Tuple< T1, T2>> index, string streamViewId = null);
-```
----
+* [Window](#getvalueswindow): A window request accepts a start index and end index. This request has an optional continuation token for large collections of events.
 
 <a name="getvaluesfiltered"></a>
 #### Filtered Request  
 
-Returns a collection of stored values as determined by a filter.  The filter limits results by applying an expression against event fields. Filter expressions are explained in detail in the [Filter expressions](xref:sdsFilterExpressions) section.
+Returns a collection of stored values as determined by a filter. The filter limits results by applying an expression against event fields. Filter expressions are explained in detail in the [Filter expressions](xref:sdsFilterExpressions) section.
 
 **Request**  
 
@@ -579,37 +509,32 @@ Adding a filter to the request means only events that meet the filter criteria a
 <a name="getvalueswindow"></a>
 #### Window Request
 
-Returns a collection of stored events based on specified start and end indexes. 
+Returns a collection of stored events based on the specified start index and end index. 
 
 For handling events at and near the boundaries of the window, a single SdsBoundaryType that applies 
 to both the start and end indexes can be passed with the request, or separate boundary types may 
 be passed for the start and end individually. 
 
-Get Window Values also supports paging for large result sets. Results for paged requests are returned 
-as an SdsResultPage.
+Paging is supported for window requests with a large number of events. 
 
-
-| Property          | Type   | Details                                          |
-| ----------------- | ------ | ------------------------------------------------ |
-| Results           | IList  | Collection of events of type T                   |
-| ContinuationToken | String | The token used to retrieve the next page of data |
-
-To retrieve the next page of values, include the ContinuationToken from the results of the previous request. 
-For the first request, specify a null or empty string for the ContinuationToken.
+To retrieve the next page of values, include the `continuationToken` from the results of the previous request. 
+For the first request, specify a null or empty string for the `continuationToken`.
 
 **Requests**
 
-      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
-          ?startIndex={startIndex}&endIndex={endIndex}&boundaryType={boundaryType} 
-          &filter={filter}&count={count}
+     GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
+          ?startIndex={startIndex}&endIndex={endIndex}
+
+     GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
+          ?startIndex={startIndex}&endIndex={endIndex}&boundaryType={boundaryType}
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&startBoundaryType={startBoundaryType} 
-          &endIndex={endIndex}&endBoundaryType={endBoundaryType}&filter={filter}&count={count} 
+          &endIndex={endIndex}&endBoundaryType={endBoundaryType}
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
-          ?startIndex={startIndex}&endIndex={endIndex}&boundaryType={boundaryType} 
-          &filter={filter}&count={count}&continuationToken={continuationToken}
+          ?startIndex={startIndex}&endIndex={endIndex}
+          &count={count}&continuationToken={continuationToken}
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data? 
           ?startIndex={startIndex}&startBoundaryType={startBoundaryType} 
@@ -633,22 +558,28 @@ Index bounding the beginning of the series of events to return
 Index bounding the end of the series of events to return
 
 ``int count``  
-Optional maximum number of events to return
+Optional maximum number of events to return. If `count` is specified, a `continuationToken` must also be specified.
 
 ``SdsBoundaryType boundaryType``  
-Optional SdsBoundaryType specifies handling of events at or near the start and end indexes
+Optional [SdsBoundaryType](xref:sdsReadingData#sdsboundaryType) specifies handling of events at or near the start and end indexes
 
 ``SdsBoundaryType startBoundaryType``  
-Optional SdsBoundaryType specifies the first value in the result in relation to the start index
+Optional [SdsBoundaryType](xref:sdsReadingData#sdsboundaryType) specifies the first value in the result in relation to the start index. If `startBoundaryType` is specified, `endBoundaryType` must be specified.
 
 ``SdsBoundaryType endBoundaryType``  
-Optional SdsBoundaryType specifies the last value in the result in relation to the end index
+Optional [SdsBoundaryType](xref:sdsReadingData#sdsboundaryType) specifies the last value in the result in relation to the end index. If `startBoundaryType` is specified, `endBoundaryType` must be specified.
 
 ``string filter``  
-Optional filter expression
+Optional [filter expression](xref:sdsFilterExpressions)
+
+``string continuationToken``  
+Optional token used to retrieve the next page of data. If `count` is specified, a `continuationToken` must also be specified.
 
 **Response**  
-The response includes a status code and a response body containing a serialized collection of events.
+The response includes a status code and a response body containing a serialized collection of events. 
+
+A continuation token can be returned if specified in the request.
+
 
 **Example**  
 The following requests all stored events between 13:30 and 15:30: 
@@ -762,7 +693,7 @@ end index by indicating count is 2 and continuationToken is an empty string:
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z 
-          &count=2&continuationToken={MOTODO - insert continuation token)
+          &count=2&continuationToken=
 
 **Response body**
 ```json
@@ -813,8 +744,6 @@ In this case, the results contain the final event. The returned continuation tok
 (not shown because it null is the default value for a JSON string). 
 
 Note that `State` is not included in the JSON as its value is the default value.
-
-
 
 **.NET Library**
 ```csharp
@@ -1011,7 +940,6 @@ For this request, the response contains events for two of the three specified in
 
 Note that `State` is not included in the JSON as its value is the default value.
 
-
 **.NET Library**
 ```csharp
    Task<T> GetValueAsync<T>(string streamId, string index, 
@@ -1055,7 +983,6 @@ The index defining the end of the window
 
 ``int count``  
 The number of events to return. Read characteristics of the stream determine how the events are constructed.
-
 
 **Response**
 
@@ -1102,26 +1029,13 @@ Note that `State` is not included in the JSON as its value is the default value.
 ```
 
 ****
+
 ## ``Get Summary``
 
 Returns summary intervals between a specified start and end index. 
   
-Index types that cannot be interpolated do not support GetIntervals requests. Strings are an example of indexes that cannot be interpolated. The 
-Get Intervals method does not support compound indexes. Interpolating between two indexes 
+Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for support compound indexes. Interpolating between two indexes 
 that consist of multiple properties is not defined and results in non-determinant behavior.
-
-Results are returned as a collection of SdsIntervals. Each SdsInterval has a start, end, and collection of 
-summary values.
-
-| Property  | Type                        | Details                                           |
-| --------- | --------------------------- | ------------------------------------------------- |
-| Start     | T                           | The start of the interval                         |
-| End       | T                           | The end of the interval                           |
-| Summaries | IDictionary<SdsSummaryType, | The summary values for the interval, keyed by     |
-|           | IDictionary<string, object> | summary type. The nested dictionary contains      |
-|           | Summaries                   | property name keys and summary calculation result |
-|           |                             | values.                                           |
-
 
 Summary values supported by SdsSummaryType enum:
 
@@ -1173,6 +1087,14 @@ Optional stream view identifier
 
 **Response**  
 The response includes a status code and a response body containing a serialized collection of SdsIntervals.
+
+Each SdsInterval has a start, end, and collection of summary values.
+
+| Property  | Details                                           |
+| --------- | ------------------------------------------------- |
+| Start     | The start of the interval                         |
+| End       | The end of the interval                           |
+| Summaries | The summary values for the interval, keyed by summary type. The nested dictionary contains property name keys and summary calculation result values. |
 
 **Example**  
 The following requests calculates two summary intervals between the first and last events: 
@@ -1311,19 +1233,27 @@ The following requests calculates two summary intervals between the first and la
 ```
 ****
 
-``Join Values``
---------------------
+## ``Join Values``
 
-Joins returns multiple data streams specified in your API call. 
+Returns data from multiple streams joined based on the request specifications. 
 
-Supports two types of calls:
-GET
-POST
+SDS supports the following types of joins:
 
-MOTODO: Table for join modes
+| SdsJoinMode  | Enumeration value | Operation |
+| -------      | ----------------- | --------- |
+| Inner        | 0                 | Results include the events with common indexes across all streams for the request index boundaries. |
+| Outer        | 1                 | Results include all stored events across all streams for the request index boundaries. |
+| Interpolated | 2                 | Results include events for each index across all streams for the request index boundaries. Some events may be interpolated. |
+| MergeLeft    | 3                 | Results include the event at the specified index boundary. If no stored event exists at that index, one is calculated based on the index type and interpolation and extrapolation settings. |
+| MergeRight   | 4                 | Results include the event at the specified index boundary. If no stored event exists at that index, one is calculated based on the index type and interpolation and extrapolation settings. |
 
 
-#### GET Request
+SDS supports two types of join requests:
+* [GET](#getjoin): The stream, joinMode, start index, and end index are specified in the request URI path.
+* [POST](#postjoin): Only the SdsJoinMode is specified in the URI. The streams and read specification for each stream are specified in the body of the request.
+
+<a name="getjoin"></a>
+### GET Request
 
     GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams={streams}&joinMode={joinMode}
@@ -1666,8 +1596,8 @@ This is similar to [OuterJoin](#outerjoin-request), but value at each index is t
   ```
 
 
-
-### POST Requests  
+<a name="getjoin"></a>
+### POST Requests
 
         POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?joinMode={joinMode}
@@ -1683,11 +1613,10 @@ The namespace identifier
 ``SdsJoinMode joinMode``  
 Type of join, i.e. inner, outer, etc.
 
-For POST requests, the response formats are similar to GET requests, but the request format is different. Except the joinMode, all other options are specified in the body.
+**Reqeust Body**  
+Read options specific to each stream.
 
-MOTODO: The transitions in to examples need to be better
-
-**Request Body**
+**Example Request Body**
 ```json
   [  
       {  
@@ -1718,7 +1647,6 @@ MOTODO: The transitions in to examples need to be better
 **Response**
 
  The response includes a status code and a response body containing multiple serialized events.
-
 
 **Response body**
 ```json

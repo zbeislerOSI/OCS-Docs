@@ -137,38 +137,46 @@ SDS supports the following data transformations:
 * [Reading with SdsStreamViews](#reading-with-sdsstreamviews): Changing the shape of the returned data
 * [Unit of Measure Conversions](#unit-conversion-of-data): Coverting the unit of measure of the data  
 
-Transforming data involves getting events from streams. The base transformation URI is as follows:
-
-
 #### Reading with SdsStreamViews
-When reading with an SdsStreamView, the data read is converted to the *target type* specified in the SdsStreamView. Working with stream views is covered in detail in the [Stream Views](xref:sdsViews) section.
+When transforming data with an SdsStreamView, the data read is converted to the *target type* specified in the SdsStreamView. Working with stream views is covered in detail in the [Stream Views](xref:sdsViews) section.
 
-All stream view transformations are GET HTTP requests. The base stream view transfromation URI is as follows
+All stream view transformations are GET HTTP requests. The stream view is specified by appending the stream view identifier to requests to the transformation endpoint.
 
-        GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
+    GET POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform?{readSpecifications}&streamViewId={streamViewId}
 
-The stream view is specified by appending the stream view identifier to requests to the transformation endpoitn
-
-All types of data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
+All single stream data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
 
 When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
 determine what is returned. The read characteristics are discussed in the code samples.
 
 ### Unit conversion of data
-SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (Uom) to stream data. If stream data has Uom information associated, SDS supports reading data with unit conversions applied. On each read data request, unit conversions are specified by a user defined collection of `SdsStreamPropertyOverride` objects in read requests. The `SdsStreamPropertyOverride` object has the following structure:
+SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (UOM) to stream data. If stream data has UOM information associated, SDS supports reading data with unit conversions applied. On each read data request, unit conversions are specified by a user defined collection of `SdsStreamPropertyOverride` objects in read requests. The `SdsStreamPropertyOverride` object has the following structure:
 
-| Property          | Type                 | Optionality | Details                                              |
-| ----------------- | -------------------- | ----------- | ---------------------------------------------------- |
-| SdsTypePropertyId | String               | Required    | Identifier for an SdsTypeProperty with a Uom assigned |
-| Uom               | String               | Required    | Target unit of measure                               |
-| InterpolationMode | SdsInterpolationMode | N/A         | Currently not supported in context of data reads     |
+| Property          | Type                 | Optionality | Details                                               |
+| ----------------- | -------------------- | ----------- | ----------------------------------------------------  |
+| SdsTypePropertyId | String               | Required    | Identifier for an SdsTypeProperty with a UOM assigned |
+| Uom               | String               | Required    | Target unit of measure                                |
+| InterpolationMode | SdsInterpolationMode | N/A         | Currently not supported in context of data reads      |
 
 This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects. See [API calls for reading data](xref:sdsReadingDataApi) for more information.
 
-All unit conversions are POST HTTP requests. The unit conversion transfromation URI is as follows
+All unit conversions are POST HTTP requests. The unit conversion transfromation URI is as follows:
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
 
-MOTODO: Make this better
+**Request body**
+
+The Request Body contains a collection of SdsStreamPropertyOverride objects. The example request body below requests SDS convert the Measurement property of the returned data from meter to centimeter.
+
+```json
+[
+  {
+    "SdsTypePropertyId" : "Measurement",
+    "Uom" : "centimeter" 
+  }
+]
+```
+
+All single stream data reads with stream that have specified UOMs support UOM conversions. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
 
 ***********************
