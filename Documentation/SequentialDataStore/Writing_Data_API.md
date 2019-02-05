@@ -37,7 +37,7 @@ The events to be inserted must be formatted as a serialized JSON array of the st
 
 You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
 
-For HTTP requests, the events to be inserted must be formatted as a serialized JSON array of type ``T``. JSON arrays are comma-delimited lists of type ``T`` enclosed within square brackets. The following code shows a list  of three WaveData events that are properly formatted for insertion. See the SDS code samples for the complete WaveData example.
+For HTTP requests, the events to be inserted must be formatted as a serialized JSON array of type `T`. JSON arrays are comma-delimited lists of type `T` enclosed within square brackets. The following code shows a list  of three WaveData events that are properly formatted for insertion. See the SDS code samples for the complete WaveData example.
 ```json
 [
     {
@@ -139,7 +139,7 @@ Removes the event at each index from the specified stream. Different overloads a
 **Request**  
 
         DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-		    ?index={index}[&index={index} …]
+		    ?index={index}[&index={index}…]
 
 **Parameters**  
 ``string tenantId``  
@@ -174,7 +174,6 @@ If you attempt to remove events at indexes that have no events, an error is retu
 ```
 
 <a name="removewindow"></a>
-
 ### `Window`
 
 Removes events at and between the start index and end index.
@@ -303,14 +302,58 @@ The tenant identifier
 The namespace identifier
 
 **Request Body**  
-A serialized list of streams and lists of events
+A serialized SdsValues object which contains a dictionary of streams and lists of events
+
+```json
+{
+	"Values": 
+	{
+		"DTV00":[
+            {
+    			"Time": "2017-11-24T01:00:00Z",
+    			"Value": "1"
+    		 }
+        ],
+		 "DTV0": [
+            {
+    			"Time": "2017-11-24T02:00:00Z",
+    			"Value": "3"
+    		 },
+    		 {
+    			"Time": "2017-11-24T03:00:00Z",
+    			"Value": "6"
+    		 }
+        ]
+	 }
+}
+```
 
 **Response**  
-An array of stuff MOTODO: Description
+Returns a status code
+
+If there are errors, a 207 Multi-Status status code is returned with the error and Child Error per stream.
+
+**Response Body**
+```json
+{
+    "Error": "The request partially failed.",
+    "Reason": "At least one of the attempted write operations resulted in an error.",
+    "Resolution": "Iterate through the child errors for more information.",
+    "ChildErrors": [
+        {
+            "Error": "The request was unsuccessful due to a conflict.",
+            "Reason": "Failed to update stream.",
+            "StreamId": "DTV0",
+            "Index": "2017-11-24T02:00:00.0000000Z",
+            "StatusCode": 409
+        }
+    ]
+}
+```
 
 *****
 
-## `Bulk Insert Values`
+## `Bulk Update Values`
 
 Updates specified events for multiple streams.
 
@@ -326,7 +369,11 @@ The tenant identifier
 The namespace identifier
 
 **Request Body**  
-A serialized list of streams and lists of events
+A serialized SdsValues object which contains a dictionary of streams and lists of events
 
 **Response**  
-An array of stuff MOTODO: Description
+Returns a status code
+
+If there are errors, a 207 Multi-Status status code is returned with the error and Child Error per stream.
+
+***************

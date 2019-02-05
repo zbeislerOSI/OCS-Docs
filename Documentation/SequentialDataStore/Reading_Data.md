@@ -50,7 +50,7 @@ The stream identifier
 Response Format
 ---------------
 
-Supported response formats include json, verbose json, and Sds. 
+Supported response formats include json, verbose json, and SDS. 
 
 The default response format for is json, which is used in all examples in this document.  Default json 
 responses do not include any values that are equal to the default value for their type.
@@ -58,13 +58,13 @@ responses do not include any values that are equal to the default value for thei
 Verbose json responses include all values, including defaults, in the returned json payload. To specify 
 verbose json return, add the header ``Accept-Verbosity`` with a value of ``verbose`` to the request.  
 
-To specify SDS format, set the ``Accept`` header in the request to ``application/Sds``.
+To specify SDS format, set the ``Accept`` header in the request to ``application/SDS``.
 
 Indexes and reading data
 ------------------------
 
 Most read operations take at least one index as a parameter. Indexes may be specified as strings, or, 
-when using the Sds Client libraries, the index may be passed as-is to read methods that take the index 
+when using the SDS Client libraries, the index may be passed as-is to read methods that take the index 
 type as a generic argument. Additional details about working with indexes can be found on the [Indexes](xref:sdsIndexes) page.
 
 Read Characteristics
@@ -142,12 +142,13 @@ When transforming data with an SdsStreamView, the data read is converted to the 
 
 All stream view transformations are GET HTTP requests. The stream view is specified by appending the stream view identifier to requests to the transformation endpoint.
 
-    GET POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform?{readSpecifications}&streamViewId={streamViewId}
+    GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform?{readRequestParameters}&streamViewId={streamViewId}
 
 All single stream data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
 
 When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
 determine what is returned. The read characteristics are discussed in the code samples.
+
 
 ### Unit conversion of data
 SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (UOM) to stream data. If stream data has UOM information associated, SDS supports reading data with unit conversions applied. On each read data request, unit conversions are specified by a user defined collection of `SdsStreamPropertyOverride` objects in read requests. The `SdsStreamPropertyOverride` object has the following structure:

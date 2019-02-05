@@ -3,7 +3,6 @@ uid: sdsReadingDataApi
 ---
 # API calls for reading data
 
-*****
 #### Example Type, Stream, and Data
 
 Many of the API methods described below contain example requests and responses in JSON to highlight usage and specific behaviors. The following type, stream, and data are used in the examples.
@@ -144,7 +143,7 @@ The response includes a status code and a response body containing a serialized 
 
 ## ``Find Distinct Value``
 
-Returns a stored event found based on the specified SdsSearchMode and index. 
+Returns a stored event found based on the specified `index` and `searchMode`. 
 
 **Request**  
 
@@ -236,9 +235,9 @@ SDS supports four ways of specifying which stored events to return:
 * [Window](#getvalueswindow): A window request accepts a start index and end index. This request has an optional continuation token for large collections of events.
 
 <a name="getvaluesfiltered"></a>
-#### Filtered Request  
+### `Filtered`  
 
-Returns a collection of stored values as determined by a filter. The filter limits results by applying an expression against event fields. Filter expressions are explained in detail in the [Filter expressions](xref:sdsFilterExpressions) section.
+Returns a collection of stored values as determined by a `filter`. The `filter` limits results by applying an expression against event fields. Filter expressions are explained in detail in the [Filter expressions](xref:sdsFilterExpressions) section.
 
 **Request**  
 
@@ -299,15 +298,15 @@ Note that `State` is not included in the JSON as its value is the default value.
 ```
 
 <a name="getvaluesrange"></a>
-#### Range Request
+### `Range`
 
 Returns a collection of stored values as determined by a ``startIndex`` and ``count``. Additional optional parameters specify the direction of the range, how to handle events near or at the start index, whether to skip a certain number of events at the start of the range, and how to filter the data.
 
 **Request**
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
-            ?startIndex={startIndex}&count={count}&skip={skip}&reversed={reversed} 
-            &boundaryType={boundaryType}&filter={filter}
+            ?startIndex={startIndex}&count={count}[&skip={skip}&reversed={reversed} 
+            &boundaryType={boundaryType}&filter={filter}]
 
 **Parameters**  
 ``string tenantId``  
@@ -504,10 +503,8 @@ Adding a filter to the request means only events that meet the filter criteria a
       string filter, string streamViewId = null);
 ```
 
-****
-
 <a name="getvalueswindow"></a>
-#### Window Request
+### `Window`
 
 Returns a collection of stored events based on the specified start index and end index. 
 
@@ -579,7 +576,6 @@ Optional token used to retrieve the next page of data. If `count` is specified, 
 The response includes a status code and a response body containing a serialized collection of events. 
 
 A continuation token can be returned if specified in the request.
-
 
 **Example**  
 The following requests all stored events between 13:30 and 15:30: 
@@ -834,7 +830,7 @@ Note that `State` is not included in the JSON as its value is the default value.
 
 ****
 
-## ``Get Interpolated Values``
+## `Get Interpolated Values`
 
 Returns a collection of values based on request parameters. The stream’s read characteristics determine how events 
 are calculated for indexes at which no stored event exists.
@@ -845,7 +841,7 @@ Get Interpolated Values supports three ways of specifying which events to return
   count of events evenly spaced from start index to end index.
 
 <a name="getvaluesindexcollection"></a>
-### ``Index Collection``  
+### `Index Collection`  
 
 Returns the stored events at the specified indexes. If no stored event exists at a specified index, the stream’s read characteristics determines how the returned event is calculated.
 
@@ -1235,17 +1231,17 @@ The following requests calculates two summary intervals between the first and la
 
 ## ``Join Values``
 
-Returns data from multiple streams joined based on the request specifications. 
+Returns data from multiple streams joined based on the request specifications. The streams must be of the same SdsType.
 
 SDS supports the following types of joins:
 
 | SdsJoinMode  | Enumeration value | Operation |
 | -------      | ----------------- | --------- |
-| Inner        | 0                 | Results include the events with common indexes across all streams for the request index boundaries. |
-| Outer        | 1                 | Results include all stored events across all streams for the request index boundaries. |
+| Inner        | 0                 | Results include the stored events with common indexes across specified streams. |
+| Outer        | 1                 | Results include the stored events for all indexes across all streams. |
 | Interpolated | 2                 | Results include events for each index across all streams for the request index boundaries. Some events may be interpolated. |
-| MergeLeft    | 3                 | Results include the event at the specified index boundary. If no stored event exists at that index, one is calculated based on the index type and interpolation and extrapolation settings. |
-| MergeRight   | 4                 | Results include the event at the specified index boundary. If no stored event exists at that index, one is calculated based on the index type and interpolation and extrapolation settings. |
+| MergeLeft    | 3                 | Results include events for each index across all streams selecting events at the indexes based on left to right order of the streams. |
+| MergeRight   | 4                 | Results include events for each index across all streams selecting events at the indexes based on right to left order of the streams. |
 
 
 SDS supports two types of join requests:
@@ -1253,7 +1249,7 @@ SDS supports two types of join requests:
 * [POST](#postjoin): Only the SdsJoinMode is specified in the URI. The streams and read specification for each stream are specified in the body of the request.
 
 <a name="getjoin"></a>
-### GET Request
+### `GET Request`
 
     GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams={streams}&joinMode={joinMode}
@@ -1279,7 +1275,7 @@ Index identifying the beginning of the series of events to return
 Index identifying the end of the series of events to return
 
 **Response**  
-The response includes a status code and a response body containing multiple serialized events.
+The response includes a status code and a response body containing multiple serialized events. See examples for specifics.
 
 #### Examples
 
@@ -1329,7 +1325,7 @@ And assume that Simple2 presents the following data:
 
 The following are responses for various Joins request options:
 
-##### InnerJoin Request
+##### Inner Join Example
 
       GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams=Simple1,Simple2&joinMode=inner
@@ -1355,7 +1351,7 @@ Measurements from both streams with common indexes.
   ] 
 ```
 
-##### **OuterJoin Request**
+##### Outer Join Example
 
       GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams=Simple1,Simple2&joinMode=outer
@@ -1363,7 +1359,6 @@ Measurements from both streams with common indexes.
 
 **Response**  
 All Measurements from both Streams, with default values at indexes where a Stream does not have a value.
-
 
 **Response body**
 ```json
@@ -1423,7 +1418,7 @@ All Measurements from both Streams, with default values at indexes where a Strea
 ```
 
 
-##### **InterpolatedJoin Request**
+##### Interpolated Join Example
 
       GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams=Simple1,Simple2&joinMode=interpolated
@@ -1509,7 +1504,7 @@ All Measurements from both Streams with missing values interpolated. If the miss
   ] 
 ```
 
-##### **MergeLeftJoin Request**
+##### MergeLeft Join Example
 
       GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams=Simple1,Simple2&joinMode=mergeleft
@@ -1552,7 +1547,7 @@ This is similar to [OuterJoin](#outerjoin-request), but value at each index is t
   ] 
 ```
 
-#### **MergeRightJoin Request**
+##### MergeRight Join Example
 
       GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
             ?streams=Simple1,Simple2&joinMode=mergeright
@@ -1644,8 +1639,7 @@ Read options specific to each stream.
   ] 
 ```
 
-**Response**
-
+**Response**  
  The response includes a status code and a response body containing multiple serialized events.
 
 **Response body**
