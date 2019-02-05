@@ -58,7 +58,7 @@ responses do not include any values that are equal to the default value for thei
 Verbose json responses include all values, including defaults, in the returned json payload. To specify 
 verbose json return, add the header ``Accept-Verbosity`` with a value of ``verbose`` to the request.  
 
-To specify SDS format, set the ``Accept`` header in the request to ``application/SDS``.
+To specify SDS format, set the ``Accept`` header in the request to ``application/sds``.
 
 Indexes and reading data
 ------------------------
@@ -161,7 +161,7 @@ SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (UOM) to stream d
 
 This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects. See [API calls for reading data](xref:sdsReadingDataApi) for more information.
 
-All unit conversions are POST HTTP requests. The unit conversion transfromation URI is as follows:
+All unit conversions are POST HTTP requests. The unit conversion transformation URI is as follows:
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
 
@@ -178,6 +178,6 @@ The Request Body contains a collection of SdsStreamPropertyOverride objects. The
 ]
 ```
 
-All single stream data reads with stream that have specified UOMs support UOM conversions. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
+All single stream data reads with streams that have specified UOMs support UOM conversions. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
 
 ***********************

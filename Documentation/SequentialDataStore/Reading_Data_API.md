@@ -25,7 +25,7 @@ public class SimpleType
    public DateTime Time { get; set; }
    public State State { get; set; }
    [SdsMember(Uom = "meter")]
-   public Double `Measurement` { get; set; }
+   public Double Measurement { get; set; }
 }
 ```
 ###### Python
@@ -48,7 +48,7 @@ class SimpleType(object):
   def setState(self, state):
     self.__state = state
 
-  `Measurement` = property(getValue, setValue)
+  Measurement = property(getValue, setValue)
   def getValue(self):
     return self.__measurement
   def setValue(self, measurement):
