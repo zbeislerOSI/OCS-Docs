@@ -1026,7 +1026,7 @@ Note that `State` is not included in the JSON as its value is the default value.
 
 ****
 
-## ``Get Summary``
+## ``Get Summaries``
 
 Returns summary intervals between a specified start and end index. 
   

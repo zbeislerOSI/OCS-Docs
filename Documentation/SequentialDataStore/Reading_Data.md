@@ -6,7 +6,7 @@ Reading data
 ============
 
 The .NET and REST APIs provide programmatic access to read and write data. This section identifies and describes 
-the APIs used to read [Stream](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes),  
+the APIs used to read [Streams](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes),  
 [Stream Views](xref:sdsViews), [Filter expressions](xref:sdsFilterExpressions), and [Table format](xref:sdsTableFormat).
 
 If you are working in a .NET environment, convenient SDS Client Libraries are available. 
@@ -15,27 +15,22 @@ defines the functions that are available.
 
 The following methods for reading a single value are available:
 
-* ``Get Value`` returns a value at a specified index, calculated if no stored value exists at that index. 
-* ``Get First Value`` returns the first value in the stream.
-* ``Get Last Value`` returns the last value in the stream.
-* ``Get Distinct Value`` returns a value at the specified index, only if a stored value exists at that index.
-* ``Find Distinct Value`` searches for a value based on a starting index and search criteria.
+* [`Get First Value`](xref:sdsReadingDataApi#get-first-value) returns the first value in the stream.
+* [`Get Last Value`](xref:sdsReadingDataApi#get-last-value) returns the last value in the stream.
+* [`Find Distinct Value`](xref:sdsReadingDataApi#find-distinct-value) returns a value based on a starting index and search criteria.
 
 In addition, the following methods support reading multiple values:
 
-* ``Get Values`` retrieves a collection of values at specified indexes, calculated if no stored 
-  value exists at the index(es). ``Get values`` supports specifying the desired indexes as a list of indexes, 
-  a filter expression and count, or a starting index, ending index, and count.
-* ``Get Range Values`` retrieves a collection of stored values based on the specified start index and count.
-* ``Get Window Values`` retrieves a collection of stored values based on specified start and end indexes.
-* ``Get Intervals`` retrieves a collection of evenly spaced summary intervals based on a count 
+* [`Get Values`](xref:sdsReadingDataApi#get-values) retrieves a collection of stored values based on the request parameters.
+* [`Get Interpolated Values`](xref:sdsReadingDataApi#get-interpolated-values) retrieves a collection of stored or calculated values based on the request parameters.
+* [`Get Summaries`](xref:sdsReadingDataApi#get-summaries) retrieves a collection of evenly spaced summary intervals based on a count 
   and specified start and end indexes.
 
-All reads are HTTP GET actions. Reading data involves getting events from streams. The base reading URI is as follows:
+All single stream reads are HTTP GET actions. Reading data involves getting events from streams. The base reading URI from a single stream is as follows:
 
         api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
 
-**where:**
+**Parameters**
 
 ``string tenantId``  
 The tenant identifier
@@ -45,6 +40,22 @@ The namespace identifier
 
 ``string streamId``  
 The stream identifier
+
+The following for reading multiple streams are available:
+* [`Join Values`](xref:sdsReadingDataApi#join-values) retrieves a collection of values across multiples streams and joins the results based on the request parameters.
+
+
+Mutlti-stream reads can be HTTP GET or POST actions. The base reading URI for reading from multiple streams is as follows:
+ 
+        api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
+
+**Parameters**
+
+``string tenantId``  
+The tenant identifier
+
+``string namespaceId``  
+The namespace identifier
 
 
 Response Format

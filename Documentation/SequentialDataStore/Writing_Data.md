@@ -15,15 +15,6 @@ All writes rely on a stream’s key or primary index. Preexisting values and pos
 is determined exclusively by the primary index. Secondary indexes are updated, but they do not contribute 
 to the request. All references to indexes are to the primary index.
 
-The following single value write methods are available:
-
-* **Insert Value** inserts a value at the specified primary index. 
-* **Patch Value** updates specific fields in an existing value identified by the primary index.
-* **Replace Value** replaces the value at the specified primary index.
-* **Update Value** replaces the value with matching primary index. If no value exists the value is added.
-* **Remove Value** deletes the value at the specified primary index.
-
-
 The following support writing multiple values:
 
 * **Insert Values** inserts a collection of values.
@@ -41,14 +32,30 @@ The base URI for writing SDS data to a single stream is:
 **Parameters**
 
 ``string tenantId``  
-  The tenant identifier  
+The tenant identifier  
   
 ``string namespaceId``  
-  The namespace identifier  
+The namespace identifier  
   
 ``string streamId``  
-  The stream identifier  
+The stream identifier  
 
+The following support writing multiple streams:
+* **Bulk Insert Values** inserts a collection of values for multiple streams.
+* **Bulk Update Values** replaces or adds a collection of values for multiple streams.
+
+The base URI for writing SDS data to a multiple stream is:
+
+      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data  
+      
+**Parameters**
+
+``string tenantId``  
+The tenant identifier  
+  
+``string namespaceId``  
+The namespace identifier  
+  
 
 Response Format
 ---------------
