@@ -24,20 +24,17 @@ The namespace identifier
 ``string streamId``  
 The stream identifier  
 
-**Request Body**
-A serialized list of one or more events of the stream type
+**Request Body**  
+A serialized list of one or more events of the stream type  
 
 **Response**  
 The response includes a status code
 
 **_Notes_**  
-This request will return an error if an event already exists for any index in the request. If any individual index encounters a problem, the entire operation is rolled back and no insertions are made. The streamId and index that caused the issue are included in the error response.
+This request will return an error if an event already exists for any index in the request. If any individual index encounters a problem, the entire operation is rolled back and no insertions are made. The `streamId` and `index` that caused the issue are included in the error response.
 
 The events to be inserted must be formatted as a serialized JSON array of the stream's type. JSON arrays are comma-delimited lists of a type enclosed within square brackets. The following code shows a list of three WaveData events that are properly formatted for insertion. See the [OCS-Samples](https://github.com/osisoft/OCS-Samples) for the complete example.
 
-You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
-
-For HTTP requests, the events to be inserted must be formatted as a serialized JSON array of type `T`. JSON arrays are comma-delimited lists of type `T` enclosed within square brackets. The following code shows a list  of three WaveData events that are properly formatted for insertion. See the SDS code samples for the complete WaveData example.
 ```json
 [
     {
@@ -75,6 +72,9 @@ For HTTP requests, the events to be inserted must be formatted as a serialized J
     }
 ]
 ```
+
+You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
+
 
 **.NET Library**
 ```csharp

@@ -216,11 +216,11 @@ The next event in the stream is retrieved.
 **.NET Library**
 ```csharp
    Task<T> FindDistinctValueAsync<T>(string streamId, string index, 
-      SdsSearchMode searchMode, string streamViewId = null);
+      SdsSearchMode searchMode = SdsSearchMode.Exact, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1>(string streamId, Tuple<T1> index, 
-      SdsSearchMode searchMode, string streamViewId = null);
+      SdsSearchMode searchMode = SdsSearchMode.Exact, string streamViewId = null);
    Task<T> FindDistinctValueAsync<T, T1, T2>(string streamId, Tuple<T1, T2> index, 
-      SdsSearchMode searchMode, string streamViewId = null);
+      SdsSearchMode searchMode = SdsSearchMode.Exact, string streamViewId = null);
 ```
 ****
 
@@ -228,8 +228,7 @@ The next event in the stream is retrieved.
 
 Returns a collection of *stored* values at indexes based on request parameters. 
 
-SDS supports four ways of specifying which stored events to return:
-
+SDS supports three ways of specifying which stored events to return:  
 * [Filtered](#getvaluesfiltered): A filtered request accepts a [filter expression](xref:sdsFilterExpressions).
 * [Range](#getvaluesrange): A range request accepts a start index and a count.
 * [Window](#getvalueswindow): A window request accepts a start index and end index. This request has an optional continuation token for large collections of events.
@@ -263,7 +262,7 @@ The response includes a status code and a response body containing a serialized 
 **Example**  
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
-          ?filter=`Measurement` gt 10
+          ?filter=Measurement gt 10
 
 The events in the stream whose `Measurement` is less than or equal to 10 are not returned.
 
@@ -400,7 +399,7 @@ return up to 100 events starting at 13:00 and extending back toward the start of
 
 Note that `State` is not included in the JSON as its value is the default value. 
 
-Further, `Measurement` is not include in the second, 12:00:00, event as zero is the default value for numbers.
+Further, `Measurement` is not included in the second, 12:00:00, event as zero is the default value for numbers.
 
 The following request specifies a boundary type of Outside for a reversed-direction range request. 
 The response will contain up to 100 events. The boundary type Outside indicates that up to one 
@@ -442,7 +441,7 @@ Adding a filter to the request means only events that meet the filter criteria a
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?startIndex=2017-11-23T13:00:00Z&count=100&reversed=true 
-          &boundaryType=2&filter=`Measurement` gt 10
+          &boundaryType=2&filter=Measurement gt 10
 
 **Response body**
 ```json
@@ -506,7 +505,7 @@ Adding a filter to the request means only events that meet the filter criteria a
 <a name="getvalueswindow"></a>
 ### `Window`
 
-Returns a collection of stored events based on the specified start index and end index. 
+Returns a collection of stored events based on the specified `startIndex` and `endIndex`. 
 
 For handling events at and near the boundaries of the window, a single SdsBoundaryType that applies 
 to both the start and end indexes can be passed with the request, or separate boundary types may 
@@ -578,7 +577,7 @@ The response includes a status code and a response body containing a serialized 
 A continuation token can be returned if specified in the request.
 
 **Example**  
-The following requests all stored events between 13:30 and 15:30: 
+The following requests all stored events between 12:30 and 15:30: 
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?startIndex=2017-11-23T12:30:00Z&endIndex=2017-11-23T15:30:00Z
@@ -833,9 +832,9 @@ Note that `State` is not included in the JSON as its value is the default value.
 ## `Get Interpolated Values`
 
 Returns a collection of values based on request parameters. The stream’s read characteristics determine how events 
-are calculated for indexes at which no stored event exists.
+are calculated for indexes at which no stored event exists. Interpolation is not supported for streams with compound indexes.
 
-Get Interpolated Values supports three ways of specifying which events to return:  
+SDS supports two ways of specifying which interpolated events to return:  
 * [Index Collection](#getvaluesindexcollection): One or more indexes can be passed to the request in order to retrieve events at specific indexes. 
 * [Window](#getvaluesinterpolatedwindow): A window can be specified with a start index, end index, and count. This will return the specified 
   count of events evenly spaced from start index to end index.
@@ -843,12 +842,12 @@ Get Interpolated Values supports three ways of specifying which events to return
 <a name="getvaluesindexcollection"></a>
 ### `Index Collection`  
 
-Returns the stored events at the specified indexes. If no stored event exists at a specified index, the stream’s read characteristics determines how the returned event is calculated.
+Returns events at the specified indexes. If no stored event exists at a specified index, the stream’s read characteristics determine how the returned event is calculated.
 
 **Request**  
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/
-        Interpolated?index={index}[&index={index}
+        Interpolated?index={index}[&index={index}...]
 
 **Parameters**  
 ``string tenantId``  
@@ -956,6 +955,8 @@ Note that `State` is not included in the JSON as its value is the default value.
 <a name="getvaluesinterpolatedwindow"></a>
 ### `Window`
 
+Returns events at a evenly spaced intervals based on the specified start index, end index, and count. If no stored event exists at an index interval, the stream’s read characteristics determine how the returned event is calculated.
+
 **Request**  
 
         GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/
@@ -980,9 +981,8 @@ The index defining the end of the window
 ``int count``  
 The number of events to return. Read characteristics of the stream determine how the events are constructed.
 
-**Response**
-
-The response includes a status code and a response body containing a serialized collection of events.
+**Response**  
+The response includes a status code and a response body containing a serialized collection of events. Depending on the read characteristics and input parameters, it is possible for a collection to be returned with less events than specified in the count.
 
 For a stream, named Simple, of type ``Simple`` for the following request
 
@@ -1030,7 +1030,7 @@ Note that `State` is not included in the JSON as its value is the default value.
 
 Returns summary intervals between a specified start and end index. 
   
-Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for support compound indexes. Interpolating between two indexes 
+Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for compound indexes. Interpolating between two indexes 
 that consist of multiple properties is not defined and results in non-determinant behavior.
 
 Summary values supported by SdsSummaryType enum:
@@ -1096,7 +1096,7 @@ Each SdsInterval has a start, end, and collection of summary values.
 The following requests calculates two summary intervals between the first and last events: 
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
-        Summaries?startIndex=2017-11-23T12:00:00Z&endIndex=2017-11-23T16:00:00Z&count=2
+        Summaries?startIndex=2017-11-24T20:00:00Z&endIndex=2017-11-25T00:00:00Z&count=2
 
 **Response body**
 ```json

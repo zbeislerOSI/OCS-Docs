@@ -6,11 +6,10 @@ Reading data
 ============
 
 The .NET and REST APIs provide programmatic access to read and write data. This section identifies and describes 
-the APIs used to read [Streams](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes),  
-[Stream Views](xref:sdsViews), [Filter expressions](xref:sdsFilterExpressions), and [Table format](xref:sdsTableFormat).
+the APIs used to read [Streams](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes), [Stream Views](xref:sdsViews), [Filter expressions](xref:sdsFilterExpressions), and [Table format](xref:sdsTableFormat).
 
 If you are working in a .NET environment, convenient SDS Client Libraries are available. 
-The ``ISdsDataServiceinterface``, which is accessed using the ``SdsService.GetDataService()`` helper, 
+The `ISdsDataService` interface, which is accessed using the ``SdsService.GetDataService()`` helper, 
 defines the functions that are available.
 
 The following methods for reading a single value are available:
@@ -41,11 +40,11 @@ The namespace identifier
 ``string streamId``  
 The stream identifier
 
-The following for reading multiple streams are available:
-* [`Join Values`](xref:sdsReadingDataApi#join-values) retrieves a collection of values across multiples streams and joins the results based on the request parameters.
+The following method for reading data from multiple streams is available:
+* [`Join Values`](xref:sdsReadingDataApi#join-values) retrieves a collection of events across multiple streams and joins the results based on the request parameters.
 
 
-Mutlti-stream reads can be HTTP GET or POST actions. The base reading URI for reading from multiple streams is as follows:
+Multi-stream reads can be HTTP GET or POST actions. The base reading URI for reading from multiple streams is as follows:
  
         api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
 
@@ -61,13 +60,11 @@ The namespace identifier
 Response Format
 ---------------
 
-Supported response formats include json, verbose json, and SDS. 
+Supported response formats include JSON, verbose JSON, and SDS. 
 
-The default response format for is json, which is used in all examples in this document.  Default json 
-responses do not include any values that are equal to the default value for their type.
+The default response format for SDS is JSON, which is used in all examples in this document. Default JSON responses do not include any values that are equal to the default value for their type.
 
-Verbose json responses include all values, including defaults, in the returned json payload. To specify 
-verbose json return, add the header ``Accept-Verbosity`` with a value of ``verbose`` to the request.  
+Verbose JSON responses include all values, including defaults, in the returned JSON payload. To specify verbose JSON return, add the header ``Accept-Verbosity`` with a value of ``verbose`` to the request.  
 
 To specify SDS format, set the ``Accept`` header in the request to ``application/sds``.
 
@@ -82,7 +79,7 @@ Read Characteristics
 --------------------
 
 When data is requested at an index for which no stored event exists, the read characterisitics determine 
-whether the result is an error, null event, interpolated event, or extrapolated event. The combination of 
+whether the result is an error, no event, interpolated event, or extrapolated event. The combination of 
 the type of the index and the interpolation and extrapolation modes of the SdsType and the SdsStream 
 determine the read characteristics. For more information on read characteristics, 
 see [Types](xref:sdsTypes) and [Streams](xref:sdsStreams).
@@ -170,15 +167,37 @@ SDS supports assigning [Units of Measure](xref:unitsOfMeasure) (UOM) to stream d
 | Uom               | String               | Required    | Target unit of measure                                |
 | InterpolationMode | SdsInterpolationMode | N/A         | Currently not supported in context of data reads      |
 
-This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects. See [API calls for reading data](xref:sdsReadingDataApi) for more information.
+This is supported in the .NET API via overloads that accept a collection of `SdsStreamPropertyOverride` objects, and in the REST API via HTTP POST calls with a request body containing a collection of `SdsStreamPropertyOverride` objects.  
 
 All unit conversions are POST HTTP requests. The unit conversion transformation URI is as follows:
 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
 
-**Request body**
+**Request body**  
+The Request Body contains a collection of SdsStreamPropertyOverride objects. 
 
-The Request Body contains a collection of SdsStreamPropertyOverride objects. The example request body below requests SDS convert the Measurement property of the returned data from meter to centimeter.
+**Example Type**  
+The following code defines a `Simple Type` with one index and two additional properties. 
+
+```csharp
+public enum State
+{
+   Ok,
+   Warning,
+   Alarm
+}
+
+public class SimpleType
+{
+   [SdsMember(IsKey = true, Order = 0) ]
+   public DateTime Time { get; set; }
+   public State State { get; set; }
+   [SdsMember(Uom = "meter")]
+   public Double Measurement { get; set; }
+}
+```
+
+The example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
 
 ```json
 [
