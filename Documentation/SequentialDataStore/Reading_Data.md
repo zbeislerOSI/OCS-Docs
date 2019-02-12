@@ -2,8 +2,7 @@
 uid: sdsReadingData
 ---
 
-Reading data
-============
+# Reading data
 
 The .NET and REST APIs provide programmatic access to read and write data. This section identifies and describes 
 the APIs used to read [Streams](xref:sdsStreams) data. Results are influenced by [Types](xref:sdsTypes), [Stream Views](xref:sdsViews), [Filter expressions](xref:sdsFilterExpressions), and [Table format](xref:sdsTableFormat).
@@ -12,6 +11,7 @@ If you are working in a .NET environment, convenient SDS Client Libraries are av
 The `ISdsDataService` interface, which is accessed using the ``SdsService.GetDataService()`` helper, 
 defines the functions that are available.
 
+### Single Stream Reads  
 The following methods for reading a single value are available:
 
 * [`Get First Value`](xref:sdsReadingDataApi#get-first-value) returns the first value in the stream.
@@ -40,9 +40,10 @@ The namespace identifier
 ``string streamId``  
 The stream identifier
 
-The following method for reading data from multiple streams is available:
+### Multi-Stream Reads   
+ 
+SDS supports reading from multiple streams in one request. The following method for reading data from multiple streams is available:
 * [`Join Values`](xref:sdsReadingDataApi#join-values) retrieves a collection of events across multiple streams and joins the results based on the request parameters.
-
 
 Multi-stream reads can be HTTP GET or POST actions. The base reading URI for reading from multiple streams is as follows:
  
@@ -57,8 +58,7 @@ The tenant identifier
 The namespace identifier
 
 
-Response Format
----------------
+### Response Format
 
 Supported response formats include JSON, verbose JSON, and SDS. 
 
@@ -68,15 +68,13 @@ Verbose JSON responses include all values, including defaults, in the returned J
 
 To specify SDS format, set the ``Accept`` header in the request to ``application/sds``.
 
-Indexes and reading data
-------------------------
+### Indexes and reading data
 
 Most read operations take at least one index as a parameter. Indexes may be specified as strings, or, 
 when using the SDS Client libraries, the index may be passed as-is to read methods that take the index 
 type as a generic argument. Additional details about working with indexes can be found on the [Indexes](xref:sdsIndexes) page.
 
-Read Characteristics
---------------------
+### Read Characteristics
 
 When data is requested at an index for which no stored event exists, the read characterisitics determine 
 whether the result is an error, no event, interpolated event, or extrapolated event. The combination of 
@@ -84,8 +82,7 @@ the type of the index and the interpolation and extrapolation modes of the SdsTy
 determine the read characteristics. For more information on read characteristics, 
 see [Types](xref:sdsTypes) and [Streams](xref:sdsStreams).
 
-Filter Expressions
-------------------
+### Filter Expressions
 
 Filter expressions can be applied to any read that returns multiple values, including Get Values, Get Range Values, 
 Get Window Values, and Get Intervals. The filter expression is applied to the collection events conditionally 
@@ -93,8 +90,7 @@ filtering events that do not meet the filter conditions.
 
 Filter expressions are covered in detail in the [Filter expressions](xref:sdsFilterExpressions) section.
 
-Table Format
-------------
+### Table Format
 
 Results of a query can be organized into tables by directing the form parameter to return a table. 
 Two forms of table are available: table and header table.
@@ -108,11 +104,10 @@ contains a column header list.
 
 Table formats are covered in detail in the [Table format](xref:sdsTableFormat) section.
 
-SdsBoundaryType
---------------
+### SdsBoundaryType
 
-SdsBoundaryType defines how data on the boundary of queries is handled: around the start index for range value queries, 
-and around the start and end index for window values. The following are valid values for SdsBoundaryType:
+The `SdsBoundaryType` enum defines how data on the boundary of queries is handled: around the start index for range value queries, 
+and around the start and end index for window values. The following are valid values for `SdsBoundaryType`:
 
 | Boundary | Enumeration value | Operation |
 | -------  | ----------------- | --------- |
@@ -121,11 +116,9 @@ and around the start and end index for window values. The following are valid va
 | Outside  | 2                 | Results include up to one event that falls immediately outside of the specified index boundary. |
 | ExactOrCalculated | 3        | Results include the event at the specified index boundary. If no stored event exists at that index, one is calculated based on the index type and interpolation and extrapolation settings. |
 
-SdsSearchMode
--------------
+### SdsSearchMode
 
-The SdsSearchMode enum defines search behavior when seeking a stored event near a specified index. The following are 
-available SdsSearchModes:
+The `SdsSearchMode` enum defines search behavior when seeking a stored event near a specified index. The following are valid values for `SdsSearchMode`:
 
 | Mode  | Enumeration value | Operation |
 | ----- | ----------------- | --------- |
@@ -138,19 +131,29 @@ available SdsSearchModes:
 
 *****
 
-Transforming Data
-------------------------
+## Transforming Data
 
-SDS supports the following data transformations:
+SDS provides the ability to transforming data upon reads. The supported data transformations are:
 * [Reading with SdsStreamViews](#reading-with-sdsstreamviews): Changing the shape of the returned data
 * [Unit of Measure Conversions](#unit-conversion-of-data): Coverting the unit of measure of the data  
 
-#### Reading with SdsStreamViews
+Data tranformations are suppported for all single stream reads, but transformations have specific endpoints. The following are the base URIs for the tranformation endpoints:
+```
+    api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform/First
+    api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform/Last
+    api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
+    api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform/Interpolated
+    api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform/Summaries
+```
+
+### Reading with SdsStreamViews
 When transforming data with an SdsStreamView, the data read is converted to the *target type* specified in the SdsStreamView. Working with stream views is covered in detail in the [Stream Views](xref:sdsViews) section.
 
-All stream view transformations are GET HTTP requests. The stream view is specified by appending the stream view identifier to requests to the transformation endpoint.
+All stream view transformations are GET HTTP requests. The stream view is specified by appending the stream view identifier to requests to the transformation endpoint. For example the following request:
 
-    GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform?{readRequestParameters}&streamViewId={streamViewId}
+    GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform/First?streamViewId={streamViewId}
+
+would return the first event in the stream as the target type in the stream view specified by the `streamViewId`.
 
 All single stream data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
 

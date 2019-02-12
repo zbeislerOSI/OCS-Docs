@@ -2,8 +2,7 @@
 uid: sdsWritingData
 ---
 
-Writing data
-============
+# Writing data
 
 The SDS REST APIs provide programmatic access to read and write SDS data. This section describes 
 the APIs used to write SdsStream data.
@@ -13,6 +12,8 @@ When working in .NET, convenient SDS Client libraries are available. The `ISdsDa
 
 All writes rely on a stream’s key or primary index. The primary index determines the order of events in the stream. Secondary indexes are updated, but they do not contribute 
 to the request. All references to indexes are to the primary index.
+
+### Single Stream Writes   
 
 The following support writing multiple values:
 * [Insert Values](xref:sdsWritingDataApi#insert-values) inserts a collection of events.
@@ -36,6 +37,8 @@ The namespace identifier
 ``string streamId``  
 The stream identifier  
 
+### Multi-Stream Writes  
+
 The following support writing multiple streams:
 * [Bulk Insert Values](xref:sdsWritingDataApi#bulk-insert-values) inserts a collection of events for multiple streams.
 * [Bulk Update Values](xref:sdsWritingDataApi#bulk-update-values) adds or replaces a collection of events for multiple streams.
@@ -53,8 +56,7 @@ The tenant identifier
 The namespace identifier  
   
 
-Response Format
----------------
+### Response Format
 
 Supported response formats include JSON, verbose JSON, and SDS. 
 
@@ -68,8 +70,7 @@ Verbose has no impact on writes; writes return only error messages.
 
 To specify SDS format, set the ``Accept`` header in the request to ``application/sds``.
 
-Indexes
--------
+### Indexes
 
 SDS writes rely on the primary index for positioning within streams and locating existing events. 
 Most writes use the index as specified by the value. Deletes are the exception to this rule. When deleting, 

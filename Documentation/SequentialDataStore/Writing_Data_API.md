@@ -3,8 +3,7 @@ uid: sdsWritingDataApi
 ---
 
 # API calls for writing data
-  
-*****
+
 
 ## `Insert Values`
 
