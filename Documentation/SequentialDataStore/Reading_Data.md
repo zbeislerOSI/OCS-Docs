@@ -155,7 +155,7 @@ All stream view transformations are GET HTTP requests. The stream view is specif
 
 would return the first event in the stream as the target type in the stream view specified by the `streamViewId`.
 
-All single stream data reads support stream view transformations. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
+All single stream data reads support stream view transformations.
 
 When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
 determine what is returned. The read characteristics are discussed in the code samples.
@@ -177,30 +177,21 @@ All unit conversions are POST HTTP requests. The unit conversion transformation 
         POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/Transform
 
 **Request body**  
-The Request Body contains a collection of SdsStreamPropertyOverride objects. 
+The Request Body contains a collection of `SdsStreamPropertyOverride` objects. 
 
-**Example Type**  
-The following code defines a `Simple Type` with one index and two additional properties. 
+The following code defines a `Simple Type` with one index, `Time`, and one additional property, `Measurement`. `Measurement` has an assigned unit of measure, meter.
 
 ```csharp
-public enum State
-{
-   Ok,
-   Warning,
-   Alarm
-}
-
 public class SimpleType
 {
    [SdsMember(IsKey = true, Order = 0) ]
    public DateTime Time { get; set; }
-   public State State { get; set; }
    [SdsMember(Uom = "meter")]
    public Double Measurement { get; set; }
 }
 ```
 
-The example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
+This type is assigned to stream, and the example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
 
 ```json
 [
@@ -211,6 +202,6 @@ The example request body below requests SDS convert the `Measurement` property o
 ]
 ```
 
-All single stream data reads with streams that have specified UOMs support UOM conversions. For specific syntax, see [Reading Data API](xref:sdsReadingDataApi).
+All single stream data reads with streams that have specified UOMs support UOM conversions.
 
 ***********************

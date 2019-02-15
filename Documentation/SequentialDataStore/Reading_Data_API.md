@@ -176,42 +176,44 @@ Depending on the request `index` and `searchMode`, it is possible to have an emp
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?index=2017-11-23T13:00:00Z&searchMode=Next
 
-The request has an index that matches the index of an existing event, but because  
-an SdsSearchMode of ``next`` was specified, the response contains the next event in the stream after the 
+The request has an index that matches the index of an existing event, but since a `SdsSearchMode` of ``next`` was specified, the response contains the next event in the stream after the 
 specified index:
 
 **Response body**
 ```json
-   HTTP/1.1 200
-   Content-Type: application/json
-   
-   Formatted JSON Data
-   {  
-      "Time":"2017-11-23T14:00:00Z",
-      "Measurement":20.0
-   }
-```
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
 
-Note that `State` is not included in the JSON as its value is the default value.
+[
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    }
+]
+```
 
 **Example**  
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
         ?index=2017-11-23T13:30:00Z&searchMode=Next
 
-The request specifies an index that does not match an index of an existing event. 
-The next event in the stream is retrieved.
+The request specifies an index that does not match an index of an existing event. The next event in the stream is retrieved.
 
 **Response body**
 ```json
-   HTTP/1.1 200
-   Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
    
-   Formatted JSON Data
-   {  
-      "Time":"2017-11-23T14:00:00Z",
-      "Measurement":20.0
-   }
+[
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    }
+]
 ```
 **.NET Library**
 ```csharp
@@ -264,31 +266,30 @@ The response includes a status code and a response body containing a serialized 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
           ?filter=Measurement gt 10
 
-The events in the stream whose `Measurement` is less than or equal to 10 are not returned.
+The events in the stream with `Measurement` greater than 10 are returned.
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
 
-      [  
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-            "Measurement":30.0
-         },
-         {  
-            "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "Measurement": 40
+    }
+]
 ```
 
 Note that `State` is not included in the JSON as its value is the default value.
-
 
 **.NET Library**
 ```csharp
@@ -349,27 +350,27 @@ This request will return a response with up to 100 events starting at 13:00 and 
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
 
-      [  
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-            "Measurement":30.0
-         },
-         {  
-           "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "Measurement": 40
+    }
+]
 ```
 
 Note that `State` is not included in the JSON as its value is the default value.
@@ -383,18 +384,17 @@ return up to 100 events starting at 13:00 and extending back toward the start of
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
-
-      [  
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T12:00:00Z"
-         }
-      ] 
+HTTP/1.1 200
+Accept: application/json
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T12:00:00Z"
+    }
+]
 ```
 
 Note that `State` is not included in the JSON as its value is the default value. 
@@ -413,29 +413,31 @@ it would mean one event before the specified start index.
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose 
 
-      [  
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T12:00:00Z"
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T12:00:00Z",
+        "State": 0,
+        "Measurement": 0
+    }
+]
 ```
 
 The event outside of the index is the next event or the event at 14:00 because the 
 request operates in reverse.
-
-Note that `State` is not included in the JSON as its value is the default value. Further 
-`Measurement` is not included in the last event as its value is default.
 
 Adding a filter to the request means only events that meet the filter criteria are returned:
 
@@ -445,19 +447,17 @@ Adding a filter to the request means only events that meet the filter criteria a
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose 
 
-      [  
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-      ] 
+[
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    }
+]
 ```
 
 **.NET Library**
@@ -586,22 +586,23 @@ The response will contain the event stored at the specified index:
 
 **Response body**
 ```json
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
 
-      [  
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-            "Measurement":30.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 30
+    }
+]
 ```
 
 Note that `State` is not included in the JSON as its value is the default value.
@@ -616,30 +617,30 @@ before 13:30 and the value after 15:30 are included:
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
 
-      [  
-         {  
-            "Time":"2017-11-23T12:00:00Z"
-         },
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-           "Measurement":30.0
-         },
-         {  
-            "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T12:00:00Z"
+    },
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "Measurement": 40
+    }
+]
 ```
 
 Note that `State` is not included in the JSON as its value is the default value. 
@@ -657,30 +658,32 @@ are included in the result. With an end boundary of Outside one value outside th
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
 
-      [  
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-            "Measurement":30.0
-         },
-         {  
-            "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "State": 0,
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "State": 0,
+        "Measurement": 40
+    }
+]
 ```
-
-Note that `State` is not included in the JSON as its value is the default value.
 
 In order to page the results of the request, a continuation token may be specified. 
 This requests the first page of the first two stored events between start index and 
@@ -692,25 +695,26 @@ end index by indicating count is 2 and continuationToken is an empty string:
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
 
-      {  
-         "Results":[  
-            {  
-               "Time":"2017-11-23T13:00:00Z",
-               "Measurement":10.0
-            },
-            {  
-               "Time":"2017-11-23T14:00:00Z",
-               "Measurement":20.0
-            }
-         ],
-         "ContinuationToken":"2017-11-23T14:00:00.0000000Z"
-      } 
+{
+    "Results": [
+        {
+            "Time": "2017-11-23T13:00:00Z",
+            "State": 0,
+            "Measurement": 10
+        },
+        {
+            "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
+            "Measurement": 20
+        }
+    ],
+    "ContinuationToken": "2017-11-23T14:00:00.0000000Z"
+}
 ```
-
-Note that `State` is not included in the JSON as its value is the default value.
 
 This request uses the continuation token from the previous 
 page to request the next page of stored events:
@@ -722,23 +726,23 @@ page to request the next page of stored events:
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
 
-      {  
-         "Results":[  
-            {  
-               "Time":"2017-11-23T15:00:00Z",
-               "Measurement":30.0
-            }
-         ]
-      } 
+{
+    "Results": [
+        {
+            "Time": "2017-11-23T15:00:00Z",
+            "State": 0,
+            "Measurement": 30
+        }
+    ],
+    "ContinuationToken": null
+}
 ```
 
-In this case, the results contain the final event. The returned continuation token is null 
-(not shown because it null is the default value for a JSON string). 
-
-Note that `State` is not included in the JSON as its value is the default value.
+In this case, the results contain the final event. The returned continuation token is null. 
 
 **.NET Library**
 ```csharp
@@ -878,16 +882,18 @@ The response will contain the event stored at the specified index.
 
 **Response body**
 ```json
-   HTTP/1.1 200
-   Content-Type: application/json
- [  
-   {  
-      "Time":"2017-11-23T13:00:00Z",
-      "Measurement":10.0
-   }
- ]
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    }
+]
 ```
-Note that `State` is not included in the JSON as its value is the default value.
 
 The following request specifies an index for which no stored event exists:
 
@@ -899,11 +905,16 @@ this request receives a response with an event interpolated at the specified ind
 
 **Response body**
 ```json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
 [
-   {  
-      "Time":"2017-11-23T13:30:00Z",
-      "Measurement":15.0
-   }
+    {
+        "Time": "2017-11-23T13:30:00Z",
+        "State": 0,
+        "Measurement": 15
+    }
 ]
 ```
 
@@ -912,28 +923,29 @@ Consider a stream of type ``Simple`` with a ``InterpolationMode`` of ``Discrete`
 match two existing stored events:
 
       GET api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data 
-          Interpolate?index=2017-11-23T12:30:00Z&index=2017-11-23T13:00:00Z&index=2017-11-23T14:00:00Z
+          Interpolated?index=2017-11-23T12:30:00Z&index=2017-11-23T13:00:00Z&index=2017-11-23T14:00:00Z
 
 For this request, the response contains events for two of the three specified indexes.
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
 
-      [  
-         {  
-            "Time":"2017-11-23T12:30:00Z",
-            "Measurement":5.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    }
+]
 ```
-
-Note that `State` is not included in the JSON as its value is the default value.
 
 **.NET Library**
 ```csharp
@@ -993,26 +1005,28 @@ the start and end fall exactly on event indexes and the number of events from st
 
 **Response body**
 ```json
-      HTTP/1.1 200
-      Content-Type: application/json
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
 
-      [  
-         {  
-            "Time":"2017-11-23T13:00:00Z",
-            "Measurement":10.0
-         },
-         {  
-            "Time":"2017-11-23T14:00:00Z",
-            "Measurement":20.0
-         },
-         {  
-            "Time":"2017-11-23T15:00:00Z",
-            "Measurement":30.0
-         }
-      ] 
+[
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "State": 0,
+        "Measurement": 30
+    }
+]
 ```
-
-Note that `State` is not included in the JSON as its value is the default value.
 
 **.NET Library**
 ```csharp
@@ -1033,7 +1047,7 @@ Returns summary intervals between a specified start and end index.
 Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for compound indexes. Interpolating between two indexes 
 that consist of multiple properties is not defined and results in non-determinant behavior.
 
-Summary values supported by SdsSummaryType enum:
+Summary values supported by `SdsSummaryType` enum:
 
 | Summary                            | Enumeration value |
 | ---------------------------------- | ----------------- |
@@ -1050,7 +1064,6 @@ Summary values supported by SdsSummaryType enum:
 | WeightedStandardDeviation          | 2048              |
 | WeightedPopulationStandardDeviatio | 4096              |
 
-<a name="getintervalsstandard"></a>
 **Request**  
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/
@@ -1093,114 +1106,125 @@ Each SdsInterval has a start, end, and collection of summary values.
 | Summaries | The summary values for the interval, keyed by summary type. The nested dictionary contains property name keys and summary calculation result values. |
 
 **Example**  
-The following requests calculates two summary intervals between the first and last events: 
+The following requests calculates two summary intervals between the `startIndex` and `endIndex`: 
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data 
-        Summaries?startIndex=2017-11-24T20:00:00Z&endIndex=2017-11-25T00:00:00Z&count=2
+        Summaries?startIndex=2017-11-23T12:00:00Z&endIndex=2017-11-23T16:00:00Z&count=2
 
 **Response body**
 ```json
-      [{
-          "Start":{  
-             "Time":"2017-11-24T20:00:00Z"
-          },
-          "End":{  
-             "Time":"2017-11-24T22:00:00Z",
-             "Measurement":20.0
-          },
-          "Summaries":{  
-             "Count":{  
-                "Measurement":2
-             },
-             "Minimum":{  
-                "Measurement":0.0
-             },
-             "Maximum":{  
-                "Measurement":20.0
-             },
-             "Range":{  
-                "Measurement":20.0
-             },
-             "Total":{  
-                "Measurement":20.0
-             },
-             "Mean":{  
-                "Measurement":10.0
-             },
-             "StandardDeviation":{  
-                "Measurement":7.0710678118654755
-             },
-             "PopulationStandardDeviation":{  
-                "Measurement":5.0
-             },
-             "WeightedMean":{  
-                "Measurement":10.0
-             },
-             "WeightedStandardDeviation":{  
-                "Measurement":7.0710678118654755
-             },
-             "WeightedPopulationStandardDeviation":{  
-                "Measurement":5.0
-             },
-             "Skewness":{  
-                "Measurement":0.0
-             },
-             "Kurtosis":{  
-                "Measurement":-2.0
-             }
-          }
-       },
-       {  
-          "Start":{  
-             "Time":"2017-11-24T22:00:00Z",
-             "Measurement":20.0
-          },
-          "End":{  
-             "Time":"2017-11-25T00:00:00Z",
-             "Measurement":40.0
-          },
-          "Summaries":{  
-             "Count":{  
-                "Measurement":2
-             },
-             "Minimum":{  
-                "Measurement":20.0
-             },
-             "Maximum":{  
-                "Measurement":40.0
-             },
-             "Range":{  
-                "Measurement":20.0
-             },
-             "Total":{  
-                "Measurement":60.0
-             },
-             "Mean":{  
-                "Measurement":30.0
-             },
-             "StandardDeviation":{  
-                "Measurement":7.0710678118654755
-             },
-             "PopulationStandardDeviation":{  
-                "Measurement":5.0
-             },
-             "WeightedMean":{  
-                "Measurement":30.0
-             },
-             "WeightedStandardDeviation":{  
-                "Measurement":7.0710678118654755
-             },
-             "WeightedPopulationStandardDeviation":{  
-                "Measurement":5.0
-             },
-             "Skewness":{  
-                "Measurement":0.0
-             },
-             "Kurtosis":{  
-                "Measurement":-2.0
-             }
-          }
-      }]
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
+    {
+        "Start": {
+            "Time": "2017-11-23T12:00:00Z",
+            "State": 0,
+            "Measurement": 0
+        },
+        "End": {
+            "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
+            "Measurement": 20
+        },
+        "Summaries": {
+            "Count": {
+                "Measurement": 2
+            },
+            "Minimum": {
+                "Measurement": 0
+            },
+            "Maximum": {
+                "Measurement": 20
+            },
+            "Range": {
+                "Measurement": 20
+            },
+            "Total": {
+                "Measurement": 20
+            },
+            "Mean": {
+                "Measurement": 10
+            },
+            "StandardDeviation": {
+                "Measurement": 7.0710678118654755
+            },
+            "PopulationStandardDeviation": {
+                "Measurement": 5
+            },
+            "WeightedMean": {
+                "Measurement": 10
+            },
+            "WeightedStandardDeviation": {
+                "Measurement": 7.0710678118654755
+            },
+            "WeightedPopulationStandardDeviation": {
+                "Measurement": 5
+            },
+            "Skewness": {
+                "Measurement": 0
+            },
+            "Kurtosis": {
+                "Measurement": -2
+            }
+        }
+    },
+    {
+        "Start": {
+            "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
+            "Measurement": 20
+        },
+        "End": {
+            "Time": "2017-11-23T16:00:00Z",
+            "State": 0,
+            "Measurement": 40
+        },
+        "Summaries": {
+            "Count": {
+                "Measurement": 2
+            },
+            "Minimum": {
+                "Measurement": 20
+            },
+            "Maximum": {
+                "Measurement": 40
+            },
+            "Range": {
+                "Measurement": 20
+            },
+            "Total": {
+                "Measurement": 60
+            },
+            "Mean": {
+                "Measurement": 30
+            },
+            "StandardDeviation": {
+                "Measurement": 7.0710678118654755
+            },
+            "PopulationStandardDeviation": {
+                "Measurement": 5
+            },
+            "WeightedMean": {
+                "Measurement": 30
+            },
+            "WeightedStandardDeviation": {
+                "Measurement": 7.0710678118654755
+            },
+            "WeightedPopulationStandardDeviation": {
+                "Measurement": 5
+            },
+            "Skewness": {
+                "Measurement": 0
+            },
+            "Kurtosis": {
+                "Measurement": -2
+            }
+        }
+    }
+]
 ```
 
 **.NET Library**
@@ -1251,7 +1275,7 @@ SDS supports two types of join requests:
 <a name="getjoin"></a>
 ### `GET Request`
 
-    GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+    GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams={streams}&joinMode={joinMode}
             &startIndex={startIndex}&endIndex={endIndex}
 
@@ -1279,55 +1303,73 @@ The response includes a status code and a response body containing multiple seri
 
 #### Examples
 
-To join multiple streams, for example Simple1 and Simple2, assume that Simple 1 presents the following data:
+To join multiple streams, for example Simple1 and Simple2, assume that Simple1 presents the following data:
 
 ```json  
-  [  
-     {  
-        "Time":"2017-11-23T11:00:00Z",
-        "Measurement":10.0
-     },
-     {  
-        "Time":"2017-11-23T13:00:00Z",
-        "Measurement":20.0
-     },
-     {  
-        "Time":"2017-11-23T14:00:00Z",
-        "Measurement":30.0
-     },
-     {  "Time":"2017-11-23T16:00:00Z",
-        "Measurement":40.0
-     }
-  ] 
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
+    {
+        "Time": "2017-11-23T11:00:00Z",
+        "State": 0,
+        "Measurement": 10
+    },
+    {
+        "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
+        "Measurement": 20
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 30
+    },
+    {
+        "Time": "2017-11-23T16:00:00Z",
+        "State": 0,
+        "Measurement": 40
+    }
+]
 ```
 
 And assume that Simple2 presents the following data:
 
 ```json
-  [  
-     {  
-        "Time":"2017-11-23T12:00:00Z",
-        "Measurement":50.0
-     },
-     {  
-        "Time":"2017-11-23T14:00:00Z",
-        "Measurement":60.0
-     },
-     {  
-        "Time":"2017-11-23T15:00:00Z",
-        "Measurement":70.0
-     },
-     {  "Time":"2017-11-23T17:00:00Z",
-        "Measurement":80.0
-     }
-  ] 
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
+    {
+        "Time": "2017-11-23T12:00:00Z",
+        "State": 0,
+        "Measurement": 50
+    },
+    {
+        "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
+        "Measurement": 60
+    },
+    {
+        "Time": "2017-11-23T15:00:00Z",
+        "State": 0,
+        "Measurement": 70
+    },
+    {
+        "Time": "2017-11-23T17:00:00Z",
+        "State": 0,
+        "Measurement": 80
+    }
+]
 ```
 
 The following are responses for various Joins request options:
 
 ##### Inner Join Example
 
-      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams=Simple1,Simple2&joinMode=inner
             &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
 
@@ -1337,23 +1379,29 @@ Measurements from both streams with common indexes.
 **Response body** 
 
 ```json
-  [  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
     [
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 30
         },
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 60
         }
     ]
-  ] 
+]
 ```
 
 ##### Outer Join Example
 
-      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams=Simple1,Simple2&joinMode=outer
             &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
 
@@ -1362,10 +1410,15 @@ All Measurements from both Streams, with default values at indexes where a Strea
 
 **Response body**
 ```json
-  [  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
     [
-      {  
+        {
             "Time": "2017-11-23T11:00:00Z",
+            "State": 0,
             "Measurement": 10
         },
         null
@@ -1374,12 +1427,14 @@ All Measurements from both Streams, with default values at indexes where a Strea
         null,
         {
             "Time": "2017-11-23T12:00:00Z",
+            "State": 0,
             "Measurement": 50
         }
     ],
     [
         {
             "Time": "2017-11-23T13:00:00Z",
+            "State": 0,
             "Measurement": 20
         },
         null
@@ -1387,10 +1442,12 @@ All Measurements from both Streams, with default values at indexes where a Strea
     [
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 30
         },
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 60
         }
     ],
@@ -1398,29 +1455,32 @@ All Measurements from both Streams, with default values at indexes where a Strea
         null,
         {
             "Time": "2017-11-23T15:00:00Z",
+            "State": 0,
             "Measurement": 70
-     },
-   ],
-   [
-     {  
-            "Time":"2017-11-23T16:00:00Z",
-            "Measurement":40.0
-     },
+        }
+    ],
+    [
+        {
+            "Time": "2017-11-23T16:00:00Z",
+            "State": 0,
+            "Measurement": 40
+        },
         null
-   ],
+    ],
+    [
         null,
         {
-            "Time":"2017-11-23T17:00:00Z",
-            "Measurement":80.0
-      }
+            "Time": "2017-11-23T17:00:00Z",
+            "State": 0,
+            "Measurement": 80
+        }
     ]
-  ] 
+]
 ```
-
 
 ##### Interpolated Join Example
 
-      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams=Simple1,Simple2&joinMode=interpolated
             &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
 
@@ -1430,83 +1490,101 @@ All Measurements from both Streams with missing values interpolated. If the miss
 **Response body**
 
 ```json
-  [  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
     [
-      {  
+        {
             "Time": "2017-11-23T11:00:00Z",
+            "State": 0,
             "Measurement": 10
         },
         {
             "Time": "2017-11-23T11:00:00Z",
+            "State": 0,
             "Measurement": 50
         }
     ],
     [
         {
             "Time": "2017-11-23T12:00:00Z",
+            "State": 0,
             "Measurement": 15
         },
         {
             "Time": "2017-11-23T12:00:00Z",
+            "State": 0,
             "Measurement": 50
         }
     ],
     [
         {
             "Time": "2017-11-23T13:00:00Z",
+            "State": 0,
             "Measurement": 20
         },
         {
             "Time": "2017-11-23T13:00:00Z",
+            "State": 0,
             "Measurement": 55
         }
     ],
     [
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 30
         },
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 60
         }
     ],
     [
         {
             "Time": "2017-11-23T15:00:00Z",
+            "State": 0,
             "Measurement": 35
         },
         {
             "Time": "2017-11-23T15:00:00Z",
+            "State": 0,
             "Measurement": 70
         }
     ],
     [
         {
             "Time": "2017-11-23T16:00:00Z",
+            "State": 0,
             "Measurement": 40
         },
         {
             "Time": "2017-11-23T16:00:00Z",
+            "State": 0,
             "Measurement": 75
         }
     ],
     [
         {
             "Time": "2017-11-23T17:00:00Z",
+            "State": 0,
             "Measurement": 40
         },
         {
             "Time": "2017-11-23T17:00:00Z",
+            "State": 0,
             "Measurement": 80
-      }
+        }
     ]
-  ] 
+]
 ```
 
 ##### MergeLeft Join Example
 
-      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams=Simple1,Simple2&joinMode=mergeleft
             &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
 
@@ -1515,41 +1593,52 @@ This is similar to [OuterJoin](#outerjoin-request), but value at each index is t
 
 **Response body**
 ```json
-  [  
-      {  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
+    {
         "Time": "2017-11-23T11:00:00Z",
+        "State": 0,
         "Measurement": 10
     },
     {
         "Time": "2017-11-23T12:00:00Z",
+        "State": 0,
         "Measurement": 50
     },
     {
         "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
         "Measurement": 20
     },
     {
         "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
         "Measurement": 30
     },
     {
         "Time": "2017-11-23T15:00:00Z",
+        "State": 0,
         "Measurement": 70
     },
     {
         "Time": "2017-11-23T16:00:00Z",
+        "State": 0,
         "Measurement": 40
     },
     {
         "Time": "2017-11-23T17:00:00Z",
+        "State": 0,
         "Measurement": 80
-      }
-  ] 
+    }
+]
 ```
 
 ##### MergeRight Join Example
 
-      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+      GET api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?streams=Simple1,Simple2&joinMode=mergeright
             &startIndex=0001-01-01T00:00:00.0000000&endIndex=9999-12-31T23:59:59.9999999
 
@@ -1558,43 +1647,54 @@ This is similar to [OuterJoin](#outerjoin-request), but value at each index is t
 
 **Response body**
 ```json
-  [  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
     {
         "Time": "2017-11-23T11:00:00Z",
+        "State": 0,
         "Measurement": 10
     },
     {
         "Time": "2017-11-23T12:00:00Z",
+        "State": 0,
         "Measurement": 50
     },
     {
         "Time": "2017-11-23T13:00:00Z",
+        "State": 0,
         "Measurement": 20
     },
     {
         "Time": "2017-11-23T14:00:00Z",
+        "State": 0,
         "Measurement": 60
     },
     {
         "Time": "2017-11-23T15:00:00Z",
+        "State": 0,
         "Measurement": 70
     },
     {
         "Time": "2017-11-23T16:00:00Z",
+        "State": 0,
         "Measurement": 40
     },
     {
         "Time": "2017-11-23T17:00:00Z",
+        "State": 0,
         "Measurement": 80
     }
-  ] 
-  ```
+]
+```
 
 
 <a name="getjoin"></a>
 ### POST Requests
 
-        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Data/Joins
+        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?joinMode={joinMode}
 
 **Parameters**
@@ -1611,10 +1711,19 @@ Type of join, i.e. inner, outer, etc.
 **Reqeust Body**  
 Read options specific to each stream.
 
-**Example Request Body**
+**Response**  
+ The response includes a status code and a response body containing multiple serialized events.
+
+Consider the following outer join request,
+
+        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
+            ?joinMode=outer
+
+where in the request body, different start indexes and end indexes are specified per stream,
+
 ```json
-  [  
-      {  
+[  
+   {  
 		"StreamId": "Simple1",
 		"Options": {
 			"StartIndex": "2017-11-23T11:00:00Z",
@@ -1635,19 +1744,23 @@ Read options specific to each stream.
 			"Count": 100,
 			"Filter": ""
 		}
-      }
-  ] 
+    }
+] 
 ```
 
-**Response**  
- The response includes a status code and a response body containing multiple serialized events.
+Only events within the stream's specified index boundaries are considered for the outer join operation
 
 **Response body**
 ```json
-  [  
+HTTP/1.1 200
+Accept: application/json
+Accept-Verbosity: verbose
+
+[
     [
         {
             "Time": "2017-11-23T11:00:00Z",
+            "State": 0,
             "Measurement": 10
         },
         null
@@ -1655,6 +1768,7 @@ Read options specific to each stream.
     [
         {
             "Time": "2017-11-23T13:00:00Z",
+            "State": 0,
             "Measurement": 20
         },
         null
@@ -1662,6 +1776,7 @@ Read options specific to each stream.
     [
         {
             "Time": "2017-11-23T14:00:00Z",
+            "State": 0,
             "Measurement": 30
         },
         null
@@ -1670,6 +1785,7 @@ Read options specific to each stream.
         null,
         {
             "Time": "2017-11-23T15:00:00Z",
+            "State": 0,
             "Measurement": 70
         }
     ],
@@ -1677,10 +1793,11 @@ Read options specific to each stream.
         null,
         {
             "Time": "2017-11-23T17:00:00Z",
+            "State": 0,
             "Measurement": 80
         }
     ]
-  ] 
+]
 ```
 
 Notice that not all the values from Streams were included since they are restricted by individual queries for each Stream.

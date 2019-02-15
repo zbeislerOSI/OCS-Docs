@@ -36,25 +36,53 @@ The namespace identifier
   
 ``string streamId``  
 The stream identifier  
+ 
+### Request Body Format
+With the exception of Remove Values, all single stream write calls require a request body containing the events to insert or modify.
 
-### Multi-Stream Writes  
+The events must be formatted as a serialized JSON array of the stream's type. JSON arrays are comma-delimited lists of a type enclosed within square brackets. The following code shows a list of three WaveData events that are properly formatted for insertion. See the [OCS-Samples](https://github.com/osisoft/OCS-Samples) for the complete example.
 
-The following support writing multiple streams:
-* [Bulk Insert Values](xref:sdsWritingDataApi#bulk-insert-values) inserts a collection of events for multiple streams.
-* [Bulk Update Values](xref:sdsWritingDataApi#bulk-update-values) adds or replaces a collection of events for multiple streams.
+```json
+[
+    {
+        "Order":2,
+        "Tau":0.25722883666666846,
+        "Radians":1.6162164471269089,
+        "Sin":1.9979373673043652,
+        "Cos":-0.090809010174665111,
+        "Tan":-44.003064529862513,
+        "Sinh":4.8353589272389,
+        "Cosh":5.2326566823391856,
+        "Tanh":1.8481468289554672
+    }, 
+    {
+        "Order":4,
+        "Tau":0.25724560000002383,
+        "Radians":1.6163217742567466,
+        "Sin":1.9979277915696148,
+        "Cos":-0.091019446679060964,
+        "Tan":-43.901119254534827,
+        "Sinh":4.8359100947709592,
+        "Cosh":5.233166005842703,
+        "Tanh":1.8481776000882766
+    }, 
+    {
+        "Order":6,
+        "Tau":0.25724560000002383,
+        "Radians":1.6163217742567466,
+        "Sin":1.9979277915696148,
+        "Cos":-0.091019446679060964,
+        "Tan":-43.901119254534827,
+        "Sinh":4.8359100947709592,
+        "Cosh":5.233166005842703,
+        "Tanh":1.8481776000882766
+    }
+]
+```
 
-The base URI for writing SDS data to a multiple stream is:
+You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
 
-      api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data  
-      
-**Parameters**
 
-``string tenantId``  
-The tenant identifier  
-  
-``string namespaceId``  
-The namespace identifier  
-  
 
 ### Response Format
 

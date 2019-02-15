@@ -4,6 +4,88 @@ uid: sdsWritingDataApi
 
 # API calls for writing data
 
+#### Example Type, Stream, and Data
+
+Many of the API methods described below contain example requests and responses in JSON to highlight usage and specific behaviors. The following type, stream, and data are used in the examples.
+
+**Example Type**  
+``SimpleType`` is an SdsType with a single index and two additional properties. This type is defined below in .NET, Python, and Javascript:
+
+###### .NET
+```csharp
+public enum State
+{
+   Ok,
+   Warning,
+   Alarm
+}
+
+public class SimpleType
+{
+   [SdsMember(IsKey = true, Order = 0) ]
+   public DateTime Time { get; set; }
+   public State State { get; set; }
+   [SdsMember(Uom = "meter")]
+   public Double Measurement { get; set; }
+}
+```
+###### Python
+```python
+class State(Enum):
+  Ok = 0
+  Warning = 1
+  Alarm = 2
+
+class SimpleType(object):
+  Time = property(getTime, setTime)
+  def getTime(self):
+    return self.__time
+  def setTime(self, time):
+    self.__time = time
+
+  State = property(getState, setState)
+  def getState(self):
+    return self.__state
+  def setState(self, state):
+    self.__state = state
+
+  Measurement = property(getValue, setValue)
+  def getValue(self):
+    return self.__measurement
+  def setValue(self, measurement):
+    self.__measurement = measurement
+```
+###### JavaScript
+```javascript
+var State =
+{
+  Ok: 0,
+  Warning: 1,
+  Alarm: 2,
+}
+
+var SimpleType = function () {
+  this.Time = null;
+  this.State = null;
+  this.Value = null;
+}
+```
+
+**Example Stream**  
+``Simple`` is an SdsStream of type ``SimpleType``.
+
+**Example Data**  
+``Simple`` has stored values as follows:
+
+      11/23/2017 12:00:00 PM: Ok  0
+      11/23/2017  1:00:00 PM: Ok 10
+      11/23/2017  2:00:00 PM: Ok 20
+      11/23/2017  3:00:00 PM: Ok 30
+      11/23/2017  4:00:00 PM: Ok 40
+
+All times are represented at offset 0, GMT.
+
+*****
 
 ## `Insert Values`
 
@@ -32,48 +114,26 @@ The response includes a status code
 **_Notes_**  
 This request will return an error if an event already exists for any index in the request. If any individual index encounters a problem, the entire operation is rolled back and no insertions are made. The `streamId` and `index` that caused the issue are included in the error response.
 
-The events to be inserted must be formatted as a serialized JSON array of the stream's type. JSON arrays are comma-delimited lists of a type enclosed within square brackets. The following code shows a list of three WaveData events that are properly formatted for insertion. See the [OCS-Samples](https://github.com/osisoft/OCS-Samples) for the complete example.
+**Example**  
+The following request is used to insert events into stream `Simple` of `SimpleType`,
 
+        POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data
+
+where the request body specifies the values to insert: 
 ```json
 [
     {
-        "Order":2,
-        "Tau":0.25722883666666846,
-        "Radians":1.6162164471269089,
-        "Sin":1.9979373673043652,
-        "Cos":-0.090809010174665111,
-        "Tan":-44.003064529862513,
-        "Sinh":4.8353589272389,
-        "Cosh":5.2326566823391856,
-        "Tanh":1.8481468289554672
-    }, 
+        "Time": "2017-11-23T17:00:00Z",
+        "State": 0,
+        "Measurement": 50
+    },
     {
-        "Order":4,
-        "Tau":0.25724560000002383,
-        "Radians":1.6163217742567466,
-        "Sin":1.9979277915696148,
-        "Cos":-0.091019446679060964,
-        "Tan":-43.901119254534827,
-        "Sinh":4.8359100947709592,
-        "Cosh":5.233166005842703,
-        "Tanh":1.8481776000882766
-    }, 
-    {
-        "Order":6,
-        "Tau":0.25724560000002383,
-        "Radians":1.6163217742567466,
-        "Sin":1.9979277915696148,
-        "Cos":-0.091019446679060964,
-        "Tan":-43.901119254534827,
-        "Sinh":4.8359100947709592,
-        "Cosh":5.233166005842703,
-        "Tanh":1.8481776000882766
+        "Time": "2017-11-23T18:00:00Z",
+        "State": 0,
+        "Measurement": 60
     }
 ]
 ```
-
-You can serialize your data using one of many available JSON serializers available at [Introducing JSON](http://json.org/index.html). 
-
 
 **.NET Library**
 ```csharp
@@ -103,18 +163,35 @@ The namespace identifier
 The stream identifier 
   
 ``string selectExpression``  
-CSV list of strings that indicates the event fields that will be changed in stream events.  
+Comma separated list of strings that indicates the event fields that will be changed in stream events  
 
 **Request Body**  
-A serialized list of one or more patch property events
+A serialized collection of one or more patch property events
 
 **Response**  
 The response includes a status code
 
-**_Notes_**  
-Patching is used to patch the events of the selected fields for one or more events in the stream. Only the fields indicated in **selectExpression** are modified. The events to be modified are indicated by the index value of each member of the **items** collection. The individual events in **items** also hold the new events.
+Consider you have a stream `Simple` of `SimpleType`, to change one property, `Measurement`, for one event specify the following request
+        
+       PATCH api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data
+		    ?select=measurement
 
-If there is a problem patching any individual event, the entire operation is rolled back and the error will indicate the streamId and index of the problem.  
+With the following request body,
+```json
+[
+  {  
+    "Time":"2017-11-23T12:00:00Z",
+    "Measurement":500.0
+  }
+]
+```
+
+This request will only change the `Measurement` value at the specified event index. 
+
+**_Notes_**  
+Patching is used to patch the events of the selected fields for one or more events in the stream. Only the fields indicated in `selectExpression` are modified. The events to be modified are indicated by the index value of each entry in the collection. 
+
+If there is a problem patching any individual event, the entire operation is rolled back and the error will indicate the `streamId` and `index` of the problem.  
 
 **.NET Library**
 ```csharp
@@ -284,95 +361,3 @@ no events are written to the stream. The index that caused the issue is included
 ```
 
 ***********************
-
-## `Bulk Insert Values`
-
-Writes specified events to multiple streams.
-
-**Request**
-
-        POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
-
-**Parameters**  
-``string tenantId``  
-The tenant identifier
-  
-``string namespaceId``  
-The namespace identifier
-
-**Request Body**  
-A serialized SdsValues object which contains a dictionary of streams and lists of events
-
-```json
-{
-	"Values": 
-	{
-		"DTV00":[
-            {
-    			"Time": "2017-11-24T01:00:00Z",
-    			"Value": "1"
-    		 }
-        ],
-		 "DTV0": [
-            {
-    			"Time": "2017-11-24T02:00:00Z",
-    			"Value": "3"
-    		 },
-    		 {
-    			"Time": "2017-11-24T03:00:00Z",
-    			"Value": "6"
-    		 }
-        ]
-	 }
-}
-```
-
-**Response**  
-Returns a status code
-
-If there are errors, a 207 Multi-Status status code is returned with the error and Child Error per stream.
-
-**Response Body**
-```json
-{
-    "Error": "The request partially failed.",
-    "Reason": "At least one of the attempted write operations resulted in an error.",
-    "Resolution": "Iterate through the child errors for more information.",
-    "ChildErrors": [
-        {
-            "Error": "The request was unsuccessful due to a conflict.",
-            "Reason": "Failed to update stream.",
-            "StreamId": "DTV0",
-            "Index": "2017-11-24T02:00:00.0000000Z",
-            "StatusCode": 409
-        }
-    ]
-}
-```
-
-*****
-
-## `Bulk Update Values`
-
-Updates specified events for multiple streams.
-
-**Request**  
-
-        PUT api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data
-
-**Parameters**  
-``string tenantId``  
-The tenant identifier
-  
-``string namespaceId``  
-The namespace identifier
-
-**Request Body**  
-A serialized SdsValues object which contains a dictionary of streams and lists of events
-
-**Response**  
-Returns a status code
-
-If there are errors, a 207 Multi-Status status code is returned with the error and Child Error per stream.
-
-***************
