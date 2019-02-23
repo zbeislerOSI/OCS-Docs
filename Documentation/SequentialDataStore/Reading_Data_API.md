@@ -840,8 +840,7 @@ are calculated for indexes at which no stored event exists. Interpolation is not
 
 SDS supports two ways of specifying which interpolated events to return:  
 * [Index Collection](#getvaluesindexcollection): One or more indexes can be passed to the request in order to retrieve events at specific indexes. 
-* [Window](#getvaluesinterpolatedwindow): A window can be specified with a start index, end index, and count. This will return the specified 
-  count of events evenly spaced from start index to end index.
+* [Interval](#getvaluesinterpolatedinterval): An interval can be specified with a start index, end index, and count. This will return the specified count of events evenly spaced from start index to end index.
 
 <a name="getvaluesindexcollection"></a>
 ### `Index Collection`  
@@ -964,10 +963,10 @@ Accept-Verbosity: verbose
       IEnumerable<Tuple< T1, T2>> index, string streamViewId = null);
 ```
 
-<a name="getvaluesinterpolatedwindow"></a>
-### `Window`
+<a name="getvaluesinterpolatedinterval"></a>
+### `Interval`
 
-Returns events at a evenly spaced intervals based on the specified start index, end index, and count. If no stored event exists at an index interval, the stream’s read characteristics determine how the returned event is calculated.
+Returns events at evenly spaced intervals based on the specified start index, end index, and count. If no stored event exists at an index interval, the stream’s read characteristics determine how the returned event is calculated.
 
 **Request**  
 
