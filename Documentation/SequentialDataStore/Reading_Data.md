@@ -135,7 +135,7 @@ The `SdsSearchMode` enum defines search behavior when seeking a stored event nea
 
 SDS provides the ability to transforming data upon reads. The supported data transformations are:
 * [Reading with SdsStreamViews](#reading-with-sdsstreamviews): Changing the shape of the returned data
-* [Unit of Measure Conversions](#unit-conversion-of-data): Coverting the unit of measure of the data  
+* [Unit of Measure Conversions](#unit-conversion-of-data): Converting the unit of measure of the data  
 
 Data tranformations are suppported for all single stream reads, but transformations have specific endpoints. The following are the base URIs for the tranformation endpoints:
 ```
