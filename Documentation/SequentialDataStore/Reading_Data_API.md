@@ -1043,7 +1043,7 @@ Accept-Verbosity: verbose
 
 Returns summary intervals between a specified start and end index. 
   
-Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for compound indexes. Interpolating between two indexes 
+Index types that cannot be interpolated do not support summary requests. Strings are an example of indexes that cannot be interpolated. Summaries are not supported for streams with compound indexes. Interpolating between two indexes 
 that consist of multiple properties is not defined and results in non-determinant behavior.
 
 Summary values supported by `SdsSummaryType` enum:
@@ -1254,7 +1254,7 @@ Accept-Verbosity: verbose
 
 ## ``Join Values``
 
-Returns data from multiple streams joined based on the request specifications. The streams must be of the same SdsType.
+Returns data from multiple streams, which are joined based on the request specifications. The streams must be of the same SdsType.
 
 SDS supports the following types of joins:
 
