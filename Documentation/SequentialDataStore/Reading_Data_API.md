@@ -143,7 +143,7 @@ The response includes a status code and a response body containing a serialized 
 
 ## ``Find Distinct Value``
 
-Returns a stored event found based on the specified `index` and `searchMode`. 
+Returns a stored event based on the specified `index` and `searchMode`. 
 
 **Request**  
 
@@ -917,7 +917,7 @@ Accept-Verbosity: verbose
 ]
 ```
 
-Consider a stream of type ``Simple`` with a ``InterpolationMode`` of ``Discrete`` and 
+Consider a stream of type ``Simple`` with an ``InterpolationMode`` of ``Discrete`` and 
 ``ExtrapolationMode`` of ``All``. In the following request, the specified indexes only 
 match two existing stored events:
 
@@ -995,12 +995,12 @@ The number of events to return. Read characteristics of the stream determine how
 **Response**  
 The response includes a status code and a response body containing a serialized collection of events. Depending on the read characteristics and input parameters, it is possible for a collection to be returned with less events than specified in the count.
 
-For a stream, named Simple, of type ``Simple`` for the following request
+For a stream, named Simple, of type ``Simple`` for the following request:
 
       GET api/v1-preview/Tenants/{tenantId}}/Namespaces/{namespaceId}/Streams/Simple/Data/
         Interpolated?startIndex=2017-11-23T13:00:00Z&endIndex=2017-11-23T15:00:00Z&count=3
 
-the start and end fall exactly on event indexes and the number of events from start to end match the count of three (3).
+the start and end fall exactly on event indexes, and the number of events from start to end match the count of three (3).
 
 **Response body**
 ```json
