@@ -781,7 +781,7 @@ SdsType API
 ----------
 
 The REST APIs provide programmatic access to read and write Sds data. The APIs in this section 
-interact with SdsTypes. When working in .NET convenient SDS Client Libraries are available. 
+interact with SdsTypes. When working in .NET, convenient SDS Client Libraries are available. 
 The ISdsMetadataService interface, accessed using the ``SdsService.GetMetadataService()`` helper, 
 defines the available functions. See [Types](#types) for general SdsType information.
 
