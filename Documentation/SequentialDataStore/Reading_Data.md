@@ -133,7 +133,7 @@ The `SdsSearchMode` enum defines search behavior when seeking a stored event nea
 
 ## Transforming Data
 
-SDS provides the ability to transforming data upon reads. The supported data transformations are:
+SDS provides the ability to transform data upon reads. The supported data transformations are:
 * [Reading with SdsStreamViews](#reading-with-sdsstreamviews): Changing the shape of the returned data
 * [Unit of Measure Conversions](#unit-conversion-of-data): Converting the unit of measure of the data  
 
@@ -157,7 +157,7 @@ would return the first event in the stream as the target type in the stream view
 
 All single stream data reads support stream view transformations.
 
-When data is requested with an SdsStreamView the read characteristics defined by the *target type* of the SdsStreamView 
+When data is requested with an SdsStreamView, the read characteristics defined by the *target type* of the SdsStreamView 
 determine what is returned. The read characteristics are discussed in the code samples.
 
 
@@ -191,7 +191,7 @@ public class SimpleType
 }
 ```
 
-This type is assigned to stream, and the example request body below requests SDS convert the `Measurement` property of the returned data from meter to centimeter.
+This type is assigned to a stream, and the example request body below requests SDS to convert the `Measurement` property of the returned data from meter to centimeter.
 
 ```json
 [
