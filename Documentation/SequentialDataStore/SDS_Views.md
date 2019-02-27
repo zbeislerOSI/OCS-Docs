@@ -30,7 +30,7 @@ The following table shows the required and optional SdsStreamView fields. Fields
 | Properties   | IList<SdsStreamViewProperty> | Optional    | Property level mapping |
 
 
-**Rules for Stream View identifier**
+**Rules for the Stream View Identifier (SdsStreamView.Id)**
 
 1. Is not case sensitive
 2. Can contain spaces
