@@ -34,7 +34,7 @@ for internal SDS use.
 | PropertyOverrides | IList<SdsStreamPropertyOverride> | Optional    | Used to define unit of measure and interpolation mode overrides for a stream |
 
 
-**Rules for Identifier (SdsStream.Id)**
+**Rules for the Stream Identifier (SdsStream.Id)**
 
 1. Is not case sensitive
 2. Can contain spaces
