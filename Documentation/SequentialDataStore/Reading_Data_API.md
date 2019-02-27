@@ -645,7 +645,7 @@ Accept: application/json
 
 Note that `State` is not included in the JSON as its value is the default value. 
 
-Further, `Measurement` is not include in the second, 12:00:00, event as zero is the default 
+Further, `Measurement` is not included in the second, 12:00:00, event as zero is the default 
 value for numbers.
 
 If instead a start boundary of Inside, only values inside the start boundary (after 13:30) 
