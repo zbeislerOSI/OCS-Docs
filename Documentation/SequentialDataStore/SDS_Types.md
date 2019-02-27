@@ -57,12 +57,8 @@ The following table shows the required and optional SdsType fields. Fields that 
 
 1. Is not case sensitive
 2. Can contain spaces
-3. Cannot begin with two underscores ("\_\_")
-4. Cannot contain forward slash or backslash characters ("/" or "\\")
-5. Can contain a maximum of 100 characters
-6. Cannot start or end with a period.
-7. Cannot contain consecutive periods.
-8. Cannot consist of only periods.
+3. Cannot contain forward slash ("/")
+4. Can contain a maximum of 100 characters  
 
 SdsType management using the .NET SDS Client Libraries is performed through the ``ISdsMetadataService``. 
 You can create the ``ISdsMetadataService`` using one of the ``SdsService.GetMetadataService()`` factory methods.
