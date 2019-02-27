@@ -53,7 +53,7 @@ The following table shows the required and optional SdsType fields. Fields that 
 | Properties        | IList<SdsTypeProperty> | Required    | List of SdsTypeProperty items |
 
 
-**Rules for typeId**
+**Rules for the Type Identifier (SdsType.Id)**
 
 1. Is not case sensitive
 2. Can contain spaces
