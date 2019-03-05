@@ -1707,7 +1707,7 @@ The namespace identifier
 ``SdsJoinMode joinMode``  
 Type of join, i.e. inner, outer, etc.
 
-**Reqeust Body**  
+**Request Body**  
 Read options specific to each stream.
 
 **Response**  
