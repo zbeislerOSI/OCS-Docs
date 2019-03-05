@@ -166,7 +166,7 @@ The index
 ``string searchMode``  
 The [SdsSearchMode](xref:sdsReadingData#sdssearchmode), the default is ``exact``
 
-**Response**
+**Response**  
 The response includes a status code and a response body containing a serialized collection with one event. 
 
 Depending on the request `index` and `searchMode`, it is possible to have an empty collection returned.
@@ -258,7 +258,7 @@ The stream identifier
 ``string filter``  
 The filter expression (see [Filter expressions](xref:sdsFilterExpressions))
 
-**Response**
+**Response**  
 The response includes a status code and a response body containing a serialized collection of events.
 
 **Example**  
@@ -338,7 +338,7 @@ Optional SdsBoundaryType specifies the handling of events at or near startIndex
 ``string filter``  
 Optional filter expression
 
-**Response**
+**Response**  
 The response includes a status code and a response body containing a serialized collection of events.
 
 **Example**  
