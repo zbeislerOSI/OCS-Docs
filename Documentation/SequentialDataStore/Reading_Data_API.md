@@ -1690,8 +1690,8 @@ Accept-Verbosity: verbose
 ```
 
 
-<a name="getjoin"></a>
-### POST Requests
+<a name="postjoin"></a>
+### POST Request
 
         POST api/Tenants/{tenantId}/Namespaces/{namespaceId}/Bulk/Streams/Data/Joins
             ?joinMode={joinMode}
@@ -1722,27 +1722,29 @@ where in the request body, different start indexes and end indexes are specified
 
 ```json
 [  
-   {  
-		"StreamId": "Simple1",
-		"Options": {
-			"StartIndex": "2017-11-23T11:00:00Z",
-			"EndIndex": "2017-11-23T14:00:00Z",
-			"StartBoundaryType": "Exact",
-			"EndBoundaryType": "Exact",
-			"Count": 100,
-			"Filter": ""
-		}
-	},
+    {  
+        "StreamId": "Simple1",
+        "Options": 
 	{
-		"StreamId": "Simple2",
-		"Options": {
-			"StartIndex": "2017-11-23T15:00:00Z",
-			"EndIndex": "2017-11-23T17:00:00Z",
-			"StartBoundaryType": "Exact",
-			"EndBoundaryType": "Exact",
-			"Count": 100,
-			"Filter": ""
-		}
+           "StartIndex": "2017-11-23T11:00:00Z",
+	   "EndIndex": "2017-11-23T14:00:00Z",
+	   "StartBoundaryType": "Exact",
+	   "EndBoundaryType": "Exact",
+	   "Count": 100,
+	   "Filter": ""
+        }
+    },
+    {
+        "StreamId": "Simple2",
+        "Options": 
+	{
+           "StartIndex": "2017-11-23T15:00:00Z",
+	   "EndIndex": "2017-11-23T17:00:00Z",
+	   "StartBoundaryType": "Exact",
+	   "EndBoundaryType": "Exact",
+	   "Count": 100,
+	   "Filter": ""
+        }
     }
 ] 
 ```
