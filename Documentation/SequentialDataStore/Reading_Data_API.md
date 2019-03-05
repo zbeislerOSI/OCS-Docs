@@ -850,7 +850,7 @@ Returns events at the specified indexes. If no stored event exists at a specifie
 **Request**  
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/{streamId}/Data/
-        Interpolated?index={index}[&index={index}...]
+          Interpolated?index={index}[&index={index}...]
 
 **Parameters**  
 ``string tenantId``  
@@ -874,8 +874,8 @@ Depending on the specified indexes and read characteristics of the stream, it is
 Consider a stream of type ``Simple`` with the default ``InterpolationMode`` of ``Continuous`` and 
 ``ExtrapolationMode`` of ``All``. In the following request, the specified index matches an existing stored event:
 
-    GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/
-      Interpolated?index=2017-11-23T13:00:00Z
+      GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/
+          Interpolated?index=2017-11-23T13:00:00Z
 
 The response will contain the event stored at the specified index.
 
@@ -897,7 +897,7 @@ Accept-Verbosity: verbose
 The following request specifies an index for which no stored event exists:
 
       GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Streams/Simple/Data/
-        Interpolated?index=2017-11-23T13:30:00Z
+          Interpolated?index=2017-11-23T13:30:00Z
 
 Because the index is a valid type for interpolation and the stream has a ``InterpolationMode`` of ``Continuous``, 
 this request receives a response with an event interpolated at the specified index:
