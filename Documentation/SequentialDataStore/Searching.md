@@ -242,10 +242,10 @@ Also, wildcards can be used on the *outside* of the quote operators, but if an a
  **Query string**     | **Matches field value** | **Does not match field value**	
 ------------------ | --------------------------------- | -----------------------------	
 ``"pump pressure"`` | pump pressure | pressure <br> pressure pump <br> pump pressure gauge	
-``"pump pressure"*`` | pump pressure <br> pump pressure guage | pressure <br> pressure pump <br> the pump pressure guage
-``*"pump pressure"`` | pump pressure <br> the pump pressure | pressure <br> pressure pump <br> the pump pressure guage
-``*"pump pressure"*`` | pump pressure <br> pump pressure guage <br> the pump pressure guage | pressure <br> pressure pump 
-``"pump*pressure"`` | pump\*pressure | pump pressure <br> the pump pressure guage
+``"pump pressure"*`` | pump pressure <br> pump pressure gauge | pressure <br> pressure pump <br> the pump pressure gauge
+``*"pump pressure"`` | pump pressure <br> the pump pressure | pressure <br> pressure pump <br> the pump pressure gauge
+``*"pump pressure"*`` | pump pressure <br> pump pressure gauge <br> the pump pressure gauge | pressure <br> pressure pump 
+``"pump*pressure"`` | pump\*pressure | pump pressure <br> the pump pressure gauge
 
  **Request**	
  ```text	
