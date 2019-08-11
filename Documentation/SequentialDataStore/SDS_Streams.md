@@ -44,6 +44,37 @@ they are associated with SdsStream objects and can be used as search criteria.
 3. Cannot contain forward slash ("/")
 4. Can contain a maximum of 100 characters
 
+## Create a stream
+
+Streams are objects you create to ingress unique combinations of serial data into a designated namespace in OCS. Streams are open ended data transmission objects with no defined time frame. They collect and pass data from the client system into OCS for as long as you have them in place.
+You define the shape of the data a stream is intended to ingress with SDS types. For each stream you create, the first step is to create an SDS type and define the data properties to be included. You must define a type in order to define a stream. 
+You must create a different stream for every unique combination of data properties that you want to ingress. 
+in a targeted data value or values, that shift in relation to changes in other key data.
+For technical specifications and reference, see Streams.
+
+### SDS type property definition
+
+You define the shape of the data to be streamed into a namespace by specifying the properties of targeted data. For example, a stream providing time series data for Drilling Station 27 might be named "Station 27," and the properties defined for type id “Station 27” might be:
+
+•  time
+•  volume
+•  depth
+•  pressure
+
+If the target data value to be exposed were pressure, you could designate time as the primary key, thus providing multiple pressure values at specific time intervals.  If however, pressure values were more accurately a function of depth and volume combined, then you would designate both of those properties as your primary index, in this case a compound index.
+
+### Type properties and indexes
+
+You select the properties, or data elements, to be included in the type, and thus exposed through your stream. Careful analysis and assignment of properties to a type will provide more meaningful data.   You should designate as the primary index the property which most directly affects the value depicted in the stream.  The primary index should directly represent when or how each value in a stream is created. Best practice is to designate the most unique and sequential type property as the primary index. For time series data, this is usually "time". 
+
+**Note:** In some circumstances, it may be necessary to designate two properties as the primary index, in order to create a truly unique key for the data involved. For example, the combination of "time" and "pressure" may serve as a unique key, delineating "depth" and "volume" values sequentially. Such a combined primary index is called a compound index. You can designate up to three properties as compound indexes.
+
+All non-index properties defined for a stream should bear a clear and logical relationship to each other, such as pertaining to the same device or the same general scope of measurement. While fewer properties alone is not a design objective, it should be noted that an excessive number of unnecessary properties can impact performance, and the inclusion of properties bearing less than clear and direct relationships to each other can result in muddled and confusing data. It always makes more sense to include only properties for which you have a valid business requirement to retrieve. In general, properties which are unrelated, or less specifically related to each other, should be defined in a separate stream.
+
+For example, if you were streaming operational data from a power plant, it would not be desirable to create a single stream for the entire plant, even if a single index, such as time, applied to all measurements. It would result in more usable data to create separate streams for the discrete components comprising the plant, and thus have clear measurements for each of those components. For multiple devices of the same category, such as different models of turbines, it would be appropriate to use a single type for each of their respective streams.
+
+For technical specifications and reference, see Indexes.
+
 ## Indexes
 
 The Key or Primary Index is defined at the SdsType. Secondary
