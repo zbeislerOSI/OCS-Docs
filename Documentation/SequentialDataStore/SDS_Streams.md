@@ -47,8 +47,7 @@ they are associated with SdsStream objects and can be used as search criteria.
 ## Create a stream
 
 Streams are objects you create to ingress unique combinations of serial data into a designated namespace in OCS. Streams are open ended data transmission objects with no defined time frame. They collect and pass data from the client system into OCS for as long as you have them in place.
-You define the shape of the data a stream is intended to ingress with SDS types. For each stream you create, the first step is to create an SDS type and define the data properties to be included. You must define a type in order to define a stream. 
-You must create a different stream for every unique combination of data properties that you want to ingress. 
+For each stream you create, the first step is to create an SDS type and define the data properties to be included. You must define a type in order to define a stream. You must create a different stream for every unique combination of data properties that you want to ingress. 
 
 For technical specifications and reference, see Streams.
 
