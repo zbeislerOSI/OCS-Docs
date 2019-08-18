@@ -60,7 +60,7 @@ You define the shape of the data to be streamed into a namespace by specifying t
 •  depth
 •  pressure
 
-If the target data value to be exposed were pressure, you could designate time as the primary key, thus providing multiple pressure values at specific time intervals.  If however, pressure values were more accurately a function of depth and volume combined, then you would designate both of those properties as your primary index, in this case a compound index.
+If the data value to be exposed were pressure, you could designate time as the primary key, thus providing multiple pressure values at specific time intervals.  If however, pressure values were more accurately a function of depth and volume combined, then you would designate both of those properties as your primary index, in this case a compound index.
 
 ### Type properties and indexes
 
