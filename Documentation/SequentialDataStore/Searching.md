@@ -182,10 +182,10 @@ Operators | Description
 ``AND`` | AND operator. For example, ``cat AND dog`` searches for streams containing both "cat" and "dog".  AND must be in all caps.
 ``OR``  | OR operator. For example, ``cat OR dog`` searches for streams containing either "cat" or "dog" or both.  OR must be in all caps.
 ``NOT`` | NOT operator. For example, ``cat NOT dog`` searches for streams that have the "cat" term or do not have "dog".  NOT must be in all caps.
-``*``   | Wildcard operator. For example, ``cat*`` searches for streams that have a term that starts with "cat", ignoring case.
-``:``   | Field-scoped query.  For example, ``id:stream*`` will search for streams where the ``id`` field starts with "stream", but will not search on other fields like ``name`` or ``description``.  *Note that field names are camel case and are case sensitive.*
-``" "`` | Quote operator. For example, while ``dog food`` (without quotes) would search for streams containing "dog" and/or "food" anywhere in any order, ``"dog food"`` (with quotes) will only match streams that contain the whole string together and in that order.
-``( )`` | Precedence operator. For example, ``motel AND (wifi OR luxury)`` searches for streams containing the motel term and either wifi or luxury (or both).
+``*``   | Wildcard operator. This matches 0 or more characters in a word.  For example, ``log*`` searches for streams that have a term that starts with "log" (e.g. "log", "logs" or "logger"), ignoring case.
+``:``   | Field-scoped query.  This specifies a particular field to search on.  For example, ``id:stream*`` will search for streams where the ``id`` field starts with "stream", but will not search on other fields like ``name`` or ``description``.
+``" "`` | Quote operator. This searches on an exact sequence of characters rather than searching on words separated by spaces or punctuation.  For example, while ``dog food`` (without quotes) searches for streams containing "dog" or "food" anywhere in any order, ``"dog food"`` (with quotes) will only match streams that contain the whole string together and in that order.
+``( )`` | Precedence operator. For example, ``motel AND (wifi OR luxury)`` searches for streams containing "motel" and either "wifi" and/or "luxury".
 
 **: Operator**
 ---------------
