@@ -25,6 +25,10 @@ index; that is, each property of an SdsType event is related to the event's inde
 
 An SdsType is referenced by its identifier or Id field. SdsType identifiers must be unique within a Namespace.
 
+## Create Streams with Types
+
+Streams are objects you create to ingress unique combinations of serial data into a designated namespace in OCS. Streams are open ended data transmission objects with no defined time frame. They collect and pass data from the client system into OCS for as long as you have them in place. For each stream you create, the first step is to create an SDS type and define the data properties to be included. You must define a type in order to define a stream. You must create a different stream for every unique combination of data properties that you want to ingress.
+
 An SdsType can also refer other SdsTypes by using their identifiers. This enables type re-usability.
 Nested types and base types are automatically created as separate types. For further information, see [Type Reusability](#type-reusability)
 
