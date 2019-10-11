@@ -2,11 +2,9 @@
 uid: sdsStreams
 ---
 
-# Streams
+# SdsStreams
 
-SDS stores collections of events and provides convenient ways to find and associating events. Events 
-of consistent structure are stored in streams, called SdsStreams.  An SdsType defines the structure 
-of events in an SdsStream.
+Streams are collections of sequentially occurring values indexed by a single value, or primary index.  The most common example is time series data collected from a device, in which sequentially occurring values, or events, are ordered by their respective timestamps.  All streams are based on types, which serve as templates for collections of data values.  Every SdsStream you create must be based on some predefined SdsType. 
 
 SdsStreams are referenced by their identifier or Id field. SdsStream identifiers must be unique 
 within a Namespace.
