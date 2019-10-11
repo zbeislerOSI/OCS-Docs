@@ -40,7 +40,7 @@ Only SdsTypes used to define SdsStreams or SdsStreamViews are required to be add
 SdsTypes that define Properties or base types are contained within the parent SdsType and are not required
 to be added to the Data Store independently.
 
-## SDS Type Creation Guidelines
+## SDS type creation guidelines
 
 All properties defined for a single SDS Type should occur at the same index.  Properties occurring at different indexes should always be included in different types.  In addition to being directly related to the primary index, all non-index properties defined in an SDS Type should pertain to the same general scope of measurement.  While fewer properties alone is not a design objective, it should be noted that an excessive number of unnecessary properties can impact performance, and the inclusion of properties bearing less than clear and direct relationships to each other can result in muddled and confusing data. It always makes more sense to include only properties for which you have a valid business requirement to retrieve. For multiple devices of the same category, such as different models of turbines, it would be appropriate to create a separate type for each model.
 
