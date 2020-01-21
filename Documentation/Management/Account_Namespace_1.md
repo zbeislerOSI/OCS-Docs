@@ -4,8 +4,11 @@ uid: AccountNamespace_1
 
 # Namespaces
 
-A `Namespace` is a collection of SDS types, streams, and stream views. Namespace identifiers are unique within an account. Requirements
-for Namespace IDs are the following:
+A `Namespace` is a collection of SDS types, streams, and stream views. Namespace identifiers are unique within an account. You create namespaces to serve as the destination for incoming stream data. In practice, namespaces may correspond to a specific set of infrastructure assets, but more commonly correspond to virtual partitions within a single set of assets. 
+
+An SDS account is divided into one or more namespaces. Each namespace is effectively an instance of SDS, within which you create types and streams based on those types. You also create stream views, data views, and metadata in the namespace.
+
+Requirements for Namespace IDs are the following:
 - Must contain 100 characters or fewer
 - Must only contain alphanumeric characters, underscores, dashes, spaces, and periods
 - Must not contain two consecutive periods
