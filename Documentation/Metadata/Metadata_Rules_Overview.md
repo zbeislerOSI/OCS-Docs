@@ -1,5 +1,5 @@
 ---
-uid:MetadataRulesOverview
+uid: MetadataRulesOverview
 ---
 
 # Metadata Rules (Preview)
