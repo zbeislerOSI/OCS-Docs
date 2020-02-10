@@ -28,21 +28,21 @@ In the above example, “chi” is the location code for a customer facility, �
 
 You can create a new metadata rule based on stream name chi.x22.flow, where the delimited parts of the stream name have the following meanings:
 
-chi = facility location
-x22 = a specific device
-flow = the data provided by the stream
+- chi = facility location
+- x22 = a specific device
+- flow = the data provided by the stream
 
 For each delimited part of a stream name, you assign one of the following part types:
 
-- metadata
-- strong literal
-- wildcard
+- metadata = key-value pair
+- string literal = accepts only exact match
+- wildcard = accepts any value
 
 If the rule is intended to capture streams from the “chi” facility location only, that part of the stream name should be designated as string literal.  This is not a variable, and only stream names displaying this literal location code should be captured.
 
 If “x22” is the ID for a specific device, and you want to capture “flow” streams for all devices in the “chi” location, then the “x22” part of the stream name should be designated as metadata, with a key defined as Device Id.  This will allow the rule to capture streams with any value in that part of the stream name, and assign Device ID as its key.
 
-**Note:**	If the rule were intended to capture any type of streams for all devices in the “chi” location, then the “flow” part of the stream name should be designated as a wildcard.  In this case, any value would be acceptable, so long as it occurred in the same position of the stream name on which you patterned your rule.
+**Note:**	If the rule were intended to capture any type of streams for all devices in the “chi” location, then the “flow” part of the stream name should be designated as a wildcard.  To capture only streams of type "flow," that stream type should be designated as string literal.
 
 ## Key-Value pairs
 For each part of the stream name that you designate as metadata, you define a key, under which any value that occupies that specific part of the stream name pattern will be categorized. This creates a key-value pair for each value captured by that portion of the rule.  The key-value structure will facilitate analytical processing of the data returned by the rule you create. 
