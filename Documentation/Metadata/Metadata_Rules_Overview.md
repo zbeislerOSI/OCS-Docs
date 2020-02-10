@@ -14,9 +14,9 @@ The metadata rules feature in the OCS Portal simplifies the process of defining 
 After you save the rule, it assigns the defined metadata to every stream matching the pattern defined in your rule. Changes and deletions of existing metadata rules may cascade through to all affected streams.  A change in the metadata rule definition can result in the rule capturing a different set of streams. When deleting a rule, you have the option of keeping or deleting assigned metadata from all streams captured by the rule.
 
 ## Metadata Rules Documentation
-OCS Metadata rules enable you to define and create metadata, which OCS assigns to objects that meet the criteria you specify. Metadata rules help users define patterns in their stream names, using the delimited parts of the selected stream name, to quickly extract valuable information as more streams are added. 
+OCS Metadata rules enable you to define and create metadata, which OCS assigns to objects that meet the criteria you specify. Metadata rules help users define patterns in their stream names, using delimited parts of the selected stream name, to quickly extract valuable information as more streams are added. 
 
-You begin by selecting an existing stream name in the OCS Portal, and observing its delimited parts.  Name parts can be “delimited,” or separated, by any non-alphanumeric character placed within the name, typically to separate meaningful sections of the name.  
+You begin by selecting an existing stream name in the OCS Portal, and observing the delimited parts of  the stream name.  Name parts can be “delimited,” or separated, by any non-alphanumeric character placed within the name, typically to separate meaningful sections of the name.  
 
 An example stream name follows:
 
@@ -26,13 +26,17 @@ chi.x22.flow
 
 In the above example, “chi” is the location code for a customer facility, “x22” is the device ID for a specific device, and “flow” is the type of data provided by this stream.
 
-Refer to the following example for rule creation:
-
-A new metadata rule is based on stream name chi.x22.flow, where the delimited parts of the stream name have the following meanings:
+You can create a new metadata rule based on stream name chi.x22.flow, where the delimited parts of the stream name have the following meanings:
 
 chi = facility location
 x22 = a specific device
 flow = the data provided by the stream
+
+For each delimited part of a stream name, you assign one of the following part types:
+
+- metadata
+- strong literal
+- wildcard
 
 If the rule is intended to capture streams from the “chi” facility location only, that part of the stream name should be designated as string literal.  This is not a variable, and only stream names displaying this literal location code should be captured.
 
