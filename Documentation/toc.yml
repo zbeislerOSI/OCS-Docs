@@ -1,11 +1,23 @@
 - name: OSIsoft Cloud Services 
   topicHref: OSIsoft_Cloud_Services.md
+- name: Concepts
+  href: Concepts/toc.yml
+  topicHref: Concepts.md
+- name: Tasks
+  href: Tasks/toc.yml
+  topicHref: Tasks.md
+- name: Reference
+  href: Reference/toc.yml
+  topicHref: Reference.md
+  
 - name: Account Management
   href: Management/toc.yml
   topicHref: Management/Management_Overview.md
+    
 - name: Identity
   href: Identity/toc.yml
   topicHref: Identity/Identity_Overview.md
+    
 - name: Sequential Data Store
   href: SequentialDataStore/toc.yml
   topicHref: SequentialDataStore/Data_Store_and_SDS.md
