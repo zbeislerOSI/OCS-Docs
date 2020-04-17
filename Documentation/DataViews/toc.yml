@@ -2,6 +2,8 @@
   href: Data_Views_API_Overview.md
 - name: Introduction - Define a Data View
   href: Introduction_Define_a_Data_View.md
+- name: Data Views Questions
+  href: Data_Views_Questions.md
 - name: Quick Start - Define a Data View
   href: Quick_Start_Define_a_Data_View.md
 - name: Introduction - Get Data View Data
