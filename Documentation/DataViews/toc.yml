@@ -1,44 +1,17 @@
-- name: Data Views
-  href: Data_Views_API_Overview.md
-- name: Introduction - Define a Data View
-  href: Introduction_Define_a_Data_View.md
-- name: Data Views Questions
-  href: Data_Views_Questions.md
-- name: Quick Start - Define a Data View
-  href: Quick_Start_Define_a_Data_View.md
-- name: Introduction - Get Data View Data
-  href: Introduction_Get_Data_View_Data.md
-- name: Quick Start - Get Data View Data
-  href: Quick_Start_Get_Data_View_Data.md
-- name: Example Scenario
-  href: Example_Scenario.md
-- name: Data View
+- name: Overview
   href: Data_View.md
-- name: Queries
-  href: Queries.md
-- name: Field Sets
-  href: Field_Sets.md
-- name: Data View Shape
-  href: Data_View_Shape.md
-- name: Grouping
-  href: Grouping.md
-- name: Data View API
-  href: Data_View_API.md
-- name: Resolved Data View
-  href: Resolved_Data_View.md
-- name: Data Items and Groups
-  href: Data_Items_and_Groups.md
-- name: Available Field Sets
-  href: Available_Field_Sets.md
-- name: Field Mappings
-  href: Field_Mappings.md
-- name: Resolved Data View API
-  href: Resolved_Data_View_API.md
-- name: Getting Data
-  href: Getting_Data.md
-- name: Data API
-  href: Data_API.md
-- name: Securing Data Views
-  href: Securing_Data_Views.md
-- name: Access Control API
-  href: Access_Control_API.md
+- name: Quick Start: Define a Data View
+  href: Define a Data View/toc.yml
+  topicHref: Define a Data View/Quick_Start_Define_a_Data_View.md
+- name: Get Resolved Data View
+  href: GetResolvedDataViews/toc.yml
+  topicHref: GetResolvedDataViews/Resolved_Data_View.md
+- name: Get Data View Data
+  href: GetDataViewData/toc.yml
+  topicHref: GetDataViewData/Quick_Start_Get_Data_View_Data.md  
+- name: Secure Data Views
+  href: SecureDataViews/toc.yml
+  topicHref: SecureDataViews/Securing_Data_Views.md
+- name: Data Views API Overview
+  href: DataViewsAPIOverview/toc.yml
+  topicHref: DataViewsAPIOverview/Data_Views_API_Overview.md
