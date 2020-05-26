@@ -1,1 +1,19 @@
+- name: Overview
+  href: Overview.md
+- name: Quick Start: Define a Data View
+  href: DefineaDataView/toc.yml
+  topicHref: Quick_Start_Define_a_Data_View.md
+- name: Get Data View Data
+  href: GetDataViewData/toc.yml
+  topicHref: Quick_Start_Get_Data_View_Data.md
+- name: Get Resolved Data View
+  href: ResolvedDataView/toc.yml
+  topicHref: Resolved_Data_View.md
+- name: Secure Data Views
+  href: SecureDataViews/toc.yml
+  topicHref: Securing_Data_Views.md
+- name: Data View APIs Overview
+  href: DataViewAPIsOverview/toc.yml
+  topicHref: Data_View_APIs_Overview.md
+
 
