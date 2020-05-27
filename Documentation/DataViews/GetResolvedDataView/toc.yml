@@ -1,8 +1,8 @@
 - name: Get Resolved Data View
   href: Resolved_Data_View.md
 - name: Data View Shape
-  href: Getting_Data.md
+  href: Data_View_Shape.md
 - name: Grouping
-  href: Getting_Data.md
+  href: Grouping.md
 - name: Field Mappings
-  href: Getting_Data.md
+  href: Field_Mappings.md
