@@ -7,7 +7,7 @@ SdsStreamViews (or stream views) provide flexibility in the use of SdsTypes.
 While you cannot actually change the properties of SdsTypes themselves,
 the stream views feature enables you to create a view of a selected SdsStream that appears as if you had changed the SdsType on which it is based.
 You create a stream view by choosing a source and target type then a set of mappings between properties of those two types. 
-Using a stream view to leverage existing SdsType properties is preferable to creating a new SdsType, because the SdsStream that is based on the SdsType continues to function with its previously archived stream data intact.
+Using a stream view to leverage existing SdsType properties is preferable to creating a new SdsType, because the SdsStream that is based on the SdsType continues to function with its previously archived stream data intact.  
 
 You can either see the impact of the stream view on a stream in an ad hoc manner through a GET method or assign the stream view to a stream with a PUT method.
 
