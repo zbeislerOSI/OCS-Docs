@@ -11,11 +11,10 @@ If you have not already acquired an account, email [OCS support](mailto://clouds
 You will be mainly working on the [OSIsoft Cloud Services portal](https://cloud.osisoft.com/). Sign into the portal using the credentials associated with the tenant. You will also need a namespace and administrative client keys. 
 
 
-#### Step 1: Acquire a Namespace
+#### Step 1: Acquire a Namespace  
 
 In the portal, open the navigation menu ![navigation menu](../images/icon_navigation_bigger.png) and select **Data Management** > **Namespaces**.
-You can use an existing namespace or create a new one.
-
+You can use an existing namespace or create a new one.  
 
 #### Step 2: Acquire a Client Identity and Secret
 
