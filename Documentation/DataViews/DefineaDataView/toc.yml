@@ -1,8 +1,18 @@
 - name: Define a Query
   href: Queries.md
-- name: Data Items and Groups
+- name: Identify Data Items
   href: Data_Items_and_Groups.md
-- name: Available Data Field Sets
+- name: Retrieve Available Data Field Sets
   href: Available_Field_Sets.md
-- name: Data Field Sets
+- name: Put Selected Data Field Sets to Endpoint
   href: Field_Sets.md
+- name: Data View Shape
+  href: Data_View_Shape.md
+- name: Group Data Items
+  href: Grouping.md
+- name: Add Identifying Field
+  href: Add_Identifying_Field.md (comes from Field_Sets.md)
+- name: Consolidate Data Fields
+  href: Consolidate_Data_Fields (comes from Quick_Start_Define_a_Data_View.md)
+- name: Field Mappings
+  href: Field_Mappings.md
