@@ -1,4 +1,8 @@
-## Consolidate data fields
+---
+uid: ConsolidateDataFields
+---
+
+# Consolidate data fields
 
 There is a problem with this data view: the Gen1 Weather streams have a "Temperature" property but the Gen2 Weather streams have  renamed it to "AmbientTemperature". The data view has fields for both, but for each stream "Temperature" or "AmbientTemperature" is null. This is undesirable since the fields are semantically identical and should not be separate fields in the data view.
 
@@ -83,18 +87,18 @@ PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
   "Shape": "Standard"
 }
 ```
-### Expected Result
+## Expected Result
 ```text
 HTTP 204 No Content
 ```
 
-### Action
+## Action
 ```text
 GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
-### Expected Result
+## Expected Result
 ```json
 HTTP 200 OK
 [
