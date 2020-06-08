@@ -479,7 +479,6 @@ An array of json values similar to:
         "CloudCover.23": null,
         "Temperature.24": 33.589619124193831,
     },
-    ...
 ```
 
 There was ambiguity in the field mapping identifiers, so the data views engine suffixed each field mapping id ordinally.
