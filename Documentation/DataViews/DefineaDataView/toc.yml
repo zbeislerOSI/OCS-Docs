@@ -13,6 +13,6 @@
 - name: Add Identifying Field
   href: Add_Identifying_Field.md (comes from Field_Sets.md)
 - name: Consolidate Data Fields
-  href: Consolidate_Data_Fields (comes from Quick_Start_Define_a_Data_View.md)
+  href: Consolidate_Data_Fields.md
 - name: Field Mappings
   href: Field_Mappings.md
