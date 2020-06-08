@@ -791,7 +791,6 @@ HTTP 200 OK
         "Biltmore CloudCover": null,
         "Biltmore Temperature": 33.589619124193831,
     },
-    ...
 ```
 
 ## Consolidate data fields
@@ -905,7 +904,6 @@ HTTP 200 OK
         "Biltmore AmbientTemperature": 33.589619124193831,
         "Biltmore CloudCover": null,
     }
-    ...
 ```
 
 
