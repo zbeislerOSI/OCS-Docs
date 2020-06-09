@@ -11,7 +11,7 @@
 - name: Group Data Items
   href: Grouping.md
 - name: Add Identifying Field
-  href: Add_Identifying_Field.md (comes from Field_Sets.md)
+  href: Add_Identifying_Field.md
 - name: Consolidate Data Fields
   href: Consolidate_Data_Fields.md
 - name: Field Mappings
