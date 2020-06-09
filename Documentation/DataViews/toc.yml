@@ -1,5 +1,3 @@
-- name: Overview
-  href: Data_View.md
 - name: Quick Start - Define a Data View
   href: DefineaDataView/toc.yml
   topicHref: DefineaDataView/Quick_Start_Define_a_Data_View.md
