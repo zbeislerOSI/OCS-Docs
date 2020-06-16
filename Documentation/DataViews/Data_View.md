@@ -4,9 +4,9 @@ uid: DataView
 
 # Data View
 
-The `DataView` object is a declarative query and shape for stream data. This section describes the `DataView` object. For the corresponding API routes, see [API documentation](xref:DataViewAPI).  
+The `DataView` object is a declarative query and shape for stream data. This section describes the `DataView` object. See the [Data View API section](xref:DataViewAPI)For the corresponding API routes.  
 
-At times, this section makes reference to ways the view *resolves* into further resources, such as the collection of data items found by each data item query. See the documentation of [resolved resources](xref:ResolvedDataView) for details.
+At times, this section makes reference to ways the view *resolves* into further resources, such as the collection of data items found by each data item query. See the [Resolved Data View](xref:ResolvedDataView) and [Resolved Data View API](xref:ResolvedDataViewAPI) sections for details.
 
 
 ## General concepts
