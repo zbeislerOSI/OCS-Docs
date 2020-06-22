@@ -87,7 +87,7 @@ PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
   "Shape": "Standard"
 }
 ```
-## Expected Result
+## Expected result
 ```text
 HTTP 204 No Content
 ```
@@ -98,7 +98,7 @@ GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Dat
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
-## Expected Result
+## Expected result
 ```json
 HTTP 200 OK
 [
