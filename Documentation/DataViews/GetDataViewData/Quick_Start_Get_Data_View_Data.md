@@ -25,7 +25,7 @@ For precise information about the source of each field's data, see the data view
 
 ## Get Data View Data
 
-This quick start is a hands-on tour of the main concepts behind consuming data view data.
+This topic presents the main concepts behind consuming data view data.
 
 It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
