@@ -2,11 +2,11 @@
 uid: DataViewsQuickStartGetData
 ---
 
-# Introduction - Get Data View Data
+# Get data view data
 
 Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
 
-This is an introduction to the recommended workflow for getting data. The [Quick Start - Get Data View Data](xref:DataViewsQuickStartGetData) shows these concepts in action. For detailed information, see [Getting Data](xref:DataViewsGettingData) and [Data API](xref:DataViewsDataAPI).
+This is an introduction to the recommended workflow for getting data. For detailed information, see the [Data API reference](xref:DataViewsDataAPI).
 
 ## Specify first page parameters
 Complete the following to specify first page parameters:
