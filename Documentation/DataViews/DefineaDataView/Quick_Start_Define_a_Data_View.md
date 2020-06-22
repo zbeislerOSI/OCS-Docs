@@ -2,7 +2,7 @@
 uid: DataViewsQuickStartDefine
 ---
 
-# Data View
+# Data Views
 
 The `DataView` object is a declarative query and shape for stream data. This section describes the `DataView` object. See the [Data View API section](xref:DataViewAPI)For the corresponding API routes.  
 
