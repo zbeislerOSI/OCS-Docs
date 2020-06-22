@@ -2,7 +2,7 @@
 uid: DataViewsQuickStartDefine
 ---
 
-# Data Views
+# Define a data view
 
 The `DataView` object is a declarative query and shape for stream data. This section describes the `DataView` object. See the [Data View API section](xref:DataViewAPI)For the corresponding API routes.  
 
@@ -162,7 +162,7 @@ If a group contains multiple data items from the same query, you may wish to *id
 
 You can return at any time to change the grouping fields and identifying fields.
 
-## Define a Data View
+## Procedure: Define a data view
 
 This topic presents the main concepts behind creating data views.
 
