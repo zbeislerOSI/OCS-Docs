@@ -2,7 +2,7 @@
 uid: PreviewDataView
 ---
 
-# Preview Data View API
+# Preview data view API
 
 The preview data view API provides the users with the flexibility to work and query with the routes and get a response on the fly before saving the data view. All the preview routes expect a data view to be passed in the request body of the call. The user has the flexibility to change the data view any number of times. The syntax of the data view and all other objects for the routes will remain identical to that of the non-preview routes.
 
