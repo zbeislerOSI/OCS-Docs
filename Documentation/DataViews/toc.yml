@@ -8,8 +8,8 @@
   topicHref: GetResolvedDataView/Resolved_Data_View.md
 - name: Secure Data Views
   topicHref: SecureDataViews/Securing_Data_Views.md
-- name: Data Views API Overview
+- name: Data Views API Reference
   href: DataViewsAPIOverview/toc.yml
   topicHref: DataViewsAPIOverview/Data_Views_API_Overview.md
-- name: Reference
+- name: Data View Examples
   topicHref: Reference/Example_Scenario.md
