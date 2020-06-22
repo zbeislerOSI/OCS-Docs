@@ -2,7 +2,7 @@
 uid: AddIdentifyingField
 ---
 
-# Identifying field
+# Add identifying field
 If the field set resolves to multiple data items in any group (or if grouping is not used), then a field should be designated as the field set's `.IdentifyingField`. If one lone criterion is not a sufficient or useful way of disambiguating the fields, then [grouping](xref:DataViewsGrouping) by additional criteria may be necessary.
 
 ## Example: Adding an identifying field
