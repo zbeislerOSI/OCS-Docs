@@ -1,7 +1,7 @@
-- name: Quick Start - Define a Data View
+- name: Define a Data View
   href: DefineaDataView/toc.yml
   topicHref: DefineaDataView/Quick_Start_Define_a_Data_View.md
-- name: Quick Start - Get Data View Data
+- name: Get Data View Data
   href: GetDataViewData/toc.yml
   topicHref: GetDataViewData/Quick_Start_Get_Data_View_Data.md
 - name: Get Resolved Data View Data
