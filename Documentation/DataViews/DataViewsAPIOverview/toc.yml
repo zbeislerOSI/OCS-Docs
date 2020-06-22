@@ -1,12 +1,12 @@
-- name: Data View API
+- name: Data view API
   href: Data_View_API.md
-- name: Preview Data View API  
+- name: Preview data view API  
   href: Preview_Data_View_API.md
-- name: Resolved Data View API
+- name: Resolved data view API
   href: Resolved_Data_View_API.md
-- name: Resolved Data View Preview API
+- name: Resolved data view preview API
   href: Resolved_Data_View_Preview_API.md
 - name: Data API
   href: Data_API.md
-- name: Access Control API
+- name: Access control API
   href: Access_Control_API.md
