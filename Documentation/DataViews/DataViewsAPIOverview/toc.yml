@@ -2,6 +2,8 @@
   href: Data_View_API.md
 - name: Resolved Data View API
   href: Resolved_Data_View_API.md
+- name: Resolved Data View Preview API
+  href: Resolved_Data_View_Preview_API.md
 - name: Data API
   href: Data_API.md
 - name: Access Control API
