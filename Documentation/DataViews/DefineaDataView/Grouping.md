@@ -2,7 +2,7 @@
 uid: DataViewsGrouping
 ---
 
-# Grouping
+# Group data items
 
 The data items of a data view may be organized by _grouping_ them. It is one way of producing a meaningful, consumable shape of data.
 
