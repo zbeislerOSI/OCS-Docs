@@ -5,11 +5,11 @@
   href: GetDataViewData/toc.yml
   topicHref: GetDataViewData/Quick_Start_Get_Data_View_Data.md
 - name: Get Resolved Data View Data
-  href: GetResolvedDataView/toc.yml
   topicHref: GetResolvedDataView/Resolved_Data_View.md
 - name: Secure Data Views
-  href: SecureDataViews/toc.yml
   topicHref: SecureDataViews/Securing_Data_Views.md
 - name: Data Views API Overview
   href: DataViewsAPIOverview/toc.yml
   topicHref: DataViewsAPIOverview/Data_Views_API_Overview.md
+- name: Reference
+  topicHref: Reference/Example_Scenario.md
