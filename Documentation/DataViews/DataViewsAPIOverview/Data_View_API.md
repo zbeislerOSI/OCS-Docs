@@ -2,7 +2,7 @@
 uid: DataViewAPI
 ---
 
-# Data View API
+# Data view API
 
 The `DataView` API provides mechanisms to create, read, update, and delete data views. This is one portion of the whole [data views API](xref:DataViewsAPIOverview).
 
