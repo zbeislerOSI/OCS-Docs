@@ -2,21 +2,41 @@
 uid: DataViewsQuickStartGetData
 ---
 
-# Quick Start - Get Data View Data
+# Introduction - Get Data View Data
+
+Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
+
+This is an introduction to the recommended workflow for getting data. The [Quick Start - Get Data View Data](xref:DataViewsQuickStartGetData) shows these concepts in action. For detailed information, see [Getting Data](xref:DataViewsGettingData) and [Data API](xref:DataViewsDataAPI).
+
+## Specify first page parameters
+Complete the following to specify first page parameters:
+
+1. Specify the index range (start index and end index) and granularity of data to be retrieved.
+2. Specify the desired response format as csv, table-style json, or object-style json. The default is object-style json.  Csv and table-style json are available with or without a header row.
+3. Specify the page size.
+
+### Request any remaining pages
+Complete the following if data spans into additional page(s). The current page response will include an HTTP header linking to the next page.
+1. Follow the hyperlinks to retrieve the full requested dataset page by page, if the current page includes a NextPage hyperlink.
+2. Follow the `FirstPage` hyperlink in the event that it is necessary to restart the paging operation from the first page. 
+
+### [Optional] Investigate the source of the data
+For precise information about the source of each field's data, see the data view's resolved field mappings.
+
+## Get Data View Data
 
 This quick start is a hands-on tour of the main concepts behind consuming data view data.
 
 It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
+### Get data using defaults
 
-## Get data using defaults
-
-### Action
+#### Action
 ```text
 GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ```
 
-### Expected result
+#### Expected result
 An array of json values similar to:
 ```json
 [
@@ -50,15 +70,15 @@ An array of json values similar to:
     ...
 ```
 
-## Get data for a custom range
+### Get data for a custom range
 
-### Action
+#### Action
 ```text
 GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
-### Expected result
+#### Expected result
 An array of json values similar to:
 ```json
 [
@@ -92,17 +112,17 @@ An array of json values similar to:
     ...
 ```
 
-## Get data in a different format
+### Get data in a different format
 By default, data is returned in object-style json. Other formats are available: csv and table-style json, each with an optional header row.
 
-### Action
+#### Action
 Resubmit the data query with an additional query parameter, `&form=csvh` for csv-formatted data with a header row.
 ```text
 GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}&form=csvh
 ```
 
-### Expected result
+#### Expected result
 Rows of CSV values similar to:
 
 ```csv
@@ -112,17 +132,17 @@ Timestamp.0,Id.1,Name.2,Tags.3,Site.4,SolarRadiation.5,AmbientTemperature.6,Clou
 ...
 ```
 
-## Get subsequent pages
+### Get subsequent pages
 By default, each page includes 1000 records. If the requested data spans into another page, the response includes a hyperlink to the next page of data.
 
-### Action
+#### Action
 Use the hyperlink in the NextPage header to request the next page.
 ```text
 GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}&form=csvh&continuationToken=MjAxOC0wMS0wMVQwMDowMDoxMVo_MD90Yk1OblE_QUxXcEZBP1VEdGxIMWJROG9z&cache=preserve
 ```
 
-### Expected result
+#### Expected result
 The next page of data:
 
 ```csv
@@ -132,10 +152,10 @@ Timestamp.0,Id.1,Name.2,Tags.3,Site.4,SolarRadiation.5,AmbientTemperature.6,Clou
 ...
 ```
 
-## Recover from an invalid paging session
+### Recover from an invalid paging session
 It is possible, though unlikely, for the continuation token to become invalid during paging. When this happens, paging must be restarted from the first page.
 
-### Action
+#### Action
 Use the hyperlink in the FirstPage header to request the first page.
 
 ```text
@@ -143,7 +163,7 @@ GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}&form=csvh&cache=preserve
 ```
 
-### Expected result
+#### Expected result
 The first page of data:
 
 ```csv
@@ -153,16 +173,15 @@ Timestamp.0,Id.1,Name.2,Tags.3,Site.4,SolarRadiation.5,AmbientTemperature.6,Clou
 ...
 ```
 
+### Explore what each data field maps to
 
-## Explore what each data field maps to
-
-### Action
+#### Action
 
 ```text
 GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/FieldMappings
 ```
 
-### Expected result
+#### Expected result
 An array of field mappings:
 
 ```json
