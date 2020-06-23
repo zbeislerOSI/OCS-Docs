@@ -3,12 +3,12 @@ uid: DataViewsQuickStartDefine
 ---
 
 # Define a data view
-
 The `DataView` object is a declarative query and shape for stream data. This section describes the `DataView` object. See the [Data View API section](xref:DataViewAPI)For the corresponding API routes.  
 
 At times, this section makes reference to ways the view *resolves* into further resources, such as the collection of data items found by each data item query. See the [Resolved Data View](xref:ResolvedDataView) and [Resolved Data View API](xref:ResolvedDataViewAPI) sections for details.
 
 ## General concepts
+You define multiple aspects of a data view when you define it, including data items and their organization, grouping, and shaping. 
 
 ### Defining identification
 A data view must have a unique identifier. It may have a friendly name and description. If a friendly name is not specified, the identifier will be used as the data view's name.
