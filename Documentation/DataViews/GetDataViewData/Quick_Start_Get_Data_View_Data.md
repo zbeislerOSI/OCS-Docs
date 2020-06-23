@@ -3,10 +3,10 @@ uid: DataViewsQuickStartGetData
 ---
 
 # Get data view data
-
+You retrieve data view data with the [Data API](xref:DataViewsDataAPI).
 
 ## General concepts
-Data view data is retrieved by using the [Data API](xref:DataViewsDataAPI). The supported mode of retrieval is interpolated values within a user-specified range. Several formats are available, such as JSON and CSV.
+The supported mode of retrieval is interpolated values within a user-specified range. Several formats are available, such as JSON and CSV.
 
 ### Index
 All data in a data view is associated with an index value, i.e. a timestamp.
