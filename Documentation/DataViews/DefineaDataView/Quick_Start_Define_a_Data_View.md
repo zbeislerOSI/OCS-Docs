@@ -164,7 +164,7 @@ You can return at any time to change the grouping fields and identifying fields.
 
 ## Procedure: Define a data view
 
-This topic presents the main concepts behind creating data views.
+This section presents the main concepts behind creating data views.
 
 It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
