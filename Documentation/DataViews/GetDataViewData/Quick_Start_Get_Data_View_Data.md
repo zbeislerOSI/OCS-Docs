@@ -196,6 +196,31 @@ An array of field mappings:
 }
 ```
 
+
+## Recommended workflow
+
+Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
+
+This is an introduction to the recommended workflow for getting data. For detailed information, see the [Data API reference](xref:DataViewsDataAPI).
+
+## Specify first page parameters
+Complete the following to specify first page parameters:
+
+1. Specify the index range (start index and end index) and granularity of data to be retrieved.
+2. Specify the desired response format as csv, table-style json, or object-style json. The default is object-style json.  Csv and table-style json are available with or without a header row.
+3. Specify the page size.
+
+## Request any remaining pages
+Complete the following if data spans into additional page(s). The current page response will include an HTTP header linking to the next page.
+1. Follow the hyperlinks to retrieve the full requested dataset page by page, if the current page includes a NextPage hyperlink.
+2. Follow the `FirstPage` hyperlink in the event that it is necessary to restart the paging operation from the first page. 
+
+## [Optional] Investigate the source of the data
+For precise information about the source of each field's data, see the data view's resolved field mappings.
+
+
+
+
 ## Data view data retrieval parameters
 
 Data view data is retrieved by using the [Data API](xref:DataViewsDataAPI). The supported mode of retrieval is interpolated values within a user-specified range. Several formats are available, such as JSON and CSV.
@@ -302,24 +327,3 @@ It is recommended to suppress [re-resolution](xref:ResolvedDataView#when-is-a-da
 By default, requests for a first page of data will cause the data view to re-resolve. See the documentation on [resolved data views](xref:ResolvedDataView#when-is-a-data-view-resolved). This ensures that the data view accounts for any streams that have been added to or removed from SDS. Re-resolution may be suppressed by explicitly specifying a cache behavior of "preserve".
 
 Requests for subsequent pages include a `continuationToken`. This implictly suppresses re-resolution, akin to cache "preserve" behavior.
-
-## Get data view data
-
-Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
-
-This is an introduction to the recommended workflow for getting data. For detailed information, see the [Data API reference](xref:DataViewsDataAPI).
-
-## Specify first page parameters
-Complete the following to specify first page parameters:
-
-1. Specify the index range (start index and end index) and granularity of data to be retrieved.
-2. Specify the desired response format as csv, table-style json, or object-style json. The default is object-style json.  Csv and table-style json are available with or without a header row.
-3. Specify the page size.
-
-## Request any remaining pages
-Complete the following if data spans into additional page(s). The current page response will include an HTTP header linking to the next page.
-1. Follow the hyperlinks to retrieve the full requested dataset page by page, if the current page includes a NextPage hyperlink.
-2. Follow the `FirstPage` hyperlink in the event that it is necessary to restart the paging operation from the first page. 
-
-## [Optional] Investigate the source of the data
-For precise information about the source of each field's data, see the data view's resolved field mappings.
