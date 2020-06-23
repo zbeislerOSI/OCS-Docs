@@ -113,7 +113,7 @@ See [Sds documentation](xref:sdsTypes#sdstypecode) for details.
 |Standard | 0 | Fields are resolved into a shape similar to how they were defined. This is the recommended shape unless specific needs dictate.
 |Narrow | 1 | Fields are pivoted vertically, resulting in a view whose schema is independent of what data items (streams) are resolved by the data view.
 
-## Introduction - Define a data view
+## Recommended workflow
 
 This is an introduction to the recommended workflow for defining data views. The [Define a Data View](xref:DataViewsQuickStartDefine) topic shows these concepts in action. See the Data Views section above and [Resolved Data View](xref:ResolvedDataView) for more detail.
 
