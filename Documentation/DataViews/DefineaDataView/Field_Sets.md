@@ -2,7 +2,7 @@
 uid: DataViewsFieldSets
 ---
 
-# Put selected data field sets to endpoint
+# Define data field sets
 
 A data view is likely to include multiple fields of information. One field serves as the index (e.g. Timestamp), and others contain information from or about the data items in the data view.
 DataFieldSet`s. Data field sets are collections of fields originating from the same query that share a common role.
