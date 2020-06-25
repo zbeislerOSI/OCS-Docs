@@ -2,7 +2,7 @@
 uid: DataViewsAvailableFieldSets
 ---
 
-# Retrieve available data field sets
+# Retrieve available field sets
 
 Available [field sets](xref:DataViewsFieldSets) include fields not currently included in the data view, which are available to be added. 
 
