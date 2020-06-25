@@ -31,8 +31,3 @@ When requesting for [resolved data items](xref:ResolvedDataViewAPI) or when [get
 The collection of ineligible data items represents SdsStreams that match the queries but cannot be included in the data view. The criteria for ineligibility are:
 * When the SdsStream's index type is different than the `IndexTypeCode` specified in the data view.
 * When the SdsType of the stream contains compound indexes. 
-
-
-## Groups
-
-[Grouping](xref:DataViewsGrouping) is optional when defining the data view. If the `.GroupingFields` section is not defined on the data view, the resolved data view shows a single group with all eligible data items. If the `.GroupingFields` is defined, the resolved data view shows multiple groups, each with the list of data items for the group and the `.values` field showing the matching group's value(s). In this case, if a data item does not match any group, it is added to all groups.
