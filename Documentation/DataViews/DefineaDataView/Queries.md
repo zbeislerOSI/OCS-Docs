@@ -2,7 +2,7 @@
 uid: DataViewsQueries
 ---
 
-# Define a query
+# Define queries
 
 Queries determine what data items are included in a data view.
 
