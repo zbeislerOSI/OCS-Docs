@@ -3,7 +3,7 @@
   topicHref: DefineaDataView/Quick_Start_Define_a_Data_View.md
 - name: Get data view data
   topicHref: GetDataViewData/Quick_Start_Get_Data_View_Data.md
-- name: Get resolved data view data
+- name: Get resolved data view
   topicHref: GetResolvedDataView/Resolved_Data_View.md
 - name: Secure data views
   topicHref: SecureDataViews/Securing_Data_Views.md
