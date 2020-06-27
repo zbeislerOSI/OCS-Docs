@@ -2,8 +2,6 @@
   href: Data_View_API.md
 - name: Preview data API
   href: Preview_Data_API.md
-- name: Preview data view API  
-  href: Preview_Data_View_API.md
 - name: Resolved data view API
   href: Resolved_Data_View_API.md
 - name: Resolved data view preview API
