@@ -68,7 +68,7 @@ Two things are clearly undesirable here:
 1. The field identifiers are ambiguous
 2. The result is sparse: the data views engine has not been told how to align the data items across groups, so it has no idea that all "Power In" streams are similar.
 
-Add an `.IdentifyingField` to the field set to make the identifiers less ambiguous and to render the data more consumable. See [Adding Identifying Field Sets](xref:IdentifyingFieldSets) for an example.
+Add an `.IdentifyingField` to the field set to make the identifiers less ambiguous and to render the data more consumable. See [Add Identifying Field](xref:AddIdentifyingField) for an example.
 
 ## Field
 Each data field represents a particular source of information, such as a data item's `.Id` or the values from one of its properties.
