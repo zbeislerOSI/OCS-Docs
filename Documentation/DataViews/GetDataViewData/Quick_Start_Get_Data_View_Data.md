@@ -113,6 +113,15 @@ By default, requests for a first page of data will cause the data view to re-res
 
 Requests for subsequent pages include a `continuationToken`. This implictly suppresses re-resolution, akin to cache "preserve" behavior.
 
+### Field mapping maximum count
+Shape plays an important role in both the performance and usefulness of a data view. In order to retain this balance, a maximum threshold of 1,000 field mappings is imposed for each data view. OCS checks the field mapping count prior to constructing the data set and returns a message if the limit has been exceeded.
+
+If your data view exceeds this limit, there are several ways to shape the data view to reduce the number of field mappings generated:
+
+- Use grouping fields to pivot data for like-groups into their own rows.
+- Use identifying fields to display useful information in headers, rather than as discrete field mappings.
+- Deselect unneeded fields to remove them as field mappings.
+- Toggle to the narrow shape option to pivot data fields into individual rows instead of columns.
 ## Recommended workflow
 Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
 
