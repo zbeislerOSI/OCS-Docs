@@ -122,6 +122,7 @@ If your data view exceeds this limit, there are several ways to shape the data v
 - Use identifying fields to display useful information in headers, rather than as discrete field mappings.
 - Deselect unneeded fields to remove them as field mappings.
 - Toggle to the narrow shape option to pivot data fields into individual rows instead of columns.
+
 ## Recommended workflow
 Getting data from a data view is straightforward. If you want to understand more about the source behind each data field, that information is available too.
 
@@ -141,10 +142,6 @@ Complete the following if data spans into additional page(s). The current page r
 
 ## [Optional] Investigate the source of the data
 For precise information about the source of each field's data, see the data view's resolved field mappings.
-
-
-
-
 
 ## Procedure: Get Data View Data
 
