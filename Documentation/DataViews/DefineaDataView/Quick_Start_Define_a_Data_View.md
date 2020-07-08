@@ -126,7 +126,14 @@ There are three main steps required to define a data view:
 
 This is not a one-way street. You are likely to keep adjusting the data fields included in the view even after you have begun working on how the fields are arranged in the data view.
 
-### Prerequisite: Create a data view ID
+
+## Procedure: Define a data view
+
+This section presents the main concepts behind creating data views.
+
+It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
+
+### Create a data view
 Very little information is required to create a new data view. In fact, if you request that the system generate an identifier for the new data view, no information at all is necessary. However, it is recommended to specify a meaningful `.Id`, because the identifier cannot be changed late without recreating the data view. All other properties are modifiable.
 
 Creating a data view requires only an identifier, `.Id`. The data view does not accomplish anything yet, but it's a starting point.
@@ -156,15 +163,7 @@ HTTP 201 Created
 }
 ```
 
-The `.Queries` property is empty, `[ ]`. We will address that soon. 
-
-## Procedure: Define a data view
-
-This section presents the main concepts behind creating data views.
-
-It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
-
-### Retrieve the data view
+The `.Queries` property is empty, `[ ]`. We will address that soon. ### Retrieve the data view
 
 To access the data view again, it is available via the `GET` verb:
 
