@@ -129,47 +129,6 @@ This is not a one-way street. You are likely to keep adjusting the data fields i
 ### Prerequisite: Create a data view ID
 Very little information is required to create a new data view. In fact, if you request that the system generate an identifier for the new data view, no information at all is necessary. However, it is recommended to specify a meaningful `.Id`, because the identifier cannot be changed late without recreating the data view. All other properties are modifiable.
 
-### Include data items
-Complete the following to define data items to include in a data view:
-
-1. Define (or modify) `.Queries` for SDS streams to be included as data items in the data view. View the collection data items found by each query.
-2. Use a distinct query for each general type of data item, such as streams about assets and streams about the weather where each asset is located.
-
-You can return at any time to modify or add queries.
-
-### Include specific data fields
-Complete the following to define data fields to include in a data view:
-
-1. View the information on which data fields resolve as available to include in the data view. Choose the fields you want, and add them to your data view's `.DataFieldSets`
-2. If your streams have slight variations in property naming (e.g. a property called either `temperature` or `ambient_temperature`), combine fields so that they can match alternate values.
-
-You can return at any time to adjust which fields are included in the data view.
-
-### Group and identify data items
-
-#### Group items globally
-You may wish to globally *group* the data items by some common factor (e.g. site or asset id).  Complete the following to group data items in a data view:
-
-1. Define one or more fields as `.GroupingFields` of the data view. Data items will be grouped by these fields. The available field sets now include field(s) that link to the grouping field values.
-
-2. Include the newly-available grouping value fields in the data view, so those values are included in the data view data.
-
-#### Identifying items locally within a data field set
-If a group contains multiple data items from the same query, you may wish to *identify* those data items so that they are not ambiguous and so they will be aligned across groups.  Complete the following to identify data items within a data field set:
-
-1. On the data field set in question, assign a field as the `.IdentifyingField` to tell the data items apart.
-2. Ensure that each data field's label includes the {IdentifyingValue} token so the field labels are unique. The default field labels already include it.
-
-You can return at any time to change the grouping fields and identifying fields.
-
-## Procedure: Define a data view
-
-This section presents the main concepts behind creating data views.
-
-It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
-
-### Create a data view ID
-
 Creating a data view requires only an identifier, `.Id`. The data view does not accomplish anything yet, but it's a starting point.
 
 #### Action
@@ -198,6 +157,12 @@ HTTP 201 Created
 ```
 
 The `.Queries` property is empty, `[ ]`. We will address that soon. 
+
+## Procedure: Define a data view
+
+This section presents the main concepts behind creating data views.
+
+It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
 ### Retrieve the data view
 
@@ -659,6 +624,42 @@ Timestamp.0,Id.1,Name.2,Tags.3,Site.4,SolarRadiation.5,AmbientTemperature.6,Clou
 2019-10-21T20:00:00.0000000Z,WS_WINT,WS_WINT,"Weather, High Resolution, Gen2",Winterthur,109,2.501105722,3,,WS_ROSE,WS_ROSE,"Weather, Low Resolution, Gen1",Rosecliff,139,,,14.76498991,WS_BILT,WS_BILT,"Weather, High Resolution, Gen1",Biltmore,157,,,32.41209639
 ```
 
+### Include data items
+Complete the following to define data items to include in a data view:
+
+1. Define (or modify) `.Queries` for SDS streams to be included as data items in the data view. View the collection data items found by each query.
+2. Use a distinct query for each general type of data item, such as streams about assets and streams about the weather where each asset is located.
+
+You can return at any time to modify or add queries.
+
+### Include specific data fields
+Complete the following to define data fields to include in a data view:
+
+1. View the information on which data fields resolve as available to include in the data view. Choose the fields you want, and add them to your data view's `.DataFieldSets`
+2. If your streams have slight variations in property naming (e.g. a property called either `temperature` or `ambient_temperature`), combine fields so that they can match alternate values.
+
+You can return at any time to adjust which fields are included in the data view.
+
+### Group and identify data items
+
+#### Group items globally
+You may wish to globally *group* the data items by some common factor (e.g. site or asset id).  Complete the following to group data items in a data view:
+
+1. Define one or more fields as `.GroupingFields` of the data view. Data items will be grouped by these fields. The available field sets now include field(s) that link to the grouping field values.
+
+2. Include the newly-available grouping value fields in the data view, so those values are included in the data view data.
+
+#### Identifying items locally within a data field set
+If a group contains multiple data items from the same query, you may wish to *identify* those data items so that they are not ambiguous and so they will be aligned across groups.  Complete the following to identify data items within a data field set:
+
+1. On the data field set in question, assign a field as the `.IdentifyingField` to tell the data items apart.
+2. Ensure that each data field's label includes the {IdentifyingValue} token so the field labels are unique. The default field labels already include it.
+
+You can return at any time to change the grouping fields and identifying fields.
+
+
+
+
 ### Group the data view
 One way to disambiguate the data items is to “group” them, which amounts to partitioning them based on a value. For example, metadata:Site as the grouping field might yield groups of Biltmore, Rosecliff, and Winterthur, each containing the data items associated with that Site.
 
@@ -1071,6 +1072,16 @@ HTTP 200 OK
     ...
 ]
 ```
+
+
+
+
+
+
+
+
+
+
 
 
 ## Further steps
