@@ -97,6 +97,9 @@ For example:
 FirstPage: ".../dataViews/{dataViewId}/data/interpolated?cache=Preserve&count=1000"
 ```
 
+### .NET client library
+Paging is handled automatically when using the .NET client library to retrieve data. Results are returned as an IAsyncEnumerable<string> where each value is one record of data in the requested format. The actual backend page size of the request is configurable using the backingPageSize parameter.
+ 
 ### Index parameters
 Index parameters, such as Start Index, must remain constant while paging through a range of data. If a different range of data is desired, restart the paging operation.
 
