@@ -919,7 +919,7 @@ GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
-### Expected result
+#### Expected result
 We’re back to a wide table, but the field ids are now distinct. The suggested/default values of the Available Fields’ `.Label` property includes {IdentifyingValue}, so if using those defaults, the impact of adding an identifying field is immediately clear.
 
 ```json
@@ -953,7 +953,7 @@ HTTP 200 OK
 ]
 ```
 
-## Consolidate data fields
+### Consolidate data fields
 
 There is a problem with this data view: the Gen1 Weather streams have a "Temperature" property but the Gen2 Weather streams have  renamed it to "AmbientTemperature". The data view has fields for both, but for each stream "Temperature" or "AmbientTemperature" is null. This is undesirable since the fields are semantically identical and should not be separate fields in the data view.
 
@@ -1038,18 +1038,18 @@ PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
   "Shape": "Standard"
 }
 ```
-### Expected Result
+#### Expected Result
 ```text
 HTTP 204 No Content
 ```
 
-### Action
+#### Action
 ```text
 GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
-### Expected Result
+#### Expected Result
 ```json
 HTTP 200 OK
 [
@@ -1071,17 +1071,5 @@ HTTP 200 OK
     ...
 ]
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 ## Further steps
 The API is designed to encourage trial-and-error. We encourage you to experiment with other ways to represent this data, and to incorporate information about the solar inverters at each site.
