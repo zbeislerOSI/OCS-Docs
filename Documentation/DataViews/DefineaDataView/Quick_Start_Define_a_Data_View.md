@@ -18,7 +18,7 @@ One or more queries determine the set of data items (such as SDS streams) that t
 
 ### Including data fields
 
-Information from, or about, those data items must be included explicitly in the data view as Fields within [DataFields](xref:DataViewsFieldSets) or [GroupingFields](xref:DataViewsGrouping). By default, a data view includes no fields, except the default [`.IndexField`](xref:DataView:index_field). The fields that are available for use are exposed as a "resolved" resource, [Available Field Sets](xref:DataViewsAvailableFieldSets). It is recommended to use or adapt those fields instead of defining new fields. Individual fields are organized into [DataFieldSets](xref:DataViewsFieldSets) and [GroupingFields](xref:DataViewsGrouping).
+Information from, or about, those data items must be included explicitly in the data view as Fields within [data field sets](xref:DataViewsFieldSets) or [groups](xref:DataViewsGrouping). By default, a data view includes no fields, except the default [`.IndexField`](xref:DataView:index_field). The fields that are available for use are exposed as a "resolved" resource, [Available Field Sets](xref:DataViewsAvailableFieldSets). It is recommended to use or adapt those fields instead of defining new fields. Individual fields are organized into [data field sets](xref:DataViewsFieldSets) and [groups](xref:DataViewsGrouping).
 
 ### Organizing the data items
 
@@ -40,7 +40,7 @@ Data views may be set to resolve as standard shape or narrow shape. Standard sha
 
 ## Recommended workflow
 
-This is an introduction to the recommended workflow for defining data views. The [Define a Data View](xref:DataViewsQuickStartDefine) topic shows these concepts in action. See the Data Views section above and [Resolved Data View](xref:ResolvedDataView) for more detail.
+This is an introduction to the recommended workflow for defining data views. The following sections show these concepts in action.
 
 Designing and tweaking a data view is expected to be an iterative process. You are not expected to "get it right the first time," nor to be an expert at the streams available in the Sequential Data Store. Data views provide an interactive way to select, identify, and arrange the data you and your applications need.
 
@@ -56,12 +56,12 @@ This is not a one-way street. You are likely to keep adjusting the data fields i
 
 This section presents the main concepts behind creating data views.
 
-It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
+It is assumed that you are working with streams as described in the [Stream examples](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
 ### Create a data view
 Very little information is required to create a new data view. In fact, if you request that the system generate an identifier for the new data view, no information at all is necessary. However, it is recommended to specify a meaningful `.Id`, because the identifier cannot be changed late without recreating the data view. All other properties are modifiable.
 
-Creating a data view requires only an identifier, `.Id`. The data view does not accomplish anything yet, but it's a starting point.
+Creating a data view requires only an identifier, `.Id`. The data view does not accomplish anything yet, but it is a starting point.
 
 #### Action
 ```json
@@ -88,8 +88,9 @@ HTTP 201 Created
 }
 ```
 
-The `.Queries` property is empty, `[ ]`. We will address that soon. ### Retrieve the data view
+The `.Queries` property is empty, `[ ]`. We will address that soon. 
 
+### Retrieve the data view
 To access the data view again, it is available via the `GET` verb:
 
 #### Action
