@@ -33,10 +33,10 @@ The requested end index, inclusive. The default value is the `.DefaultEndIndex` 
 The requested interval between index values. The default value is the `.DefaultInterval` of the data view. Optional if a default is specified.
 
 `[optional] string form`  
-The requested data [output format](xref:DataViewsGettingData#format). Output formats: `default`, `table`, `tableh`, `csv`, `csvh`.
+The requested data [output format](xref:DataViewsQuickStartGetData#format). Output formats: `default`, `table`, `tableh`, `csv`, `csvh`.
 
 `[optional] string continuationToken`  
-Used only when [paging](xref:DataViewsGettingData#paging). Not specified when requesting the first page of data.
+Used only when [paging](xref:DataViewsQuickStartGetData#paging). Not specified when requesting the first page of data.
 
 `[optional] string cache`  
 Controls when the data view backing resources are to be refreshed. Used only when requesting the first page of data. Ignored if used with the continuationToken. Values are:
