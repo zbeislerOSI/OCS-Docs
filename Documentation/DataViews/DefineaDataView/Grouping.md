@@ -6,7 +6,7 @@ uid: DataViewsGrouping
 The data items of a data view may be organized by _grouping_ them. It is one way of producing a meaningful, consumable shape of data.
 
 ## Groups
-[Grouping](xref:DataViewsGrouping) is optional when defining the data view. If the `.GroupingFields` section is not defined on the data view, the resolved data view shows a single group with all eligible data items. If the `.GroupingFields` is defined, the resolved data view shows multiple groups, each with the list of data items for the group and the `.values` field showing the matching group's value(s). In this case, if a data item does not match any group, it is added to all groups.
+Grouping is optional when defining the data view. If the `.GroupingFields` section is not defined on the data view, the resolved data view shows a single group with all eligible data items. If the `.GroupingFields` is defined, the resolved data view shows multiple groups, each with the list of data items for the group and the `.values` field showing the matching group's value(s). In this case, if a data item does not match any group, it is added to all groups.
 
 ## Purpose of grouping
 Without grouping, all of the data items returned by a `Query` will appear side-by-side. If the view includes many data items, its data records will be enormous. The fields are also likely to be ambiguous.
@@ -26,7 +26,7 @@ Grouping can be used to separate the data items from each other, and to join dif
 Separating the data items from each other makes the data view's data records smaller and more granular. It is also possible to produce shapes that mimic physical or logical assets.
 
 #### Example scenario
-For the following examples, assume a subgroup of the [example scenario](xref:DataViewsExampleScenario)'s power inverter streams, produced by a `Query` [value](xref:sdsSearching) such as `"TypeId:docs-pi-inverter AND (Site:Rosemont OR Site:Winterthur)"`. This is to keep the example succinct.
+For the following examples, assume a subgroup of the power inverter streams in the [stream examples](xref:DataViewsExampleScenario), produced by a `Query` [value](xref:sdsSearching) such as `"TypeId:docs-pi-inverter AND (Site:Rosemont OR Site:Winterthur)"`. This is to keep the example succinct.
 
 
 | Site | Meter | Inverter | Measurement | Stream Id |
