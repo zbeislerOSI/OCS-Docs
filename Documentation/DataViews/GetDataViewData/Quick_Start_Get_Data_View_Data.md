@@ -13,7 +13,7 @@ All data in a data view is associated with an index value, i.e. a timestamp.
 If there are multiple groups in the data view, the index and grouping field values together form a unique identifier for each data record.
 
 #### Index type
-The supported index type is `DateTime`, as noted in the documentation on creating [Data Views](xref:DataView).
+The supported index type is `DateTime`, as noted in the documentation on creating [Data Views](xref:DataViewsQuickStartDefine).
 
 #### Index range
 Three parameters control the range and granularity of data returned:
@@ -39,7 +39,7 @@ Required index parameters when requesting interpolated data are:
  
 If one or more of these parameters is not specified at query time or as a default, the data query is not valid.
 
-Streams in SDS may be configured to have non-default interpolation and extrapolation behavior. These behaviors are observed when stream data is included in data views. Data view data is always treated as dense, even if SDS returns sparse data. See the section on [empty or missing values](xref:DataViewsGettingData#empty-or-missing-values) for details.
+Streams in SDS may be configured to have non-default interpolation and extrapolation behavior. These behaviors are observed when stream data is included in data views. Data view data is always treated as dense, even if SDS returns sparse data. See the following section on empty or missing values for details.
 
 ### Empty or missing values
 SDS stream properties may be of nullable (e.g. `NullableInt32`) or non-nullable (e.g. `Int32`) types. Data views treats all fields as nullable, as is necessary for its fundamental goal of aligning large datasets.
@@ -147,7 +147,7 @@ For precise information about the source of each field's data, see the data view
 
 This section presents the main concepts behind consuming data view data.
 
-It is assumed that you are working with streams as described in the [Example Scenario](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
+It is assumed that you are working with streams as described in the [Stream examples](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
 ### Get data using defaults
 
