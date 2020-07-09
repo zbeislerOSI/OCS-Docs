@@ -16,7 +16,7 @@ Below data view API routes are available to be used as preview routes:
     - [Get Ineligible Data Items by Query](xref:ResolvedDataViewPreviewAPI#`Get-Ineligible-Data-Items-by-Query`)
     - [Get Groups](xref:ResolvedDataViewPreviewAPI#`Get-Groups`)
     - [Get Available Field Sets](xref:ResolvedDataViewPreviewAPI#`Get-Available-Field-Sets`)
-    - [Get Field Mappings](xref:ResolvedDataViewPreviewAPI#`Get-Field-Mappings`)
+    - [Get Field Mappings](xref:ResolvedDataViewPreviewAPI#Get-Field-Mappings)
     - [Get Statistics](xref:ResolvedDataViewPreviewAPI#`Get-Statistics`)
 2. [Get Data View Data](xref:DataViewsPreviewDataAPI#`Get-Data-View-Data`)
 
