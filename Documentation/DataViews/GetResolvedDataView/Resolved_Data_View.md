@@ -42,7 +42,7 @@ By default:
 - requesting a first page of data will cause the data view to re-resolve: *refresh* the cache
 
 These defaults are overridable on each API call.
-See the [Resolved Data View API](xref:ResolvedDataViewAPI) and [Getting Data](xref:DataViewsGettingData) for details.
+See the [Resolved Data View API](xref:ResolvedDataViewAPI) and [Getting Data](xref:DataViewsQuickStartGetData) for details.
 
 The defaults are intended to strike a balance between predictability and freshness. When retrieving the various resolved information that is available, you will not cause regeneration (and possible changes) simply by viewing the resolved information. This is useful when diagnosing a data view that is not returning the data you expect.
 
@@ -52,7 +52,7 @@ If the data view is modified, any cached information is reset. The data view wil
 No guarantee is made of the durability or lifespan of cached information. It may be reset by the system for maintenance reasons.
 
 #### Paging through data
-When using the [Data API](xref:DataViewsDataAPI) to page through data view data, the cache is automatically preserved on all pages after the first. This ensures consistency while paging through view data: if the view were re-resolved between pages, it might resolve differently (e.g. new streams just added to SDS) and return unpredictable results. The documentation on [Getting Data](xref:DataViewsGettingData) describes how the paging token helps guarantee consistency.
+When using the [Data API](xref:DataViewsDataAPI) to page through data view data, the cache is automatically preserved on all pages after the first. This ensures consistency while paging through view data: if the view were re-resolved between pages, it might resolve differently (e.g. new streams just added to SDS) and return unpredictable results. The documentation on [Getting Data](xref:DataViewsQuickStartGetData) describes how the paging token helps guarantee consistency.
 
 ## Object types
 
@@ -78,7 +78,7 @@ Holds an item that was resolved at a specific time.
 | Name | string | Friendly name
 | Description | string | Extended text description
 | TypeId | string | The unique identifier of the data item's type
-| ResourceType | DataItemResourceType | The resource type. See `DataView` [documentation](xref:DataView). Currently, the supported resource type is `.Stream`
+| ResourceType | DataItemResourceType | The resource type. See `DataView` [documentation](xref:DataViewsOverview). Currently, the supported resource type is `.Stream`
 | Tags | IReadOnlyList<string> | Tag strings assigned to the data item
 | Metadata | IReadOnlyDictionary<string, string> | Metadata key-value pairs assigned to the data item
 | DataItemFields | IReadOnlyList<DataItemField> | Data fields
