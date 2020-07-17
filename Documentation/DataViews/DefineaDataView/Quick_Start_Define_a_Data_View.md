@@ -10,7 +10,7 @@ At times, this section makes reference to ways the view *resolves* into further 
 ## General concepts
 You define multiple aspects of a data view when you define it, including data items and their organization, grouping, and shaping. 
 
-### Defining identification
+### Define a data view identifier
 A data view must have a unique identifier. It may have a friendly name and description. If a friendly name is not specified, the identifier will be used as the data view's name.
 
 ### Including data items
@@ -18,9 +18,8 @@ One or more queries determine the set of data items (such as SDS streams) that t
 
 ### Including data fields
 
-Information from, or about, those data items must be included explicitly in the data view as Fields within [data field sets](xref:DataViewsFieldSets) or [groups](xref:DataViewsGrouping). By default, a data view includes no fields, except the default `.IndexField`. See the Including the index field section in this topic for details. 
+Information from, or about, those data items must be included explicitly in the data view as Fields within [DataFields](xref:DataViewsFieldSets) or [GroupingFields](xref:DataViewsGrouping). By default, a data view includes no fields, except the default [`.IndexField`](xref:DataView#index-field). The fields that are available for use are exposed as a "resolved" resource, [Available Field Sets](xref:DataViewsAvailableFieldSets). It is recommended to use or adapt those fields instead of defining new fields. Individual fields are organized into [DataFieldSets](xref:DataViewsFieldSets) and [GroupingFields](xref:DataViewsGrouping).
 
-The fields that are available for use are exposed as a "resolved" resource, [Available Field Sets](xref:DataViewsAvailableFieldSets). It is recommended to use or adapt those fields instead of defining new fields. Individual fields are organized into [data field sets](xref:DataViewsFieldSets) and [groups](xref:DataViewsGrouping).
 
 ### Organizing the data items
 
