@@ -16,7 +16,7 @@ Returns the specified data view.
 
 ### Request
 ```text
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
+GET api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
 ```
 ### Parameters
 `string tenantId`  
@@ -46,7 +46,7 @@ Content-Type: application/json
 {
   "Id": "demo",
   "Name": "demo",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [
     { 
       "Id": "weather",
@@ -61,12 +61,17 @@ Content-Type: application/json
 }
 ```
 
+### .NET client libraries method
+```csharp
+   Task<DataView> GetDataViewAsync(string id);
+```
+
 ## `Get Data Views`
 Returns a list of data views.
 
 ### Request
 ```text
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews?skip={skip}&count={count}
+GET api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews?skip={skip}&count={count}
 ```
 ### Parameters
 `string tenantId`  
@@ -96,6 +101,7 @@ Successful (200 OK) responses include:
 | Header | Description |
 |--|--|
 | Total-Count | The total count of data views visible to the current user |
+| Link | Hyperlinks to the first page and next page of results as applicable |
 
 #### Example response body
 ```json
@@ -113,11 +119,16 @@ Content-Type: application/json
 ]
 ```
 
+### .NET client libraries method
+```csharp
+   Task<IEnumerable<DataView>> GetDataViewsAsync(int skip = 0, int count = 100);
+```
+
 ## `Create Data View`
 Create a new data view with a system-generated identifier.
 ### Request
 ```text
-POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews
+POST api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews
 ```
 ### Parameters
 `string tenantId`  
@@ -134,12 +145,12 @@ A `DataView` object whose `Id` is `null` or unspecified.
 {
   "Name": "demo",
   "Description": "demonstration",
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
-  "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "GroupingFields": [],  
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
 }
 ```
 
@@ -161,13 +172,18 @@ Content-Type: application/json
   "Id": "c79630cc-21dc-483e-8b37-46880e92c456",
   "Name": "demo",
   "Description": "demonstration",
+  "IndexField": { "Label": "Timestamp" }, 
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
 }
+```
+
+### .NET client libraries method
+```csharp
+   Task<DataView> GetOrCreateDataViewAsync(DataView dataView);
 ```
 
 ## `Get or Create Data View`
@@ -175,7 +191,7 @@ This call creates the specified data view. If a data view with the same id alrea
 
 ### Request
 ```text
-POST api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
+POST api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
 ```
 ### Parameters
 `string tenantId`  
@@ -196,12 +212,14 @@ A `DataView` object whose `Id` matches the `dataViewId` in the URL.
   "Id": "demo2",
   "Name": "demo2",
   "Description": "demonstration 2",
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
+  
+  
 }
 ```
 
@@ -226,12 +244,12 @@ Content-Type: application/json
   "Id": "demo2",
   "Name": "demo2",
   "Description": "demonstration 2",
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
 }
 ```
 
