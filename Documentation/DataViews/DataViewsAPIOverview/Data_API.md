@@ -10,7 +10,7 @@ Get data for the provided index parameters with paging. See [documentation on pa
 
 ### Request
 ```text
-GET /api/v1-preview/tenants/{tenantId}/namespaces/{namespaceId}/dataviews/{dataViewId}/data/interpolated?startIndex={startIndex}&endIndex={endIndex}&interval={interval}&form={form}&continuationToken={continuationToken}&cache={cache}&count={count}
+GET /api/v1/tenants/{tenantId}/namespaces/{namespaceId}/dataviews/{dataViewId}/data/interpolated?startIndex={startIndex}&endIndex={endIndex}&interval={interval}&form={form}&continuationToken={continuationToken}&cache={cache}&count={count}
 
 ```
 ### Parameters
@@ -61,18 +61,18 @@ The response includes a status code and, in most cases, a body.
 | 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
 
 #### Response headers
-Successful (200 OK) responses include one or more header values related to paging.
+Successful (200 OK) responses include:
 
 | Header | Description |
 |--|--|
-| FirstPage | Hyperlink to the first page of data |
-| NextPage | Hyperlink to the next page of data, if the data spans into an additional page. Absence of this header indicates that there are no additional pages to be retrieved. |
+| Link | Hyperlinks to the first page and next page of data as applicable. Absence of the next link indicates that there is no additional data to be retrieved. |
 
 #### Example response body in default format
 An array of json values. Each json property corresponds to a field mapping. Property names are the field mapping `.Id`s.
 
 ```json
 HTTP 200 OK
+Content-Type: application/json
 [
     {
         "Time": "2018-01-01T00:00:00Z",
@@ -99,6 +99,7 @@ HTTP 200 OK
 
 ```json
 HTTP 200 OK
+Content-Type: application/json
 {
    "Columns": [
       {
@@ -145,6 +146,7 @@ HTTP 200 OK
 
 ```json
 HTTP 200 OK
+Content-Type: application/json
 {
   "Columns": [
       {
@@ -197,6 +199,7 @@ HTTP 200 OK
 
 ```csv
 HTTP 200 OK
+Content-Type: text/csv
 2018-01-01T00:00:00Z,24,44,245
 2018-01-01T00:00:01Z,24,44,245
 2018-01-01T00:00:02Z,24,44,245
@@ -207,6 +210,7 @@ HTTP 200 OK
 ```csv
 HTTP 200 OK
 Time,Temperature,Flowrate,Volume
+Content-Type: text/csv
 2018-01-01T00:00:00Z,24,44,245
 2018-01-01T00:00:01Z,24,44,245
 2018-01-01T00:00:02Z,24,44,245
