@@ -66,7 +66,7 @@ The narrow table pivots the standard table. Each data field becomes a row compri
 
 The column label of the index and grouping value columns may vary depending on the resolved label. The Field and Value column labels are not modifiable.
 
-The data view is built veritically by grouping field, if present, then by field. 
+The data view is built vertically by grouping field, if present, then by field. 
 
 Data views resolving into multiple streams that are defined with the same SDS type, should use a grouping field or an identifier in order to differentiate the data rows. 
 
