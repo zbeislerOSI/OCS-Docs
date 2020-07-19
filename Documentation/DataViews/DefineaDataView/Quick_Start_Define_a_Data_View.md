@@ -39,7 +39,6 @@ Data views currently operate on timestamped data, which is data indexed by a Dat
 Data views may be set to resolve as standard shape or narrow shape. Standard shape resolves fields similar to how they are defined. Narrow shape pivots the fields vertically, resulting in a view whose schema is independent of what data items (streams) are resolved by the data view. Narrow shape may be used when an invariant output schema is required.
 
 ## Recommended workflow
-
 This is an introduction to the recommended workflow for defining data views. The following sections show these concepts in action.
 
 Designing and tweaking a data view is expected to be an iterative process. You are not expected to "get it right the first time," nor to be an expert at the streams available in the Sequential Data Store. Data views provide an interactive way to select, identify, and arrange the data you and your applications need.
@@ -59,9 +58,7 @@ This section presents the main concepts behind creating data views.
 It is assumed that you are working with streams as described in the [Stream examples](xref:DataViewsExampleScenario). The data views API uses the same authentication scheme as the Sequential Data Store.
 
 ### Create a data view
-Very little information is required to create a new data view. In fact, if you request that the system generate an identifier for the new data view, no information at all is necessary. However, it is recommended to specify a meaningful `.Id`, because the identifier cannot be changed late without recreating the data view. All other properties are modifiable.
-
-Creating a data view requires only an identifier, `.Id`. The data view does not accomplish anything yet, but it is a starting point.
+Very little information is required to create a new data view. In fact, if you request that the system generate an identifier for the new data view, no information at all is necessary. However, it is recommended to specify a meaningful `.Id`, because the identifier cannot be changed later without recreating the data view. All other properties are modifiable.
 
 #### Action
 ```json
@@ -581,9 +578,6 @@ If a group contains multiple data items from the same query, you may wish to *id
 2. Ensure that each data field's label includes the {IdentifyingValue} token so the field labels are unique. The default field labels already include it.
 
 You can return at any time to change the grouping fields and identifying fields.
-
-
-
 
 ### Group the data view
 One way to disambiguate the data items is to “group” them, which amounts to partitioning them based on a value. For example, metadata:Site as the grouping field might yield groups of Biltmore, Rosecliff, and Winterthur, each containing the data items associated with that Site.
