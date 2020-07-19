@@ -11,7 +11,6 @@ Get data for the provided data view and index parameters with paging. See [docum
 ### Request
 ```text
 POST /api/v1-preview/tenants/{tenantId}/namespaces/{namespaceId}/preview/dataviews/data/interpolated?startIndex={startIndex}&endIndex={endIndex}&interval={interval}&form={form}&countPerGroup={countPerGroup}&groupCount={groupCount}&continuationToken={continuationToken}&count={count}
-
 ```
 ### Parameters
 `string tenantId`  
@@ -36,10 +35,10 @@ The number of rows per group. It overrides the endIndex.
 The requested number of groups.
 
 `[optional] string form`  
-The requested data [output format](xref:DataViewsQuickStartGetData#format). Output formats: `default`, `table`, `tableh`, `csv`, `csvh`.
+The requested data [output format](xref:DataViewsGettingData#format). Output formats: `default`, `table`, `tableh`, `csv`, `csvh`.
 
 `[optional] string continuationToken`  
-Used only when [paging](xref:DataViewsQuickStartGetData#paging). Not specified when requesting the first page of data.
+Used only when [paging](xref:DataViewsGettingData#paging). Not specified when requesting the first page of data.
 
 `[optional] int count`  
 The requested page size. The default value is 1000. The maximum is 250,000.
