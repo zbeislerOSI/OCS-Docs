@@ -62,7 +62,7 @@ Very little information is required to create a new data view. In fact, if you r
 
 #### Action
 ```json
-POST /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+POST /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 { 
   "Id": "quickstart" 
 }
@@ -75,13 +75,12 @@ HTTP 201 Created
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"   
 }
 ```
 
@@ -92,7 +91,7 @@ To access the data view again, it is available via the `GET` verb:
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 ```
 
 #### Expected result
@@ -101,13 +100,12 @@ HTTP 200 OK
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"  
 }
 ```
 
@@ -120,11 +118,11 @@ Use the result of the previous step as the starting point. All following steps w
 
 Add an item to the array of `.Queries`: `{ "Id": "weather", "Value":"*weather*" }`
 ```json
-PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [
     { 
       "Id": "weather",
@@ -133,9 +131,8 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
   ],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard" 
 }
 ```
 
@@ -150,7 +147,7 @@ Data views resolve on a per user basis, executing the queries you defined. The r
 
 #### Action – Page through the data items found by the query
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/DataItems/weather
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/DataItems/weather
 ```
 
 #### Expected result
@@ -162,84 +159,10 @@ HTTP 200 OK
     "TimeOfResolution": "(a timestamp in ISO8601 format)",
     "Items": [
         {
-            "ResourceType": "Stream",
-            "Id": "WS_WINT",
-            "Name": "WS_WINT",
-            "TypeId": "quickstart-omf-weather-gen2",
-            "Tags": [
-                "Weather",
-                "High Resolution",
-                "Gen2"
-            ],
-            "Metadata": {
-                "Site": "Winterthur"
-            },
-            "DataItemFields": [
-                {
-                    "Id": "Timestamp",
-                    "Name": "Timestamp",
-                    "TypeCode": "DateTime",
-                    "IsKey": true
-                },
-                {
-                    "Id": "SolarRadiation",
-                    "Name": "SolarRadiation",
-                    "TypeCode": "Int32",
-                    "IsKey": false
-                },
-                {
-                    "Id": "AmbientTemperature",
-                    "Name": "AmbientTemperature",
-                    "TypeCode": "Double",
-                    "IsKey": false
-                },
-                {
-                    "Id": "CloudCover",
-                    "Name": "CloudCover",
-                    "TypeCode": "Int32",
-                    "IsKey": false
-                }
-            ]
-        },
-        {
-            "ResourceType": "Stream",
-            "Id": "WS_ROSE",
-            "Name": "WS_ROSE",
-            "TypeId": "quickstart-omf-weather-gen1",
-            "Tags": [
-                "Weather",
-                "Low Resolution",
-                "Gen1"
-            ],
-            "Metadata": {
-                "Site": "Rosecliff"
-            },
-            "DataItemFields": [
-                {
-                    "Id": "Timestamp",
-                    "Name": "Timestamp",
-                    "TypeCode": "DateTime",
-                    "IsKey": true
-                },
-                {
-                    "Id": "SolarRadiation",
-                    "Name": "SolarRadiation",
-                    "TypeCode": "Int32",
-                    "IsKey": false
-                },
-                {
-                    "Id": "Temperature",
-                    "Name": "Temperature",
-                    "TypeCode": "Double",
-                    "IsKey": false
-                }
-            ]
-        },
-        {
-            "ResourceType": "Stream",
             "Id": "WS_BILT",
             "Name": "WS_BILT",
-            "TypeId": "quickstart-omf-weather-gen1",
+            "TypeId": "docs-omf-weather-gen1",
+            "ResourceType": "Stream",
             "Tags": [
                 "Weather",
                 "High Resolution",
@@ -257,7 +180,48 @@ HTTP 200 OK
                 },
                 {
                     "Id": "SolarRadiation",
-                    "Name": "SolarRadiation",
+                    "Name": "Solar Radiation",
+                    "TypeCode": "Int32",
+                    "IsKey": false
+                },
+                {
+                    "Id": "Temperature",
+                    "Name": "Temperature",
+                    "TypeCode": "Double",
+                    "IsKey": false
+                },
+                {
+                    "Id": "CloudCover",
+                    "Name": "CloudCover",
+                    "TypeCode": "Int32",
+                    "IsKey": false
+                }
+            ]
+        },
+        {
+            "ResourceType": "Stream",
+            "Id": "WS_ROSE",
+            "Name": "WS_ROSE",
+            "TypeId": "docs-omf-weather-gen1",
+            "ResourceType": "Stream",
+            "Tags": [
+                "Weather",
+                "Low Resolution",
+                "Gen1"
+            ],
+            "Metadata": {
+                "Site": "Rosecliff"
+            },
+            "DataItemFields": [
+                {
+                    "Id": "Timestamp",
+                    "Name": "Timestamp",
+                    "TypeCode": "DateTime",
+                    "IsKey": true
+                },
+                {
+                    "Id": "SolarRadiation",
+                    "Name": "Solar Radiation",
                     "TypeCode": "Int32",
                     "IsKey": false
                 },
@@ -268,14 +232,54 @@ HTTP 200 OK
                     "IsKey": false
                 }
             ]
-        }
-    ]
+        },
+        {
+            "Id": "WS_WINT",
+            "Name": "WS_WINT",
+            "TypeId": "docs-omf-weather-gen2", 
+            "ResourceType": "Stream",           
+            "Tags": [
+                "Weather",
+                "High Resolution",
+                "Gen2"
+            ],
+            "Metadata": {
+                "Site": "Winterthur"
+            },
+            "DataItemFields": [
+                {
+                    "Id": "Timestamp",
+                    "Name": "Timestamp",
+                    "TypeCode": "DateTime",
+                    "IsKey": true
+                },
+                {
+                    "Id": "SolarRadiation",
+                    "Name": "Solar Radiation",
+                    "TypeCode": "Int32",
+                    "IsKey": false
+                },
+                {
+                    "Id": "AmbientTemperature",
+                    "Name": "Ambient Temperature",
+                    "TypeCode": "Double",
+                    "IsKey": false
+                },
+                {
+                    "Id": "CloudCover",
+                    "Name": "Cloud Cover",
+                    "TypeCode": "Int32",
+                    "IsKey": false                
+                 }
+             ]
+         }
+     ]
 }
 ```
 
 #### Action – Page through the ineligible data items found by the query
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/IneligibleDataItems/weather
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/IneligibleDataItems/weather
 ```
 
 #### Expected result
@@ -294,7 +298,7 @@ HTTP 200 OK
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
 ```
 
 #### Expected result
@@ -320,7 +324,7 @@ HTTP 200 OK
                     "Label": "{IdentifyingValue} Name"
                 },
                 {
-                    "Source": "Tags",
+                    "Source": "PropertyId",
                     "Keys": [
                         "Weather",
                         "Low Resolution",
@@ -332,27 +336,6 @@ HTTP 200 OK
                 },
                 {
                     "Source": "Metadata",
-                    "Keys": [
-                        "Site"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "Timestamp"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "SolarRadiation"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
                     "Keys": [
                         "AmbientTemperature"
                     ],
@@ -368,9 +351,34 @@ HTTP 200 OK
                 {
                     "Source": "PropertyId",
                     "Keys": [
+                        "SolarRadiation"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
                         "Temperature"
                     ],
                     "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "Metadata",
+                    "Keys": [
+                        "Site"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "Tags",
+                    "Keys": [
+                         "Weather",
+                        "Low Resolution",
+                        "High Resolution",
+                        "Gen1",
+                        "Gen2",
+                    ],
+                    "Label": "{IdentifyingValue} {Tags}"
                 }
             ]
         }
@@ -386,11 +394,11 @@ For ease, grab all of the field sets that are available.
 
 Set the data view’s `DataFieldSets` property as the contents of the `AvailableFieldSets` response.
 ```json
-PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [
     { 
       "Id": "weather",
@@ -413,31 +421,6 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                     "Label": "{IdentifyingValue} Name"
                 },
                 {
-                    "Source": "Tags",
-                    "Keys": [
-                        "Weather",
-                        "Low Resolution",
-                        "High Resolution",
-                        "Gen1",
-                        "Gen2",
-                    ],
-                    "Label": "{IdentifyingValue} Tags"
-                },
-                {
-                    "Source": "Metadata",
-                    "Keys": [
-                        "Site"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "SolarRadiation"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
                     "Source": "PropertyId",
                     "Keys": [
                         "AmbientTemperature"
@@ -454,17 +437,41 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                 {
                     "Source": "PropertyId",
                     "Keys": [
+                        "SolarRadiation"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
                         "Temperature"
                     ],
                     "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "Metadata",
+                    "Keys": [
+                        "Site"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "Tags",
+                    "Keys": [
+                        "Weather",
+                        "Low Resolution",
+                        "High Resolution",
+                        "Gen1",
+                        "Gen2",
+                    ],
+                    "Label": "{IdentifyingValue} {Tags}"
                 }
             ],
        },
   ],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
 }
 ```
 #### Expected Result
@@ -476,21 +483,23 @@ Now, if we return to the available field sets, all data fields are used so none 
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
 ```
 
 #### Expected result
 No available data fields.
+
 ```json
 {
     "TimeOfResolution": "(a timestamp in ISO 8601 format)",
     "Items": []
 }
 ```
+And if we request data, the table contains multiple fields in addition to the `IndexField`.
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
@@ -500,31 +509,32 @@ An array of json values similar to:
 [
     {
         "Timestamp.0": "2019-10-21T18:00:00Z",
-        "Id.1": "WS_WINT",
-        "Name.2": "WS_WINT",
-        "Tags.3": "Weather, High Resolution, Gen2",
-        "Site.4": "Winterthur",
-        "SolarRadiation.5": 108,
-        "AmbientTemperature.6": 1.0805517883941373,
-        "CloudCover.7": 2,
-        "Temperature.8": null,
+        "Id.1": "WS_BILT",
+        "Name.2": "WS_BILT",
+        "AmbientTemperature.3": null,
+        "CloudCover.4": null,
+        "SolarRadiation.5": 165,
+         "Temperature.6": 33.589619124193831,
+        "Site.7": "Biltmore",
+        "Tags.8": "Weather, High Resolution, Gen1",
         "Id.9": "WS_ROSE",
         "Name.10": "WS_ROSE",
-        "Tags.11": "Weather, Low Resolution, Gen1",
-        "Site.12": "Rosecliff",
+        "AmbientTemperature.11": null,
+        "CloudCover.12": null,
         "SolarRadiation.13": 132,
-        "AmbientTemperature.14": null,
-        "CloudCover.15": null,
-        "Temperature.16": 14.537369185607899,
-        "Id.17": "WS_BILT",
-        "Name.18": "WS_BILT",
-        "Tags.19": "Weather, High Resolution, Gen1",
-        "Site.20": "Biltmore",
-        "SolarRadiation.21": 165,
-        "AmbientTemperature.22": null,
-        "CloudCover.23": null,
-        "Temperature.24": 33.589619124193831,
+        "Temperature.14": 14.537369185607899,
+        "Site.15": "Rosecliff",
+        "Tags.16": "Weather, Low Resolution, Gen1",
+        "Id.17": "WS_WINT",
+        "Name.18": "WS_WINT",
+        "AmbientTemperature.19": 1.0805517883941373,
+        "CloudCover.20": 2,
+        "SolarRadiation.21": 108,
+        ""Temperature.22": null,
+        "Site.23": "Winterthur",
+        "Tags.24": "Weather, High Resolution, Gen2"
     },
+]
 ```
 
 There was ambiguity in the field mapping identifiers, so the data views engine suffixed each field mapping id ordinally.
@@ -534,16 +544,16 @@ The suffixing (to ensure uniqueness) is done for the sake of client behavior, as
 #### Action – Want csv?
 Resubmit the data query with an additional query parameter, `&form=csvh`
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}&form=csvh
 ```
 
 #### Expected result
 Rows of CSV values similar to:
 ```csv
-Timestamp.0,Id.1,Name.2,Tags.3,Site.4,SolarRadiation.5,AmbientTemperature.6,CloudCover.7,Temperature.8,Id.9,Name.10,Tags.11,Site.12,SolarRadiation.13,AmbientTemperature.14,CloudCover.15,Temperature.16,Id.17,Name.18,Tags.19,Site.20,SolarRadiation.21,AmbientTemperature.22,CloudCover.23,Temperature.24
-2019-10-21T18:00:00.0000000Z,WS_WINT,WS_WINT,"Weather, High Resolution, Gen2",Winterthur,108,1.080551788,2,,WS_ROSE,WS_ROSE,"Weather, Low Resolution, Gen1",Rosecliff,132,,,14.53736919,WS_BILT,WS_BILT,"Weather, High Resolution, Gen1",Biltmore,165,,,33.58961912
-2019-10-21T20:00:00.0000000Z,WS_WINT,WS_WINT,"Weather, High Resolution, Gen2",Winterthur,109,2.501105722,3,,WS_ROSE,WS_ROSE,"Weather, Low Resolution, Gen1",Rosecliff,139,,,14.76498991,WS_BILT,WS_BILT,"Weather, High Resolution, Gen1",Biltmore,157,,,32.41209639
+Timestamp.0,Id.1,Name.2,AmbientTemperature.3,CloudCover.4,SolarRadiation.5,Temperature.6,Site.7,Tags.8,Id.9,Name.10,AmbientTemperature.11,CloudCover.12,SolarRadiation.13,Temperature.14,Site.15,Tags.16,Id.17,Name.18,AmbientTemperature.19,CloudCover.20,SolarRadiation.21,Temperature.22,Site.23,Tags.24
+2019-10-21T18:00:00.0000000Z,WS_BILT,WS_BILT,,,165,33.58961912,Biltmore,"Weather, High Resolution, Gen1",WS_ROSE,WS_ROSE,,,132,14.53736919,Rosecliff,"Weather, Low Resolution, Gen1",WS_WINT,WS_WINT,1.080551788,2,108,,Winterthur,"Weather, High Resolution, Gen2"
+2019-10-21T20:00:00.0000000Z,WS_BILT,WS_BILT,,,157,32.41209639,Biltmore,"Weather, High Resolution, Gen1",WS_ROSE,WS_ROSE,,,139,14.76498991,Rosecliff,"Weather, Low Resolution, Gen1",WS_WINT,WS_WINT,2.501105722,3,109,,Winterthur,"Weather, High Resolution, Gen2"
 ```
 
 ### Include data items
@@ -587,13 +597,14 @@ You may use multiple grouping fields. This is effectively “group by X then Y t
 Grouping fields are a property of the data view, and are an array of `Field` objects. This means the same Field objects contained in the available or included field sets may be reused directly as grouping fields.
 
 #### Action
-Grouping by metadata is likely to be most satisfying, but here, start with grouping by data item id. In the `DataView` object, copy the field with `{ Source: “Metadata”, Keys: [ "Site" ] }`, and add it to the array of `.GroupingFields`.
+To group by metadata, copy the field in the `DataView` object with `{ Source: “Metadata”, Keys: [ "Site" ] }`, and add it to the array of `.GroupingFields`.
+
 ```json
-PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [
     { 
       "Id": "weather",
@@ -616,27 +627,9 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                     "Label": "{IdentifyingValue} Name"
                 },
                 {
-                    "Source": "Tags",
-                    "Keys": [
-                        "Weather",
-                        "Low Resolution",
-                        "High Resolution",
-                        "Gen1",
-                        "Gen2",
-                    ],
-                    "Label": "{IdentifyingValue} Tags"
-                },
-                {
                     "Source": "PropertyId",
                     "Keys": [
-                        "SolarRadiation"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "AmbientTemperature"
+                       "AmbientTemperature"
                     ],
                     "Label": "{IdentifyingValue} {FirstKey}"
                 },
@@ -650,9 +643,26 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                 {
                     "Source": "PropertyId",
                     "Keys": [
+                        "SolarRadiation"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },                {
+                    "Source": "PropertyId",
+                    "Keys": [
                         "Temperature"
                     ],
                     "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "Tags",
+                    "Keys": [
+                        "Weather",
+                        "Low Resolution",
+                        "High Resolution",
+                        "Gen1",
+                        "Gen2",
+                    ],
+                    "Label": "{IdentifyingValue} Tags"
                 }
             ],
        },
@@ -665,10 +675,9 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
       ],
       "Label": "{IdentifyingValue} {FirstKey}"
     }
-  ],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  ],  
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"
 }
 ```
 
@@ -679,7 +688,7 @@ HTTP 204 No Content
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
@@ -691,42 +700,42 @@ HTTP 200 OK
 [
     {
         "Timestamp": "2019-10-21T18:00:00Z",
+        "Site": "Biltmore",
         "Id": "WS_BILT",
         "Name": "WS_BILT",
-        "Tags": "Weather, High Resolution, Gen1",
-        "Site": "Biltmore",
-        "SolarRadiation": 165,
         "AmbientTemperature": null,
         "CloudCover": null,
+        "SolarRadiation": 165,
         "Temperature": 33.589619124193831
+        "Tags": "Weather, High Resolution, Gen1",
     },
     ... 
     (rest of the values for Site:Biltmore), then
     ...
     {
         "Timestamp": "2019-10-21T18:00:00Z",
+        "Site": "Rosecliff",
         "Id": "WS_ROSE",
         "Name": "WS_ROSE",
-        "Tags": "Weather, Low Resolution, Gen1",
-        "Site": "Rosecliff",
-        "SolarRadiation": 132,
         "AmbientTemperature": null,
         "CloudCover": null,
-        "Temperature": 14.537369185607899
+        "SolarRadiation": 132,
+        "Temperature": 14.537369185607899,
+        "Tags": "Weather, Low Resolution, Gen1"
     },
     ... 
     (rest of the values for Site:Rosecliff), then
     ...
     {
         "Timestamp": "2019-10-21T18:00:00Z",
+        "Site": "Winterthur",
         "Id": "WS_WINT",
         "Name": "WS_WINT",
-        "Tags": "Weather, High Resolution, Gen2",
-        "Site": "Winterthur",
-        "SolarRadiation": 108,
         "AmbientTemperature": 1.0805517883941373,
         "CloudCover": 2,
+        "SolarRadiation": 108,
         "Temperature": null
+        "Tags": "Weather, High Resolution, Gen2",
     },
     ... 
     (rest of the values for Site:Winterthur)
@@ -752,11 +761,11 @@ The data views engine must be told how the streams align across sites. Here, it 
 #### Action
 Move the field used as `GroupingField` over to being the “.IdentifyingField” of the weather data items `FieldSet`.
 ```json
-PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
+PUT /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart
 {
   "Id": "quickstart",
   "Name": "quickstart",
-  "Description": null,
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [
     { 
       "Id": "weather",
@@ -765,15 +774,7 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
   ],
   "DataFieldSets": [
         {
-            "SourceType": "DataItem",
             "QueryId": "weather",
-            "IdentifyingField": {
-                "Source": "Metadata",
-                "Keys": [
-                    "Site"
-                ],
-                "Label": "{IdentifyingValue} {FirstKey}"
-            },
             "DataFields": [
                 {
                     "Source": "Id",
@@ -784,18 +785,6 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                     "Source": "Name",
                     "Keys": [],
                     "Label": "{IdentifyingValue} Name"
-                },
-                {
-                    "Source": "Tags",
-                    "Keys": [],
-                    "Label": "{IdentifyingValue} Tags"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "SolarRadiation"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
                 },
                 {
                     "Source": "PropertyId",
@@ -814,18 +803,48 @@ PUT /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quicks
                 {
                     "Source": "PropertyId",
                     "Keys": [
+                        "SolarRadiation"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
+                        "CloudCover"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
                         "Temperature"
                     ],
                     "Label": "{IdentifyingValue} {FirstKey}"
-                }
+                },
+                {
+                    "Source": "Tags",
+                    "Keys": [
+                        "Weather",
+                        "Low Resolution",
+                        "High Resolution",
+                        "Gen1",
+                        "Gen2",
+                    ],
+                    "Label": "{IdentifyingValue} Tags"
             ],
+             "IdentifyingField": {
+                "Source": "Metadata",
+                "Keys": [
+                    "Site"
+                ],
+                "Label": "{IdentifyingValue} {FirstKey}"
+            }
        },
   ],
   "GroupingFields": [],
+  "IndexTypeCode": "DateTime",
   "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
-}
+  }
 ```
 
 #### Expected result
@@ -835,7 +854,7 @@ HTTP 204 No Content
 
 #### Action
 ```text
-GET /api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Data/Interpolated
 ?startIndex={your_val_here}&endIndex={your_val_here}&interval={your_val_here}
 ```
 
