@@ -7,7 +7,8 @@ uid: DataViewsFieldSets
 A data view is likely to include multiple fields of information. One field serves as the index (e.g. Timestamp), and others contain information from or about the data items in the data view `DataFieldSet`s. Data field sets are collections of fields originating from the same query.
 
 ### Available field sets
-The typical workflow for adding data field sets, and the data fields in them, is to use or adapt the [available field sets](xref:DataViewsAvailableFieldSets) that resolve for the data view. This workflow is demonstrated in [Define a data view](xref:DataViewsQuickStartDefine).
+The typical workflow for adding data field sets, and the data fields in them, is to use or adapt the [available field sets](xref:DataViewsAvailableFieldSets) that resolve for the data view. This workflow is demonstrated in [Define a Data View](xref:DataViewsQuickStartDefine).
+
 
 #### Example: Defining data field sets
 Let us take a subset of the power inverter streams in the [stream examples](xref:DataViewsExampleScenario), returned by the `Query` [value](xref:sdsSearching) `"TypeId:docs-pi-inverter AND Site:Winterthur"`. 
@@ -68,7 +69,7 @@ Two things are clearly undesirable here:
 1. The field identifiers are ambiguous
 2. The result is sparse: the data views engine has not been told how to align the data items across groups, so it has no idea that all "Power In" streams are similar.
 
-To fix this, we will add a `.IdentifyingField` to the field set.
+To fix this, we will add an `.IdentifyingField` to the field set.
 
 #### Identifying field
 If the field set resolves to multiple data items in any group (or if grouping is not used), then a field should be designated as the `.IdentifyingField` of the field set. If one lone criterion is not a sufficient or useful way of disambiguating the fields, then [grouping](xref:DataViewsGrouping) by additional criteria may be necessary. Field from field sources `FieldSource.Id`, `FieldSource.Name`, `FieldSource.Metadata`, `FieldSource.Tags` can be used as an identifying field. Keys are required for identifying fields with the source type of `FieldSource.Metadata` and `FieldSource.Tags`. Keys are not applicable for identifying fields with the source type of `FieldSource.Id` and `FieldSource.Name`.
