@@ -22,7 +22,7 @@ These are available via the [Resolved Data View API](xref:ResolvedDataViewAPI). 
 #### Paged collections
 Some of this information is exposed as paged collections, which accept parameters controlling `skip` and `count` within the collection. 
 
-Paged responses include a header called `FirstPage`, linking to the first page of results. If the results extend into an additional page, a `NextPage` header is included with a hyperlink to the next page.
+Paged responses include a `Link` header, with a hyperlink to the first page of results. If the results extend into an additional page, a hyperlink to the next page will also be included in the `Link` header.
 
 Using these hyperlinks is the recommended method of paging. Alternatively, constructing paging links by manually incrementing the `skip` is allowable, though in this case it is recommended to specify cache behavior of "preserve".
 
@@ -71,6 +71,12 @@ Holds an item that was resolved at a specific time.
 | Item | T | A resolved object
 | TimeOfResolution | DateTimeOffset | The time the item was resolved |
 
+### CacheBehavior enumeration
+|Name| Enumeration Id | Description  |
+|--|--|--|
+| Preserve | 1 | Use cached resource values |
+| Refresh | 2 | Re-resolve the resource values |
+
 ### DataItem
 |Property | Type | Details |
 |--|--|--|
@@ -78,7 +84,7 @@ Holds an item that was resolved at a specific time.
 | Name | string | Friendly name
 | Description | string | Extended text description
 | TypeId | string | The unique identifier of the data item's type
-| ResourceType | DataItemResourceType | The resource type. See `DataView` [documentation](xref:DataViewsOverview). Currently, the supported resource type is `.Stream`
+| ResourceType | DataItemResourceType | The resource type. See below. Currently, the supported resource type is `.Stream`
 | Tags | IReadOnlyList<string> | Tag strings assigned to the data item
 | Metadata | IReadOnlyDictionary<string, string> | Metadata key-value pairs assigned to the data item
 | DataItemFields | IReadOnlyList<DataItemField> | Data fields
@@ -86,9 +92,9 @@ Holds an item that was resolved at a specific time.
 ### DataItemResourceType enumeration
 Describes the resource type of a data item.
 
-|Name| Description  |
-|--|--|
-| Stream | A stream from the Sequential Data Store |
+|Name| Enumeration Id | Description  |
+|--|--|--|
+| Stream | 1 | A stream from the Sequential Data Store |
 
 ### DataItemField
 A field of a data item where values come from.  
@@ -106,7 +112,7 @@ A group of the data view. The overall collection of data items is divided into g
 
 |Property | Type | Details |
 |--|--|--|
-| Values | IReadOnlyList<string> | This groups's value of each `.GroupingFields` defined on the `DataView`
+| GroupingValues | IReadOnlyList<string> | This groups's value of each `.GroupingFields` defined on the `DataView`
 | DataItems | IReadOnlyDictionary<string, IReadOnlyList<DataItem>> | The data items in this group
 
 ### FieldMapping
@@ -124,11 +130,12 @@ Details on the provenance on every field of data:
 ### FieldKind enumeration
 Field type used in the mapping.
 
-|Name| Description  |
-|--|--|
-|IndexField | Maps to an index field.
-|GroupingField | Maps to a grouping field.
-|DataField | Maps to a data field.
+|Name| Enumeration Id | Description  |
+|--|--|--|
+|IndexField | 1 | Maps to an index field.
+|GroupingField | 2 | Maps to a grouping field.
+|DataField | 3 | Maps to a data field.
+|FieldId | 4 | Maps to a field id field for a narrow shape data view.
 
 ### DataMapping
 Per-group details of the data that a `FieldMapping` targets:
@@ -138,6 +145,8 @@ Per-group details of the data that a `FieldMapping` targets:
 | TargetId | string | The unique identifier of the target data item
 | TargetFieldKey | string | The specific targeted part of the data item, if any.
 | TypeCode | SdsTypeCode | The value type
+| FieldSetIndex | Nullable<int> | The position of the corresponding field set within the data view
+| FieldIndex | Nullable<int> | The position of the corresponding field within its field set
 
 ### Statistics
 General statistics about how the data view resolved:
@@ -146,4 +155,24 @@ General statistics about how the data view resolved:
 |--|--|--|
 | DataItemCount | int | The total count of data items resolved in the data view
 | GroupCount | int | The total count of groups resolved in the data view
-| FieldCount | int | The total count of fields resolved in the data view
+| FieldMappingCount | int | The total count of field mappings resolved by the data view
+| DataFieldSets | IReadOnlyList<DataFieldSetStatistics> | Statistics about how the data view data field sets resolved
+
+### DataFieldSetStatistics
+Statistics about how a data field set resolved:
+
+|Property | Type | Details |
+|--|--|--|
+| DataItemCount | int | The total count of data items resolved for the data field set
+| UnmappedDataItemCount | int | The total count of data items not referenced by a field mapping resolved for the data field set
+| DataFields | IReadOnlyList<DataFieldStatistics> | Statistics about how the data field set data fields resolved
+
+### DataFieldStatistics
+Statistics about how a data field resolved:
+
+|Property | Type | Details |
+|--|--|--|
+| FieldMappingCount | int | The total count of field mappings associated with the data field
+| DataMappingCount | int | The total count of data mappings associated with the data field
+| EmptyDataMappingCount | int | The total count of data mappings associated with the data field that do not map to any data
+| UnmappedGroupCount | int | The total count of groups that do not map to any field mappings in the data field
