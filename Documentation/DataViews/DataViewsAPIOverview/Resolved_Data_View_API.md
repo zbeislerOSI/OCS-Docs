@@ -606,5 +606,4 @@ HTTP 200 OK
 ```csharp
    Task<ResolvedItem<Statistics>> GetStatisticsAsync(string id, CacheBehavior cache = CacheBehavior.Preserve);
 ```
-}
-```
+
