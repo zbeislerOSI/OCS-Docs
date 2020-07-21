@@ -11,6 +11,8 @@ This section uses example streams to illustrate data view concepts. The streams 
 
 Each solar inverter is associated with some physical location. There is a weather stream for each location. 
 
+Use the [bulk uploader](https://github.com/osisoft/OSI-Samples-OCS/tree/master/advanced_samples/Bulk_Upload/DotNet) to create the types and streams from the example scenario. See the [configuration files](https://github.com/osisoft/OSI-Samples-OCS/tree/master/advanced_samples/Bulk_Upload/SampleCollections/DataviewQuickStart) specific to the data views example scenario.
+
 Data views are made to bring order to a tangle of data streams. Despite appearing complex and verbose, this scenario is likely much simpler than your real-world data. This scenario illustrates how data views can render real-world data consumable for data science.
 
 ## Solar inverter streams
