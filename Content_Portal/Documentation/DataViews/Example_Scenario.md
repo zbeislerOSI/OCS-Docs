@@ -2,14 +2,16 @@
 uid: DataViewsExampleScenario
 ---
 
-# Example Scenarios
+# Example Scenario
 
 This section uses example streams to illustrate data view concepts. The streams are of three types:
 - docs-pi-inverter | _simulates solar power inverter data collected via PI to OCS_
 - docs-omf-weather-gen1 | _simulates weather data collected from an OMF source_
 - docs-omf-weather-gen2 | _simulates weather data collected from an OMF source, but with some additional/renamed properties_
 
-Each solar inverter is associated with some physical location. There is a weather stream for each location. 
+Each solar inverter is associated with a physical location. There is a weather stream for each location. 
+
+Use the [bulk uploader](https://github.com/osisoft/OSI-Samples-OCS/tree/master/advanced_samples/Bulk_Upload/DotNet) to create the types and streams from the example scenario. See the configuration files specific to the data views example scenario in the [sample collections](https://github.com/osisoft/OSI-Samples-OCS/tree/master/advanced_samples/Bulk_Upload/SampleCollections/DataviewQuickStart).
 
 Data views are made to bring order to a tangle of data streams. Despite appearing complex and verbose, this scenario is likely much simpler than your real-world data. This scenario illustrates how data views can render real-world data consumable for data science.
 
