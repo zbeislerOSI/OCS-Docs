@@ -34,7 +34,6 @@ The response includes a status code and a response body.
 | Status code | Body Type | Description |
 |--|--|--|
 | 200 OK | `DataView` | The requested data view |
-| 400 Bad Request | error | The request is not valid. See the response body for details |
 | 403 Forbidden | error | You are not authorized to view the requested data view |
 | 404 Not Found | error | The specified data view identifier is not found |
 | 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
@@ -55,9 +54,8 @@ Content-Type: application/json
   ],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
-  "IndexTypeCode": "DateTime"
+  "IndexTypeCode": "DateTime",
+  "Shape": "Standard"  
 }
 ```
 
@@ -92,7 +90,6 @@ The response includes a status code and a body.
 | Status code | Body Type | Description |
 |--|--|--|
 | 200 OK | `DataView[]` | A page of data views. A response header, `Total-Count`, indicates the total size of the collection. |
-| 400 Bad Request | error | The request is not valid. See the response body for details |
 | 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
 
 #### Response headers
@@ -253,6 +250,11 @@ Content-Type: application/json
 }
 ```
 
+### .NET client libraries method
+```csharp
+   Task<DataView> GetOrCreateDataViewAsync(DataView dataView);
+```
+
 ## `Create or Update Data View`
 If a data view with the same id already exists, it is updated to the specified value. Otherwise, a new data view is created.
 
@@ -279,13 +281,18 @@ A `DataView` object whose `Id` matches the `dataViewId` in the URL.
   "Id": "demo",
   "Name": "demo",
   "Description": "demonstration",
+  "IndexField": { "Label": "Timestamp" },
   "Queries": [],
   "DataFieldSets": [],
   "GroupingFields": [],
-  "Shape": "Standard",
-  "IndexField": { "Label": "Timestamp" },
   "IndexTypeCode": "DateTime"
-}
+  "Shape": "Standard"
+ }
+```
+
+### .NET client libraries method
+```csharp
+   Task<DataView> CreateOrUpdateDataViewAsync(DataView dataView);
 ```
 
 ### Response
@@ -322,7 +329,12 @@ The response includes a status code and, in some cases, a body.
 | Status code | Body Type | Description |
 |--|--|--|
 | 204 No Content | (empty) | Successfully deleted the data view |
-| 400 Bad Request | error | The request is not valid. See the response body for details |
 | 403 Forbidden | error | You are not authorized for this operation |
 | 404 Not Found | error | The specified data view identifier is not found |
 | 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
+
+### .NET client libraries method
+
+```csharp
+   Task DeleteDataViewAsync(string id);
+```
