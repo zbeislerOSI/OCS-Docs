@@ -2,7 +2,7 @@
 uid: DataViewShape
 ---
 
-# Data View Shape
+# Data view shape
 
 Data views may be set to resolve as a standard shape or a narrow shape. 
 
