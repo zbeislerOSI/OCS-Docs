@@ -9,7 +9,8 @@ Access rights to data views and their data are configurable in several ways. Per
 This section covers information specific to access control within the data views feature. For background information about access control throughout OSIsoft Cloud Services and how to configure the access control objects, see [Role-based access control](xref:accessControl).
 
 ## Data views collection access control
-The data views collection access control list is used to control which users and clients are authorized to create data views. Only users and clients with "Write" access rights can create data views. See [CommonAccessRightsEnum](xref:accessControl#commonaccessrightsenum) for a complete list of available access rights.
+The data views collection access control list is used to control which users and clients are authorized to create data views. Only users and clients with "Write" access rights can create data views. 
+See [CommonAccessRightsEnum](xref:accessControl#commonaccessrightsenum) for a complete list of available access rights.
 
 The data views collection access control list also determines the default access control list for individual data views. Note that changing the collection level access control list does not affect existing data views as the collection level access control list is only used when the data view is first created. Once the data view exists, data view level access control is managed independently of collection level access control. See Data Views Access Control for more information on securing individual data views.
 
