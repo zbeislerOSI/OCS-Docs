@@ -2,21 +2,15 @@
 uid: DataViewAPI
 ---
 
-# Data view API
+# Preview Data API
+The Preview Data API allows users to [retrieve data](xref:DataViewsGettingData) for a specified data view.  This API is one portion of the [data views API](xref:DataViewsAPIOverview).
 
-The `DataView` API provides mechanisms to create, read, update, and delete data views. This is one portion of the whole [data views API](xref:DataViewsAPIOverview).
-
-For a description of the `DataView` object type, see the [DataView documentation](xref:DataViewsOverview).
-
-Other sections of documentation describe how to [secure data views](xref:DataViewsSecuringDataViews) by setting their ownership and permissions, and the corresponding [API](xref:DataViewsAccessControlAPI).
-
-
-## `Get Data View`
-Returns the specified data view.
+## `Get Data View Data`
+Get data for the provided data view and index parameters with paging. See [documentation on paging](xref:DataViewsGettingData#paging) for further information.
 
 ### Request
 ```text
-GET api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
+POST /api/v1-preview/tenants/{tenantId}/namespaces/{namespaceId}/preview/dataviews/data/interpolated?startIndex={startIndex}&endIndex={endIndex}&interval={interval}&form={form}&countPerGroup={countPerGroup}&groupCount={groupCount}&continuationToken={continuationToken}&count={count}
 ```
 ### Parameters
 `string tenantId`  
@@ -25,198 +19,72 @@ The tenant identifier
 `string namespaceId`  
 The namespace identifier
 
-`string dataViewId`  
-The data view identifier
+`[optional] string startIndex`  
+The requested start index, inclusive. The default value is the `.DefaultStartIndex` of the data view. Optional if a default value is specified.
 
-### Response
-The response includes a status code and a response body.
+`[optional] string endIndex`  
+The requested end index, inclusive. The default value is the `.DefaultEndIndex` of the data view. Optional if a default value is specified.
 
-| Status code | Body Type | Description |
-|--|--|--|
-| 200 OK | `DataView` | The requested data view |
-| 403 Forbidden | error | You are not authorized to view the requested data view |
-| 404 Not Found | error | The specified data view identifier is not found |
-| 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
+`[optional] string interval`  
+The requested interval between index values. The default value is the `.DefaultInterval` of the data view. Optional if a default is specified.
 
-#### Example response body
+`[optional] int countPerGroup`  
+The number of rows per group. It overrides the endIndex.
+
+`[optional] int groupCount`  
+The requested number of groups.
+
+`[optional] string form`  
+The requested data [output format](xref:DataViewsGettingData#format). Output formats: `default`, `table`, `tableh`, `csv`, `csvh`.
+
+`[optional] string continuationToken`  
+Used only when [paging](xref:DataViewsGettingData#paging). Not specified when requesting the first page of data.
+
+`[optional] int count`  
+The requested page size. The default value is 1000. The maximum is 250,000.
+
+#### Example request body
 ```json
-HTTP 200 OK
-Content-Type: application/json
 {
-  "Id": "demo",
-  "Name": "demo",
-  "IndexField": { "Label": "Timestamp" },
+  "IndexField": { "Label": "Time" },
   "Queries": [
     { 
       "Id": "weather",
+      "Kind": "Stream",
       "Value":"*weather*" 
     }
   ],
-  "DataFieldSets": [],
-  "GroupingFields": [],
-  "IndexTypeCode": "DateTime",
-  "Shape": "Standard"  
-}
-```
-
-### .NET client libraries method
-```csharp
-   Task<DataView> GetDataViewAsync(string id);
-```
-
-## `Get Data Views`
-Returns a list of data views.
-
-### Request
-```text
-GET api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews?skip={skip}&count={count}
-```
-### Parameters
-`string tenantId`  
-The tenant identifier
-
-`string namespaceId`  
-The namespace identifier
-
-`[optional] int skip`  
-An optional parameter representing the zero-based offset of the first data view to retrieve. If not specified, a default value of 0 is used.
-
-`[optional] int count`  
-An optional parameter representing the maximum number of data views to retrieve. If not specified, a default value of 100 is used.
-
-### Response
-The response includes a status code and a body.
-
-| Status code | Body Type | Description |
-|--|--|--|
-| 200 OK | `DataView[]` | A page of data views. A response header, `Total-Count`, indicates the total size of the collection. |
-| 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
-
-#### Response headers
-Successful (200 OK) responses include:
-
-| Header | Description |
-|--|--|
-| Total-Count | The total count of data views visible to the current user |
-| Link | Hyperlinks to the first page and next page of results as applicable |
-
-#### Example response body
-```json
-HTTP 200 OK
-Content-Type: application/json
-[
-  {
-    "Id": "demo view 1",
-    ... etc.
-  },
-  {
-    "Id": "demo view 2",
-    ... etc.
-  }
-]
-```
-
-### .NET client libraries method
-```csharp
-   Task<IEnumerable<DataView>> GetDataViewsAsync(int skip = 0, int count = 100);
-```
-
-## `Create Data View`
-Create a new data view with a system-generated identifier.
-### Request
-```text
-POST api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews
-```
-### Parameters
-`string tenantId`  
-The tenant identifier
-
-`string namespaceId`  
-The namespace identifier
-
-### Request body
-A `DataView` object whose `Id` is `null` or unspecified.
-
-#### Example request body
-```json
-{
-  "Name": "demo",
-  "Description": "demonstration",
-  "IndexField": { "Label": "Timestamp" },
-  "Queries": [],
-  "DataFieldSets": [],
-  "GroupingFields": [],  
-  "IndexTypeCode": "DateTime",
-  "Shape": "Standard"
-}
-```
-
-### Response
-The response includes a status code and a body.
-
-| Status code | Body Type | Description |
-|--|--|--|
-| 201 Created | `DataView` | The data view as persisted, including values for optional parameters that were omitted in the request. |
-| 400 Bad Request | error | The request is not valid. See the response body for details |
-| 403 Forbidden | error | You are not authorized to create a data view |
-| 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
-
-#### Example response body
-```json
-HTTP 200 OK
-Content-Type: application/json
-{
-  "Id": "c79630cc-21dc-483e-8b37-46880e92c456",
-  "Name": "demo",
-  "Description": "demonstration",
-  "IndexField": { "Label": "Timestamp" }, 
-  "Queries": [],
-  "DataFieldSets": [],
+  "DataFieldSets": [
+        {
+            "QueryId": "weather",
+            "DataFields": [
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
+                        "Temperature"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
+                        "Flowrate"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+                {
+                    "Source": "PropertyId",
+                    "Keys": [
+                        "Volume"
+                    ],
+                    "Label": "{IdentifyingValue} {FirstKey}"
+                },
+            ],
+       },
+  ],
   "GroupingFields": [],
   "IndexTypeCode": "DateTime",
   "Shape": "Standard"
-}
-```
-
-### .NET client libraries method
-```csharp
-   Task<DataView> GetOrCreateDataViewAsync(DataView dataView);
-```
-
-## `Get or Create Data View`
-This call creates the specified data view. If a data view with the same id already exists, the existing data view is compared with the specified data view. If they are identical, a redirect (`302 Found`) is returned with the `Location` response header indicating the URL where the stream may be retrieved using a Get function. If the data views do not match, the request fails with `409 Conflict`.
-
-### Request
-```text
-POST api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
-```
-### Parameters
-`string tenantId`  
-The tenant identifier
-
-`string namespaceId`  
-The namespace identifier
-
-`string dataViewId`  
-The data view identifier
-
-### Request body
-A `DataView` object whose `Id` matches the `dataViewId` in the URL.
-
-#### Example request body
-```json
-{
-  "Id": "demo2",
-  "Name": "demo2",
-  "Description": "demonstration 2",
-  "IndexField": { "Label": "Timestamp" },
-  "Queries": [],
-  "DataFieldSets": [],
-  "GroupingFields": [],
-  "IndexTypeCode": "DateTime",
-  "Shape": "Standard"
-  
-  
 }
 ```
 
@@ -225,116 +93,178 @@ The response includes a status code and, in most cases, a body.
 
 | Status code | Body Type | Description |
 |--|--|--|
-| 201 Created | `DataView` | The data view as persisted, including values for optional parameters that were omitted in the request. |
-| 302 Found | (empty) | The specified data view already exists. A response header, `Location`, indicates the URL where the data view may be retrieved with the `GET` verb
-| 400 Bad Request | error | The request is not valid. See the response body for details |
-| 403 Forbidden | error | You are not authorized for this operation
-| 409 Conflict | error | The specified data view conflicts with an existing data view that is not identical. To forcibly update the data view, see *Create Or Update Data View*
+| 200 OK                    | data in the requested format  | Successfully retrieved data.  |
+| 400 Bad Request           | error | The data view or the query parameters are not valid. See the response body for details. |
+| 403 Forbidden             | error | User is not authorized to create a data view.
 | 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
 
-#### Example response body
+#### Response headers
+Successful (200 OK) responses include:
+
+| Header | Description |
+|--|--|
+| Link | Hyperlinks to the first page and next page of data as applicable. Absence of the next link indicates that there is no additional data to be retrieved. |
+
+#### Example response body in default format
+An array of json values. Each json property corresponds to a field mapping. Property names are the field mapping `.Id`s.
 
 ```json
-HTTP 201 Created
+HTTP 200 OK
+Content-Type: application/json
+[
+    {
+        "Time": "2018-01-01T00:00:00Z",
+        "Temperature": 24,
+        "Flowrate": 44,
+        "Volume": 245
+    },
+    {
+        "Time": "2018-01-01T00:00:01Z",
+        "Temperature": 24,
+        "Flowrate": 44,
+        "Volume": 245
+    },
+    {
+        "Time": "2018-01-01T00:00:02Z",
+        "Temperature": 24,
+        "Flowrate": 44,
+        "Volume": 245
+    }
+]
+```
+
+#### Example response body with `form=table`
+
+```json
+HTTP 200 OK
 Content-Type: application/json
 {
-  "Id": "demo2",
-  "Name": "demo2",
-  "Description": "demonstration 2",
-  "IndexField": { "Label": "Timestamp" },
-  "Queries": [],
-  "DataFieldSets": [],
-  "GroupingFields": [],
-  "IndexTypeCode": "DateTime",
-  "Shape": "Standard"
+   "Columns": [
+      {
+          "Name": "Time",
+          "Type": "DateTime"
+      },
+      {
+          "Name": "Temperature",
+          "Type": "Int32"
+      },
+      {
+          "Name": "Flowrate",
+          "Type": "Int32"
+      },
+      {
+          "Name": "Volume",
+          "Type": "Int32"
+      }
+  ],
+  "Rows": [
+    [
+      "2018-01-01T00:00:00Z",
+      24,
+      44,
+      245
+    ],
+    [
+      "2018-01-01T00:00:01Z",
+      24,
+      44,
+      245
+    ],
+    [
+      "2018-01-01T00:00:02Z",
+      24,
+      44,
+      245
+    ]
+  ]
 }
 ```
 
-### .NET client libraries method
-```csharp
-   Task<DataView> GetOrCreateDataViewAsync(DataView dataView);
-```
+#### Example response body with `form=tableh`
 
-## `Create or Update Data View`
-If a data view with the same id already exists, it is updated to the specified value. Otherwise, a new data view is created.
-
-### Request
-```text
-PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
-```
-### Parameters
-`string tenantId`  
-The tenant identifier
-
-`string namespaceId`  
-The namespace identifier
-
-`string dataViewId`  
-The data view identifier
-
-### Request body
-A `DataView` object whose `Id` matches the `dataViewId` in the URL.
-
-#### Example request body
 ```json
+HTTP 200 OK
+Content-Type: application/json
 {
-  "Id": "demo",
-  "Name": "demo",
-  "Description": "demonstration",
-  "IndexField": { "Label": "Timestamp" },
-  "Queries": [],
-  "DataFieldSets": [],
-  "GroupingFields": [],
-  "IndexTypeCode": "DateTime"
-  "Shape": "Standard"
- }
+  "Columns": [
+      {
+          "Name": "Time",
+          "Type": "DateTime"
+      },
+      {
+          "Name": "Temperature",
+          "Type": "Int32"
+      },
+      {
+          "Name": "Flowrate",
+          "Type": "Int32"
+      },
+      {
+          "Name": "Volume",
+          "Type": "Int32"
+      }
+  ],
+  "Rows": [
+      [
+          "Time",
+          "Temperature",
+          "Flowrate",
+          "Volume"
+      ],
+      [
+          "2018-01-01T00:00:00Z",
+          24,
+          44,
+          245
+      ],
+      [
+          "2018-01-01T00:00:01Z",
+          24,
+          44,
+          245
+      ],
+      [
+          "2018-01-01T00:00:02Z",
+          24,
+          44,
+          245
+      ]
+   ]
+}
+```
+
+#### Example response body with `form=csv`
+
+```csv
+HTTP 200 OK
+Content-Type: text/csv
+2018-01-01T00:00:00Z,24,44,245
+2018-01-01T00:00:01Z,24,44,245
+2018-01-01T00:00:02Z,24,44,245
+```
+
+#### Example response body with `form=csvh`
+
+```csv
+HTTP 200 OK
+Content-Type: text/csv
+Time,Temperature,Flowrate,Volume
+2018-01-01T00:00:00Z,24,44,245
+2018-01-01T00:00:01Z,24,44,245
+2018-01-01T00:00:02Z,24,44,245
 ```
 
 ### .NET client libraries method
 ```csharp
-   Task<DataView> CreateOrUpdateDataViewAsync(DataView dataView);
-```
-
-### Response
-The response includes a status code and, in some cases, a body.
-
-| Status code | Body Type | Description |
-|--|--|--|
-| 201 Created | `DataView` | The data view as persisted, including values for optional parameters that were omitted in the request |
-| 204 No Content | (empty) | Successfully updated the data view |
-| 400 Bad Request | error | The request is not valid. See the response body for details |
-| 403 Forbidden | error | You are not authorized for this operation |
-| 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
-
-## `Delete Data View`
-Delete the data view with the specified id.
-
-### Request
-```text
-DELETE api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/{dataViewId}
-```
-### Parameters
-`string tenantId`  
-The tenant identifier
-
-`string namespaceId`  
-The namespace identifier
-
-`string dataViewId`  
-The data view identifier
-
-### Response
-The response includes a status code and, in some cases, a body.
-
-| Status code | Body Type | Description |
-|--|--|--|
-| 204 No Content | (empty) | Successfully deleted the data view |
-| 403 Forbidden | error | You are not authorized for this operation |
-| 404 Not Found | error | The specified data view identifier is not found |
-| 500 Internal Server Error | error | An error occurred while processing the request. See the response body for details |
-
-### .NET client libraries method
-
-```csharp
-   Task DeleteDataViewAsync(string id);
+    IAsyncEnumerable<string> GetPreviewDataInterpolatedAsync(
+            DataView dataView,
+            OutputFormat format = OutputFormat.Default,
+            object startIndex = null,
+            object endIndex = null,
+            object interval = null,
+            int? countPerGroup = null,
+            int? groupCount = null,
+            int? backingPageSize = null,
+            CacheBehavior cache = CacheBehavior.Refresh,
+            CancellationToken cancellationToken = default);
 ```
