@@ -1,7 +1,7 @@
 ---
 uid: ocsPropertiesTable
 ---
-| Field | Type | Optional | Default | Searchable | Details |
+| Field/ Property name | Type | Optional | Default | Searchable | Details/ Description |
 |-------|------|----------|---------|------------|---------|
 |       |      |          |         |            |         |
 |       |      |          |         |            |         |
