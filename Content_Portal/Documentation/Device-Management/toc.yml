@@ -1,0 +1,8 @@
+- name: Device management
+  href: Device-management-overview.md
+- name: Devices
+  href: Devices.md
+- name: Software
+  href: Software.md
+- name: Edge agent
+  href: Edge-Agent.md
