@@ -1,7 +1,7 @@
 ---
 uid: ocsPropertiesTable
 ---
-|*Column name*| Field/ ``Property Name`` | Data Type | Optionality | Default | Searchable | Details/ ``Description`` |
+|*Column name*| Field/ ``Property Name`` | Data Type | Required? | Default | Searchable | Details/ ``Description`` |
 |-------------|-------|------|----------|---------|------------|---------|
 |*What it is*|    name of the property   | data type of the property     |   Is this property optional or required?       |  default value or format       |   Is the property searchable?         |   description of the property      |
 |*Optional?*|       |      |   optional column       |   optional column      |      optional column      |         |
