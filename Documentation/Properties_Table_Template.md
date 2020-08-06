@@ -7,6 +7,7 @@ uid: ocsPropertiesTable
 |*Optional?*|       |      |   optional column       |   optional column      |      optional column      |         |
 |*Example*|  Id     | String     | Required         |         |     Yes       |    Unique identifier     |
 
-1. First share the excel spreadsheet on teams channel
-2. Explain the confusion arising from terminology (property vs properties) in the [types](xref:sdsTypes#typepropertiestable) section
-3. Ask if unifying is really necessary
+Questions for writers:
+1. Do you prefer calling it a `field name` or `property name`?
+2. What about `details` vs `description`?
+3. Please leave your comments in the conversation channel. 
