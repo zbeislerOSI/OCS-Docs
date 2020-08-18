@@ -5,14 +5,14 @@ uid: ocsPropertiesTable
 To be used to accompany API
 
 ## Table description
-| Field/ ``Property Name`` | Data Type | Required | Default | Searchable | Details/ ``Description`` |
+| Property Name | Data Type | Required | Default | Searchable | Description |
 |-------|------|----------|---------|------------|---------|
 |    name of the property   | data type of the property     |   Is this property optional or required?       |  default value or format       |   Is the property searchable?         |   description of the property      |
 |       |      |   This is an optional column       |   This is an optional column      |      This is an optional column      |         |
 
 
 ## Example properties table
-| Field/ ``Property Name`` | Data Type | Required | Default | Searchable | Details/ ``Description`` |
+| Property Name | Data Type | Required | Default | Searchable | Description |
 |-------|------|----------|---------|------------|---------|
 |  Id     | String     | Yes         |         |     Yes       |    Unique identifier     |
 |  GroupingFields     | Field[]     | No        |  []       |     Yes       |   Fields by which the data items are partitioned/grouped     |
