@@ -2,7 +2,7 @@
 uid: ocsPropertiesTable
 ---
 # Properties table
-To be used to accompany API
+To accompany API template
 
 ## Table description
 | Property Name | Data Type | Required | Default | Searchable | Description |
@@ -15,7 +15,7 @@ To be used to accompany API
 | Property Name | Data Type | Required | Default | Searchable | Description |
 |-------|------|----------|---------|------------|---------|
 |  Id     | String     | Yes         |         |     Yes       |    Unique identifier     |
-|  GroupingFields     | Field[]     | No        |  []       |     Yes       |   Fields by which the data items are partitioned/grouped     |
+|  GroupingFields     | Field[]     | No        |  Array       |     Yes       |   Fields by which the data items are partitioned/grouped     |
 
 ## Questions for writers
 Questions for writers:
