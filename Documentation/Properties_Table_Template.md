@@ -7,7 +7,7 @@ To accompany API template
 ## Table description
 | Property Name | Data Type | Default Type | Required | Searchable | Description |
 |-------|------|----------|---------|------------|---------|
-|    name of the property   | data type of the property     |   default value or formatIs      |   this property optional or required?       |   Is the property searchable?         |   description of the property      |
+|    name of the property   | data type of the property     |   default value or formats      |   this property optional or required?       |   Is the property searchable?         |   description of the property      |
 |       |      |   This is an optional column       |   This is an optional column      |      This is an optional column      |         |
 
 
