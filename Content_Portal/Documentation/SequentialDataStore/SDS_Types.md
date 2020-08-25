@@ -8,22 +8,22 @@ The Sequential Data Store (SDS) stores streams of events and provides convenient
 events. Events are stored in SdsStreams (or streams). An SdsType (or type) defines the shape or structure of the 
 event and how to associate events within the stream.
 
-Define simple atomic types, such as integers, floats, strings, arrays, and dictionaries, or 
-complex or nested types using the [Properties collection of SdsTypes](#sdstypeproperty). 
+You can define simple atomic types, such as integers, floats, strings, arrays, and dictionaries, or 
+complex or nested types using the [properties collection of SdsTypes](#sdstypeproperty). 
 
-An SdsType used to define an SdsStream must have a key. A key is a [Property, or a combination of Properties](#sdstypeproperty) 
+An SdsType used to define an SdsStream must have a key. A key is a [property, or a combination of properties](#sdstypeproperty) 
 that constitutes an ordered, unique identity. If the key is ordered so it functions as an index, it is 
 known as the *primary index*. While a timestamp (``DateTime``) is a very common type of index, any type that 
 can be ordered is permitted. Secondary and other indexes are defined in the stream. 
 For more information, see [Indexes](xref:sdsIndexes).
 
-When defining an SdsType, consider how the events will be represented in an SdsStream as the SdsType defines 
+Consider how the events will be represented in an SdsStream as the SdsType defines 
 each event in an SdsStream. An event is a single unit whose properties have values that relate to the 
 index; that is, each property of a type event is related to the event's index. Each event is a single unit.
 
 An SdsType is referenced by its identifier or ``Id`` field. SdsType identifiers must be unique within a namespace.
 
-An SdsType can also refer other SdsTypes by using their identifiers. This enables type re-usability.
+An SdsType can also refer to other SdsTypes by using their identifiers. This enables type reusability.
 Nested types and base types are automatically created as separate types. For more information, see [Type Reusability](#type-reusability).
 
 SdsTypes define how events are read and associated within a collection of SdsStreams. The read 
@@ -35,7 +35,7 @@ SdsTypes are immutable. After an SdsType is created, its definition cannot be up
 In addition, an SdsType may be deleted only if no SdsStreams, SdsStreamViews, or other SdsTypes reference it.
 
 Only the SdsTypes that are used to define SdsStreams or SdsStreamViews are required to be added to the SDS. 
-SdsTypes that define [Properties](#sdstypeproperty) or base types are contained within the parent type so they don't need to be added to the SDS independently.
+SdsTypes that define [properties](#sdstypeproperty) or base types are contained within the parent type so they don't need to be added to the SDS independently.
 
 ## SdsType fields and properties table
 <a name="typepropertiestable"></a>
@@ -157,7 +157,7 @@ Version                 | 22
 VersionArray            | 222
 
 ## SdsTypeProperty
-The Properties collection defines the fields in an SdsType. 
+The properties collection defines the fields in an SdsType. 
 
 The following table shows the required and optional SdsTypeProperty fields. Fields that 
 are not included are reserved for internal SDS use.
@@ -235,7 +235,7 @@ its own ``OSIsoft.Sds.SdsMemberAttribute``. When using the ``SdsMemberAttribute`
 the primary index, set the ``IsKey`` to true.
 
 The SdsType is created with the following parameters. `SdsTypeBuilder` automatically generates 
-unique identifiers. Note that the following table contains only a partial list of fields.
+unique identifiers. Note that the table below contains only a partial list of fields.
 
 | Field            | Values                  |             |                                      |
 |------------------|-------------------------|-------------|--------------------------------------|
@@ -302,7 +302,7 @@ SdsTypes must be built manually when .NET `SdsTypeBuilder` is unavailable. Below
 [JavaScript](https://github.com/osisoft/OSI-Samples-OCS/tree/master/basic_samples/SDS/JavaScript) samples. 
 For samples in other languages, go to [OCS code samples in GitHub](https://github.com/osisoft/OSI-Samples-OCS/tree/master/basic_samples/SDS).
 
-SdsType, SdsTypeProperty, and SdsTypeCode are defined below:
+SdsTypeProperty, SdsTypeCode and SdsType are defined below:
 
 **Python**
 ```python
@@ -635,7 +635,7 @@ var derivedType = new SdsObjects.SdsType({
 ```
 
 ## Type Reusability
-SdsTypes can also refer other types by using their identifiers. This enables type re-usability.
+SdsTypes can also refer to other types by using their identifiers. This enables type reusability.
 For example, if there is a common index and value property for a group of types that may have additional properties,
 a base type can be created with those properties.
 
@@ -739,7 +739,7 @@ If a stream of particular type is to be created, the type should contain at leas
 with a valid index type as described in the [Indexes](xref:sdsIndexes) section. 
 The index property may also be in the base type as shown in the example above.
 
-This works seamlessly when using any programming language, using .NET for example:
+This works seamlessly in any programming language, using .NET for example:
 
 ```csharp
 
@@ -771,13 +771,13 @@ windShieldType.BaseType.Id = "Basic";
 
 ```
 
-Note that if necessary, the base type's Id can also be changed to be more meaningful.
+Note that if necessary, the base type's ID can also be changed to be more meaningful.
 
 # SdsType API
 
 The REST APIs provide programmatic access to read and write SDS data. The APIs in this section 
-interact with SdsTypes. When working in .NET, convenient SDS Client Libraries are available. 
-The ISdsMetadataService interface, accessed using the `SdsService.GetMetadataService()` helper, 
+interact with SdsTypes. When working in .NET, convenient SDS client Libraries are available. 
+The ``ISdsMetadataService`` interface, accessed using the `SdsService.GetMetadataService()` helper, 
 defines the available functions. See [Types](#types) for general type-related information.
 
 ***********************
