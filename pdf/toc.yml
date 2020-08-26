@@ -1,0 +1,12 @@
+- name: OSIsoft Cloud Services
+  href: ../Content_Portal/OCS_Content_Portal_Overview.md
+- name: API Reference
+  href: ../Content_Portal/Documentation/toc.yml
+  topicHref: ../Content_Portal/Documentation/OSIsoft_Cloud_Services.md
+- name: Concepts
+  href: ../Content_Portal/Concepts/toc.yml
+
+
+# - name: OCS Content Portal
+#   href: ../Content_Portal/
+#   homepage: ../Content_Portal/OCS_Content_Portal_Overview.md

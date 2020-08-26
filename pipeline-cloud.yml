@@ -1,0 +1,84 @@
+# DevOps pipeline for Azure cloud deployment
+
+trigger:
+  batch: false
+  branches:
+    include:
+      - clguild-internal
+
+variables:
+  - group: product-readiness.docfx
+  - name: gitRepo
+    value: OCS-Docs
+  - name: gitBranch
+    value: clguild-internal
+
+jobs:
+  - job: Publish
+    pool:
+      # name: 00-OSIManaged-Containers
+      # demands: AgentType -equals osimanagedagent
+      vmImage: 'vs2017-win2016'
+
+    steps:
+      - script: |
+          choco install DocFX --version=2.56.2
+        displayName: 'Install DocFX 2.56.2'
+      - script: |
+          choco install wkhtmltopdf --version=0.12.5
+        displayName: 'Install wkhtmltopdf 0.12.5'
+
+      - script: |
+          echo.
+          dir
+          echo.
+          echo.
+          echo "*** Clone source ***"
+          echo.
+          mkdir source
+          cd source
+          git clone -b $(gitBranch) https://user:$(gitToken)@github.com/osisoft/$(gitRepo).git --recurse-submodules
+          dir
+          cd $(gitRepo)
+          dir
+          echo.
+          echo "*** Build DocFx site ***"
+          echo.
+          docfx.exe ./docfx.json
+          echo.
+          echo "*** Build DocFx PDF ***"
+          echo.
+          docfx.exe pdf ./docfx_pdf.json
+          copy _site_pdf\*.pdf _site
+          echo.
+          echo "*** Contents of _site ***"
+          echo.
+          dir "C:\source\$(gitRepo)\_site"
+          echo.
+          echo "Complete"
+          echo.
+        workingDirectory: 'C:\'
+        displayName: 'Publish DocFX'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: 'C:\source\$(gitRepo)\_site'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          scriptType: 'ps'
+          scriptLocation: 'inlineScript'
+          inlineScript: 'az storage blob delete-batch --source "`$web" --account-name "petersandbox1" --pattern "en/OCS-Docs/*"'
+
+      - task: AzureFileCopy@4
+        inputs:
+          # SourcePath: '$(Build.ArtifactStagingDirectory)'
+          SourcePath: 'C:\source\$(gitRepo)\_site\**'
+          azureSubscription: 'PYueh-Visual Studio Enterprise Subscription(94e67d6d-a3e6-425f-b9af-16971682c94c)'
+          Destination: 'AzureBlob'
+          storage: 'petersandbox1'
+          ContainerName: '$web'
+          BlobPrefix: 'en/OCS-Docs'
