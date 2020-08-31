@@ -80,4 +80,4 @@ Put code example here.
 
 *** Add a line before each API. 
 To see APIs formatted according to the template, go to [Get Stream](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/SDS_Streams.html#get-stream)
-or [Get Data Views](https://ocs-docs.osisoft.com/Content_Portal/Documentation/DataViews/Data_View_API.html#get-data-views)
+or [Get Data Views](https://ocs-docs.osisoft.com/Content_Portal/Documentation/DataViews/DataViewsAPIOverview/Data_View_API.html#get-data-views)
