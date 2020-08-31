@@ -39,11 +39,12 @@ This section is optional.
 
 ### Authorization
 Admin API: Specify the roles authorized to access the resource or execute the API method.  
-Consumer API: Use the text below
-```text
+For consumer API, use the text below:
+
 Access to the resources/collection is controlled by ACL (Access Control List) and Owner objects.
 For more information, see [Role-based access control](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Access_Control.html)
-```
+
+
 ### Response 
 Add API method response.  Enter a description and a type, mention body as well. Use a table to present responses.
 Code example can follow. 
