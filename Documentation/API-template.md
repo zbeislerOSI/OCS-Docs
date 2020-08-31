@@ -41,8 +41,8 @@ This section is optional.
 Admin API: Specify the roles authorized to access the resource or execute the API method.  
 For consumer API, use the text below:
 
-Access to the resources/collection is controlled by ACL (Access Control List) and Owner objects.
-For more information, see [Role-based access control](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Access_Control.html)
+ Access to the resources/collection is controlled by ACL (Access Control List) and Owner objects.
+ For more information, see [Role-based access control](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Access_Control.html).
 
 
 ### Response 
@@ -80,5 +80,6 @@ Put code example here.
 ``` 
 
 *** Add a line before each API. 
-To see APIs formatted according to the template, go to [Get Stream](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/SDS_Streams.html#get-stream)
-or [Get Data Views](https://ocs-docs.osisoft.com/Content_Portal/Documentation/DataViews/DataViewsAPIOverview/Data_View_API.html#get-data-views)
+To see APIs formatted according to the template, see [Get Stream (SdsStreams API > Get Stream)](https://ocs-docs.osisoft.com/Content_Portal/Documentation/SequentialDataStore/SDS_Streams.html#get-stream)
+or [Get Data Views (Data view API > Get Data Views)](https://ocs-docs.osisoft.com/Content_Portal/Documentation/DataViews/DataViewsAPIOverview/Data_View_API.html#get-data-views).
+**Note:** Links might break while OCS-docs is going through an update. 
