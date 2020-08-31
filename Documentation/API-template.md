@@ -42,7 +42,7 @@ Admin API: Specify the roles authorized to access the resource or execute the AP
 Consumer API: Use the text below
 ```text
 Access to the resources/collection is controlled by ACL (Access Control List) and Owner objects.
-For more information, see [Role-based access control](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Access_Control.html).
+For more information, see [Role-based access control](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Access_Control.html)
 ```
 ### Response 
 Add API method response.  Enter a description and a type, mention body as well. Use a table to present responses.
