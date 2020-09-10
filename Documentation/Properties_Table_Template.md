@@ -15,7 +15,7 @@ To accompany API template
 | Property Name | Data Type |  Required | Default Value | Searchable | Description |
 |-------|------|----------|---------|------------|---------|
 |  Id     | String     |     Yes     |        |     Yes       |    Unique identifier     |
-|  Tag     | String[]     |         |   Array       |            |    Gets or sets for OSIsoft internal use only     |
-|  GroupingFields     | Field[]     | No        |  Array       |            |   Fields by which the data items are partitioned/grouped     |
+|  Tag     | String[]     |         |   []       |            |    Gets or sets for OSIsoft internal use only     |
+|  GroupingFields     | Field[]     | No        |  []       |            |   Fields by which the data items are partitioned/grouped     |
 
 
