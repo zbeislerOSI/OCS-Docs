@@ -28,7 +28,10 @@ The example uses the following data view and the streams from the [Stream exampl
 }
 ```
 
-Accessing the ```Get Available Field Sets``` endpoint will show available fields corresponding to stream id, name, tags, metadata, and each property. 
+Accessing the ```Get Available Field Sets``` endpoint will show available fields corresponding to stream id, name, tags, metadata, and each property.
+
+**Note:** The field sets returned are the field sets included in the example PUT command in the Recommended Workflow.[Recommended Workflow](xref:DefineaDataViewRecommendedWorkflow#include-some-of-the-available-fields)
+
 
 ```json
 HTTP 200 OK
