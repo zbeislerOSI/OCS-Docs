@@ -254,84 +254,10 @@ HTTP 200 OK
 ```
 
 ### View fields available to include in the data view
+Available [field sets](xref:DataViewsFieldSets) include fields not currently included in the data view, which are available to be added. Accessing the ```Get Available Field Sets``` endpoint will show available fields corresponding to stream id, name, tags, metadata, and each property. See [Retrieve available field sets](xref:DataViewsAvailableFieldSets) for instructions.
 
-#### Action
-```text
-GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
-```
 
-#### Expected result
-A field set with a source type of "DataItem" pointing to the query identified by "weather". Assuming some data items were retrieved, this field set shows that attributes of the streams (id, name, tags) are available, as well as the values of all metadata keys and properties.
 
-```json
-HTTP 200 OK
-{
-    "TimeOfResolution": "(a timestamp in ISO 8601 format)",
-    "Items": [
-        {
-            "QueryId": "weather",
-            "DataFields": [
-                {
-                    "Source": "Id",
-                    "Keys": [],
-                    "Label": "{IdentifyingValue} Id"
-                },
-                {
-                    "Source": "Name",
-                    "Keys": [],
-                    "Label": "{IdentifyingValue} Name"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "AmbientTemperature"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "CloudCover"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "SolarRadiation"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "PropertyId",
-                    "Keys": [
-                        "Temperature"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "Metadata",
-                    "Keys": [
-                        "Site"
-                    ],
-                    "Label": "{IdentifyingValue} {FirstKey}"
-                },
-                {
-                    "Source": "Tags",
-                    "Keys": [
-                        "Weather",
-                        "Low Resolution",
-                        "High Resolution",
-                        "Gen1",
-                        "Gen2",
-                    ],
-                    "Label": "{IdentifyingValue} Tags"
-                }
-            ]
-        }
-    ]
-}
-```
 
 ### Include some of the available fields
 At this point, if you query for data, the table only contains the `IndexField` – because no fields have been included in the data view. Including fields is a deliberate action, albeit one that is intended to be easy.

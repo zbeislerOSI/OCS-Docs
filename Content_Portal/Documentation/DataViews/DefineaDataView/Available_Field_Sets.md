@@ -30,6 +30,14 @@ The example uses the following data view and the streams from the [Stream exampl
 
 Accessing the ```Get Available Field Sets``` endpoint will show available fields corresponding to stream id, name, tags, metadata, and each property. 
 
+### Action
+```text
+GET /api/v1/Tenants/{tenantId}/Namespaces/{namespaceId}/DataViews/quickstart/Resolved/AvailableFieldSets
+```
+
+### Expected result
+A field set with a source type of "DataItem" pointing to the query identified by "weather". Assuming some data items were retrieved, this field set shows that attributes of the streams (id, name, tags) are available, as well as the values of all metadata keys and properties.
+
 ```json
 HTTP 200 OK
 {
