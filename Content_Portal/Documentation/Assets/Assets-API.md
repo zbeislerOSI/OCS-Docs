@@ -217,7 +217,6 @@ The response includes a status code and a body.
 ## `Create or Update Asset` 
 
 Create or update an asset with a specified ID. 
-<!--- QUESTION: How is this different from Create Asset --->
 
 ### Request 
 
@@ -225,7 +224,6 @@ Create or update an asset with a specified ID.
 PUT api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId} 
 
 ```
-
 ### Parameters  
 
 .`string tenantId` 
@@ -244,14 +242,20 @@ The asset identifier
 
 The newly created or updated `asset` object.
 
+#### Asset Type Concordance
+
+If an asset has asset type id specified, the following apply:
+- The name of stream references on a given asset will be set to null for those stream referenece with ids which match those on the asset type stream reference id.
+- The name of metadatum on a given asset will be set to null for those metadatum with ids which match those on the asset type metadatum id.
+
 ### Response 
 
 The response includes a status code and body. 
 
-| Status Code               | Body Type | Description                                     |
-| ------------------------- | --------- | ----------------------------------------------- |
-| 200 OK                    | `Asset`  | The newly created or updated asset as persisted, including values for optional parameters that were omitted in the request.                               |
-| 400 Bad Request             | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.      |
+| Status Code              | Body Type | Description                                     |
+| ------------------------ | --------- | ----------------------------------------------- |
+| 200 OK                   | `Asset`  | The newly created or updated asset as persisted, including values for optional parameters that were omitted in the request.                               |
+| 400 Bad Request          | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.      |
 | 403 Forbidden            | error     | You are not authorized to update assets. |
 | 404 Not Found            | error     | The asset, with the specified identifier, was not found.            |
 | 409 Conflict | error     | The asset update or create has a conflict. See the response body for additional details. |

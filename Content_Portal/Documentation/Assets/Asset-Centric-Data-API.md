@@ -3,12 +3,13 @@ uid: AssetCentricDataAPI
 ---
 
 # Asset-centric Data API
-The Asset-centric Data API provides a quick way to take the dynamic data stored in SDS streams and store it as references within a given asset.
+The asset centric data API provides a quick way to take the dynamic data stored in SDS streams and store it as references within a given asset measurement mappings.
 
-In order to retrieve stream data from an asset, you must first set up measurement mappings for a given asset.
+In order to retrieve stream data from an asset, you must first set up measurement mappings for a given asset. Data retrieved will be based on the default shape of the asset.
 
 ### Example Asset
-The following asset is used in all of the sample output in this topic.
+The following asset is used in all of the sample output in this topic. The sds stream id that this asset is referencing is "PI_buildingMachine_1112". Within the measurement mappings, the stream property of interest is the 'Value' property. The below example contains one measurement mapping, but you can specify more for your asset.
+
 ```
 {
     "Id": "IDsample",
@@ -99,7 +100,7 @@ The response includes a status code and a response body.
 ## `Get Asset Sampled Data` 
 Returns sampled data for all referenced measurements. 
 
-Note: The inputs to this API matches the SdsStream Get Samples Values data call.  
+Note: The inputs to this API matches the sds stream Get samples values data call.  
 
 ### Request 
 ```text 
@@ -335,6 +336,87 @@ Content-Type: application/json
                         "Value": 55.21683769086423
                     }
                 }
+            }
+        ]
+    }
+]
+```
+
+## `Get Asset Window Data` 
+Returns window data for all referenced measurements. 
+
+### Request 
+```text 
+GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data?startIndex={startIndex}&endIndex=(endIndex)
+```
+
+###  Parameters  
+`string tenantId` 
+
+The tenant identifier 
+
+`string namespaceId` 
+
+The namespace identifier
+
+`string assetId`
+
+The asset identifier
+
+`string startIndex` 
+
+The start index for the intervals
+
+`string endIndex` 
+
+The end index for the intervals
+
+
+### Response 
+The response includes a status code and a response body.
+
+| Status Code | Body Type | Description |
+|--|--|--|
+| 200 OK | OK | Array of window values for all references. |
+| 207 Multi-Status | partial success | Array of window values for  references. Look at child errors for those that are unsuccessful. |
+| 400 Bad Request | error | The request is not valid. See the response body for additional details. |
+| 403 Forbidden | error | You are not authorized to view the requested asset. |
+| 404 Not Found | error | The specified asset with identifier is not found. |
+
+```json 
+HTTP 200 OK
+Content-Type: application/json
+[
+    {
+        "Measurement": "StreamPressure",
+          "Result": [
+            {
+                "Timestamp": "2020-01-01T12:00:11Z",
+                "Value": 107.64254
+            },
+            {
+                "Timestamp": "2020-01-01T12:00:41Z",
+                "Value": 106.129585
+            },
+            {
+                "Timestamp": "2020-01-01T12:01:11Z",
+                "Value": 109.109985
+            },
+            {
+                "Timestamp": "2020-01-01T12:01:41Z",
+                "Value": 108.936676
+            },
+            {
+                "Timestamp": "2020-01-01T12:02:11Z",
+                "Value": 110.982666
+            },
+            {
+                "Timestamp": "2020-01-01T12:02:41Z",
+                "Value": 109.05698
+            },
+            {
+                "Timestamp": "2020-01-01T12:03:11Z",
+                "Value": 110.33701
             }
         ]
     }

@@ -15,12 +15,12 @@ In this situation, an asset type can be used to create multiple similar assets. 
 
 | Property      | Type              | Required? | Searchable? | Description                                                  | Asset Property? | Asset Type Property? |
 | ------------- | ----------------- | --------- | ----------- | ------------------------------------------------------------ | ----- | --------------- |
-| ID            | String            | Required  | Yes         | Identifier for referencing this asset. If you do not provide an identifier, then the Name property is required. OCS automatically assigns the name as the identifier. | Yes  | Yes            |
-| Name          | String            | Optional  | Yes         | User-friendly name. Required if Id is not provided. If Name is used as the Id, it must be unique within a given namespace. | Yes  | Yes            |
+| ID            | String            | Required  | Yes         | Identifier for referencing this asset. If you do not provide an identifier, OCS will use the name as the identifier. If you do not provide a name, OCS automatically assigns a random GUID for the Idhe ID. | Yes  | Yes            |
+| Name          | String            | Optional  | Yes         | User-friendly name. | Yes  | Yes            |
 | Description   | String            | Optional  | Yes         | User-provided description.                                   | Yes  | Yes            |
 | AssetTypeId   | String            | Optional  | No          | Identifier for the asset type that this asset is derived from. To get the merged view of the asset, get the default shape through the /Assets/{assetId}/Shape route. | Yes  | No            |
 | Metadata      | Metadata List     | Optional  | Yes*       | Asset and AssetType Metadata                               | Yes  | Yes            |
-| StreamReferences    | Stream Reference List | Optional  | No *       | Asset Stream References                                             | Yes  | No            |
+| StreamReferences   | Stream Reference List | Optional  | No *       | Asset Stream References                                             | Yes  | No            |
 | TypeReferences | Type Reference List | Optional  | No*        | Asset Type Type References                                     | No | Yes            |
 
 For more information on search syntax, see [Add xref.]
@@ -34,9 +34,9 @@ An asset or asset type metadata is static information associated with a given as
 | ID          | String | Required  |  Identifier for the metadatum.                        |
 | Name        | String | Required  |  User-friendly name for the metadatum.   If not null, must be unique within an asset or asset type.                     |
 | Description | String | Optional  |  User-provided description                                    |
-| SdsTypeCode | Int    | Required  |  This integer corresponds to the SdsTypeCode. Asset attributes support the following integer values: 11 (Int64), 14 (Double), 16 (DateTime), and 18 (String). |
-| Uom         | String | Optional  |  Asset attribute unit of measurement. Select from the list of supported Uom types. |
-| Value       | String | Optional  |  String representation of the attribute.                      |
+| SdsTypeCode | Int    | Required  |  This integer corresponds to the SdsTypeCode. Asset metadatum support the following integer values: 11 (Int64), 14 (Double), 16 (DateTime), and 18 (String). |
+| Uom         | String | Optional  |  Asset metadatum unit of measurement. Select from the list of supported Uom types. |
+| Value       | String | Optional  |  String representation of the metadatum.                      |
 
 ## Asset Stream Reference Properties
 
