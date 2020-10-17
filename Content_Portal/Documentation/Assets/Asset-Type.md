@@ -1,4 +1,4 @@
-﻿---
+---
 uid: AssetTypesAPI
 ---
 
@@ -56,7 +56,7 @@ Content-Type: application/json
         {
             "Id": "MetadataId1",
             "Name": "ModelNumber",
-            "Description": "This attribute indicates the model number of a given Asset.",
+            "Description": "This metadata indicates the model number of a given Asset.",
             "SdsTypeCode": 14,
         }
     ],
@@ -152,7 +152,7 @@ To create an asset type with a specific ID, use the API route with ID. If this i
         {
             "Id": "MetadataId1",
             "Name": "ModelNumber",
-            "Description": "This attribute indicates the model number of a given Asset.",
+            "Description": "This metadata indicates the model number of a given Asset.",
             "SdsTypeCode": 14
         }
     ],
@@ -311,4 +311,4 @@ The response includes a status code and a body.
 | 400 Bad Request | error         | The request is not valid. The response will include which items fail validation checks. See the response body for additional details. |
 | 403 Forbidden   | error         | You are not authorized to delete this asset type.            |
 | 404 Not Found   | error         | The specified asset type object with identifier is not found. |
-| 409 Conflict    | error         | See the response body for additional details. This error typically occurs because assets are mapped to this asset type.
+| 409 Conflict    | error         | See the response body for additional details. This error typically occurs because assets are mapped to this asset type. |
