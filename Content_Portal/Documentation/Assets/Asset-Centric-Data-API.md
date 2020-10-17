@@ -54,21 +54,22 @@ Returns the last stored value for all measurements.
 
 ### Request 
 ```text 
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Last  
+GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Last&measurement={measurementNames}
 ```
 
 ### Parameters  
 `string tenantId` 
-
 The tenant identifier
 
 `string namespaceId` 
-
 The namespace identifier
 
 `string assetId`
-
 The asset identifier
+
+(Optional)
+`string[] measurements` measurementNames
+A comma separated list of measurement names that you want to return the last data for. By default, all measurements will be returned.
 
 ### Response 
 The response includes a status code and a response body.
@@ -104,30 +105,28 @@ Note: The inputs to this API matches the sds stream Get samples values data call
 
 ### Request 
 ```text 
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Sampled?startIndex={startIndex}&endIndex=(endIndex)&intervals={intervals} 
+GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Sampled?startIndex={startIndex}&endIndex={endIndex}&intervals={intervals}&measurement={measurementNames}
 ```
 
 ### Parameters  
 `string tenantId` 
-
 The tenant identifier 
 
 `string namespaceId` 
-
 The namespace identifier
 
 `string assetId`
-
 The asset identifier
 
 `string startIndex` 
-
 The start index for the intervals
 
 `string endIndex` 
-
 The number of requested intervals 
 
+(Optional)
+`string[] measurements` measurementNames
+A comma separated list of measurement names that you want to return the last data for. By default, all measurements will be returned.
 
 ### Response 
 The response includes a status code and a response body.
@@ -239,34 +238,31 @@ Returns summary data for all referenced measurements.
 
 ### Request 
 ```text 
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Summaries?startIndex={startIndex}&endIndex=(endIndex)&count={count}
+GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data/Summaries?startIndex={startIndex}&endIndex={endIndex}&count={count}&measurement={measurementNames}
 ```
 
 ###  Parameters  
 `string tenantId` 
-
 The tenant identifier 
 
 `string namespaceId` 
-
 The namespace identifier
 
 `string assetId`
-
 The asset identifier
 
 `string startIndex` 
-
 The start index for the intervals
 
 `string endIndex` 
-
 The end index for the intervals
 
 `int count` 
-
 The number of requested intervals
 
+(Optional)
+`string[] measurements` measurementNames
+A comma separated list of measurement names that you want to return the last data for. By default, all measurements will be returned.
 
 ### Response 
 The response includes a status code and a response body.
@@ -347,30 +343,28 @@ Returns window data for all referenced measurements.
 
 ### Request 
 ```text 
-GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data?startIndex={startIndex}&endIndex=(endIndex)
+GET api/v1-preview/Tenants/{tenantId}/Namespaces/{namespaceId}/Assets/{assetId}/Data?startIndex={startIndex}&endIndex={endIndex}&measurement={measurementNames}
 ```
 
 ###  Parameters  
 `string tenantId` 
-
 The tenant identifier 
 
 `string namespaceId` 
-
 The namespace identifier
 
 `string assetId`
-
 The asset identifier
 
 `string startIndex` 
-
 The start index for the intervals
 
 `string endIndex` 
-
 The end index for the intervals
 
+(Optional)
+`string[] measurements` measurementNames
+A comma separated list of measurement names that you want to return the last data for. By default, all measurements will be returned.
 
 ### Response 
 The response includes a status code and a response body.
