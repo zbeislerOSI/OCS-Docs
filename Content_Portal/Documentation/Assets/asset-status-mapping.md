@@ -98,20 +98,16 @@ Asset Type
 
 ### Parameters
 
-`string tenantID`
-
+`string tenantId`
 The tenant identifier
 
 `string namespaceId`
+The namespace identifier
 
+`string assetId`
 The asset identifier
 
 `string assetId`
-
-The asset identifier
-
-`string assetId`
-
 The asset type identifier
 
 ### Response
@@ -167,19 +163,15 @@ Asset Type
 ### Parameters
 
 `string tenantID`
-
 The tenant identifier
 
 `string namespaceId`
-
-The asset identifier
-
-`string assetId`
-
-The asset identifier
+The namespace identifier
 
 `string assetId`
+The asset identifier
 
+`string assetTypeId`
 The asset type identifier
 
 #### Example POST body
@@ -226,16 +218,13 @@ View the status of an asset
 
 ### Parameters
 
-`string tenantID`
-
+`string tenantId`
 The tenant identifier
 
 `string namespaceId`
-
 The namespace identifier
 
-`string namespaceId`
-
+`string assetId`
 The asset identifier
 
 ### Response
@@ -276,15 +265,12 @@ View the status of multiple assets.
 ### Parameters
 
 `string tenantID`
-
 The tenant identifier
 
 `string namespaceId`
-
 The namespace identifier
 
 `string namespaceId`
-
 The asset identifier
 
 #### Example POST body
