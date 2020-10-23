@@ -4,16 +4,28 @@ uid: AssetsAPI
 
 # Assets API
 
-The Assets API allows you to create, read, update, and delete assets. 
+The Assets API allows a user to create, read, update, and delete assets. 
 
-See Access Control API, Asset Centric API, and Assets Search API for additional API methods.
+See Access Control API, Asset Centric API, and Assets Search API for additional details. 
 
-QUESTION: is "methods" the correct term? I'll add links to the topics later. 
+The asset feature in OCS supports the HTTP entity tag (ETag) and If-Match for conditional requests. When a GET call is performed, the HTTP response header will contain an Etag which tells the user what version of the asset resource was retrieved.
 
-***
+Example: This is version 7 of this particular asset.
+``` 
+Etag : "7"
+``` 
+
+If the user wants to edit or delete this particular asset, specify If-Match in the HTTP request header when calling DELETE or PUT:
+
+Example: Modify or delete only if the current asset version matches version 7. Do not perform this operation otherwise.  If this condition fails, a 412 wil be returned.
+``` 
+If-Match : "7"
+``` 
+
+Note that If-Match is optional and if the user wants to delete or modify an asset to what is specified in the request body regardless of version, do not specify an If-Match.
 
 ## `Get Asset by Id` 
-Returns the specified asset.
+Returns the specified asset along with the version Etag in the HTTP response header. 
 
 ### Request 
 ``` 
@@ -113,7 +125,7 @@ The response includes a status code and a body.
 ## `Create Asset` 
 Create a new asset with a specified ID. 
 
-If the asset you are trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadatum with the same id, then the name and sds type code of the metadatum on the asset must be null. If the asset type does not have metadatum with a corresponding id, name and sds type code may not be null.
+If the asset the user is trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadatum with the same id, then the name and sds type code of the metadatum on the asset must be null. If the asset type does not have metadatum with a corresponding id, name and sds type code may not be null.
 
 ### Request 
 ```text 
@@ -138,7 +150,7 @@ The asset identifier
 An `asset` object
 
 #### Example request body 
-NOTE: To create an asset with a specific ID, use the API route with ID. If this is used, you must specify a matching ID field for the asset object in the JSON object below.
+NOTE: To create an asset with a specific ID, use the API route with ID. If this is used, the user must specify a matching ID field for the asset object in the JSON object below.
 
 ```json 
 {
@@ -165,7 +177,7 @@ NOTE: To create an asset with a specific ID, use the API route with ID. If this 
 ```
 ### Response 
 
-The response includes a status code and a body. 
+The response includes a status code, a body as well as the Etag version in the HTTP response header.
 
 | Status Code               | Body Type | Description                                     |
 | ------------------------- | --------- | ----------------------------------------------- |
@@ -216,8 +228,7 @@ The response includes a status code and a body.
 
 ## `Create or Update Asset` 
 
-Create or update an asset with a specified ID. 
-<!--- QUESTION: How is this different from Create Asset --->
+Create or update an asset with a specified ID.  If asset already exists, the user may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches. 
 
 ### Request 
 
@@ -252,21 +263,22 @@ If an asset type ID is specified for an asset, then the following is true:
 
 ### Response 
 
-The response includes a status code and body. 
+The response includes a status code, a body as well as the Etag version in the HTTP response header.
 
-| Status Code               | Body Type | Description                                     |
-| ------------------------- | --------- | ----------------------------------------------- |
-| 200 OK                    | `Asset`  | The newly created or updated asset as persisted, including values for optional parameters that were omitted in the request.                               |
-| 400 Bad Request             | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.      |
+| Status Code              | Body Type | Description                                     |
+| -------------------------| --------- | ----------------------------------------------- |
+| 200 OK                   | `Asset`  | The newly created or updated asset as persisted, including values for optional parameters that were omitted in the request.                               |
+| 400 Bad Request          | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.      |
 | 403 Forbidden            | error     | You are not authorized to update assets. |
 | 404 Not Found            | error     | The asset, with the specified identifier, was not found.            |
-| 409 Conflict | error     | The asset update or create has a conflict. See the response body for additional details. |
+| 409 Conflict             | error     | The asset update or create has a conflict. See the response body for additional details. |
+| 412 Pre-Condition Failed | error     | The asset failed to update due to If-Match condition failing. |
 
 ***
 
 ## `Delete Asset` 
 
-Delete an asset with a specified ID.
+Delete an asset with a specified ID. The user may specify an If-Match propety in the HTTP request header to ensure that they are deleting the asset only if the version matches.
 
 ### Request 
 
@@ -299,7 +311,8 @@ The response includes a status code and a body.
 
 | Status Code               | Body Type | Description                                     |
 | ------------------------- | --------- | ----------------------------------------------- |
-| 204 No Content                    | none  | The asset with the specified ID is deleted.                              |
-| 400 Bad Request             | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.       |
+| 204 No Content            | none  | The asset with the specified ID is deleted.                              |
+| 400 Bad Request           | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.       |
 | 403 Forbidden             | error     | You are not authorized to delete this asset.       |
 | 404 Not Found             | error     | The asset with the specified ID could not be found. 
+| 412 Pre-Condition Failed  | error     | The asset failed to update due to If-Match condition failing. |

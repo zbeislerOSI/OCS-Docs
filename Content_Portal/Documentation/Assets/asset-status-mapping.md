@@ -150,6 +150,8 @@ The response includes a status code and a response body.
 
 Update the status mapping for a given asset or asset type.
 
+For an asset status mappings, the user may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches.  This is not available for an asset type.
+
 ### Request
 
 Asset
@@ -205,6 +207,7 @@ The response includes a status code and a response body.
 | 400 Bad Request | error      | The request is not valid. See the response body for additional details. |
 | 403 Forbidden   | error      | You are not authorized to view the requested asset or asset type. |
 | 404 Not Found   | error      | The specified asset or asset type with identifier is not found. |
+| 412 Pre-Condition Failed | error     | The asset failed to update due to If-Match condition failing. |
 
 ***
 
