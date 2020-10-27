@@ -15,8 +15,8 @@ In this situation, an asset type can be used to create multiple similar assets. 
 
 | Property      | Type              | Required? | Searchable? | Description                                                  | Asset Property? | Asset Type Property? |
 | ------------- | ----------------- | --------- | ----------- | ------------------------------------------------------------ | ----- | --------------- |
-| Id            | String            | Required  | Yes         | Identifier for referencing this asset. If you do not provide an identifier, OCS uses the name as the identifier. If you do not provide a name, OCS assigns a random GUID for the Id.| Yes  | Yes            |
-| Name          | String            | Optional  | Yes         | User-friendly name. Required if Id is not provided. If Name is used as the Id, it must be unique within a given namespace. | Yes  | Yes            |
+| Id            | String            | Required | Yes         | Identifier for referencing this asset. If you do not provide an identifier, OCS uses the name as the identifier. If you do not provide a name, OCS assigns a random GUID for the Id.| Yes  | Yes            |
+| Name          | String            | Required only if Id not specified | Yes         | User-friendly name. Required if Id is not provided. If Name is used as the Id, it must be unique within a given namespace. | Yes  | Yes            |
 | Description   | String            | Optional  | Yes         | User-provided description.                                   | Yes  | Yes            |
 | AssetTypeId   | String            | Optional  | No          | Identifier for the asset type that this asset is derived from. To get the merged view of the asset, get the default shape through the /Assets/{assetId}/Shape route. | Yes  | No            |
 | Metadata      | Metadata List     | Optional  | Yes*       | Asset and AssetType Metadata                               | Yes  | Yes            |
