@@ -86,7 +86,7 @@ Content-Type: application/json
 ***
 
 ## `Get Assets` 
-Returns an array of assets. 
+Returns an array of assets along with the total number of assets returned specified as Total-Count in the HTTP response header. 
 
 ### Request 
 ```

@@ -75,7 +75,7 @@ Content-Type: application/json
 
 ## `Get AssetTypes` 
 
-Returns a list of asset types
+Returns a list of asset types with the total number of asset types returned specified as Total-Count in the HTTP response header. 
 
 ### Request 
 
