@@ -125,7 +125,7 @@ The response includes a status code and a body.
 ## `Create Asset` 
 Create a new asset with a specified Id. 
 
-If the asset the user is trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadatum with the same id, then the name and sds type code of the metadatum on the asset must be null. If the asset type does not have metadatum with a corresponding id, name and sds type code may not be null.
+If the asset the user is trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadata value with the same id, then the name and sds type code of the metadata value on the asset must be null. If the asset type does not have metadata value with a corresponding id, name and sds type code may not be null.
 
 ### Request 
 ```text 

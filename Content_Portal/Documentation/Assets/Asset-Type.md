@@ -229,9 +229,9 @@ The response includes a status code and a body.
 Create or update an asset type with a specified Id.
 
 When updating an asset type which is referenced by assets, the following behaviors may apply:
-- Deleting metadatum on asset type removes it from metadatum on default shape of referenced asset​s
+- Deleting metadata value on asset type removes it from metadata value on default shape of referenced asset​s
 - Deleting type reference on asset type deletes measurements on default shape of referenced assets​
-- Renaming metadatum on asset type renames metadatum on default shape of referenced assets​
+- Renaming metadata value on asset type renames metadata value on default shape of referenced assets​
 - Renaming the stream reference name on the asset type on default shape of referenced assets
 
 ### Request 

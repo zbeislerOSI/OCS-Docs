@@ -72,10 +72,10 @@ The response includes a status code and an array of assets matching the search c
 | Name:Name1                     | Returns all asset with a friendly name equal to **Name1**. |
 | Id:Id AND Name:Name1           | Returns all assets with Id matching the **id*** wildcard and with a friendly name equal to **Name1**. |
 | Description:floor1*            | Returns all assets with a description that starts with **floor1**. |
-| Metadata/Name:Building*      | Returns all assets with at least one metadatum description that contains the string **Building**. |
-| Metadata/Description:heater* | Returns all assets with at least one metadatum description that starts with **heater**. |
-| Metadata/Value:123           | Returns all assets with at least one metadatum that equals **123**. |
-| Id:X* AND Metadata/Name:B*   | Returns all assets with Id starting with **X** and containing at least one metadatum with a name that starts with a **B**. |
+| Metadata/Name:Building*      | Returns all assets with at least one metadata value who's description that contains the string **Building**. |
+| Metadata/Description:heater* | Returns all assets with at least one metadata value who's description that starts with **heater**. |
+| Metadata/Value:123           | Returns all assets with at least one metadata value who's that equals **123**. |
+| Id:X* AND Metadata/Name:B*   | Returns all assets with Id starting with **X** and containing at least one metadata value who's name that starts with a **B**. |
 | AssetTypeId:HeaterTypeId | Returns all assets with AssetTypeId matching HeaterTypeId |
 | AssetTypeName:HeaterTypeName | Returns all assets whose Name field of the AssetType matches HeaterTypeName |
 | Measurements/Name:WindMeasure | Returns all assets with the measurement name **WindMeasure**. |
