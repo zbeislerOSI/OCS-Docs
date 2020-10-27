@@ -4,25 +4,25 @@ uid: AssetsAPI
 
 # Assets API
 
-The Assets API allows a user to create, read, update, and delete assets. 
+The Assets API allows you to create, read, update, and delete assets. 
 
 See Access Control API, Asset Centric API, and Assets Search API for additional details. 
 
-The asset feature in OCS supports the HTTP entity tag (ETag) and If-Match for conditional requests. When a GET call is performed, the HTTP response header will contain an Etag which tells the user what version of the asset resource was retrieved.
+The asset feature in OCS supports the HTTP entity tag (ETag) and If-Match for conditional requests. When a `GET` call is performed, the HTTP response header will include an Etag which indicates what version of the asset resource will be retrieved.
 
 Example: This is version 7 of this particular asset.
 ``` 
 Etag : "7"
 ``` 
 
-If the user wants to edit or delete this particular asset, specify If-Match in the HTTP request header when calling DELETE or PUT:
+If you want to edit or delete this particular asset, specify If-Match in the HTTP request header when calling DELETE or PUT:
 
 Example: Modify or delete only if the current asset version matches version 7. Do not perform this operation otherwise.  If this condition fails, a 412 wil be returned.
 ``` 
 If-Match : "7"
 ``` 
 
-Note that If-Match is optional and if the user wants to delete or modify an asset to what is specified in the request body regardless of version, do not specify an If-Match.
+Note that If-Match is optional and if you want to delete or modify an asset to what is specified in the request body regardless of version, do not specify an If-Match.
 
 ## `Get Asset by Id` 
 Returns the specified asset along with the version Etag in the HTTP response header. 
@@ -116,7 +116,7 @@ The response includes a status code and a body.
 | Status Code | Body Type | Description |
 |--|--|--|
 | 200 OK | `Asset[]` | A page of assets. A response header, `Total-Count`, indicates the total size of the collection. |
-| 204 No Content | none | No assets were found or the user does not have permission to view assets. |
+| 204 No Content | none | No assets were found or you do not have permission to view assets. |
 | 400 Bad Request | error | The request is not valid. See the response body for additional details. |
 | 503 Service Unavailable | error | An error occurred while processing the request. See the response body for additional details. |
 
@@ -125,7 +125,7 @@ The response includes a status code and a body.
 ## `Create Asset` 
 Create a new asset with a specified Id. 
 
-If the asset the user is trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadata value with the same id, then the name and sds type code of the metadata value on the asset must be null. If the asset type does not have metadata value with a corresponding id, name and sds type code may not be null.
+If the asset you are trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadata value with the same id, then the name and sds type code of the metadata value on the asset must be null. If the asset type does not have metadata value with a corresponding id, name and sds type code may not be null.
 
 ### Request 
 ```text 
@@ -150,7 +150,7 @@ The asset identifier
 An `asset` object
 
 #### Example request body 
-NOTE: To create an asset with a specific Id, use the API route with Id. If this is used, the user must specify a matching Id field for the asset object in the JSON object below.
+NOTE: To create an asset with a specific Id, use the API route with Id. If this is used, you must specify a matching Id field for the asset object in the JSON object below.
 
 ```json 
 {
@@ -228,7 +228,7 @@ The response includes a status code and a body.
 
 ## `Create or Update Asset` 
 
-Create or update an asset with a specified Id.  If asset already exists, the user may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches. 
+Create or update an asset with a specified Id.  If asset already exists, you may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches. 
 
 ### Request 
 
@@ -278,7 +278,7 @@ The response includes a status code, a body as well as the Etag version in the H
 
 ## `Delete Asset` 
 
-Delete an asset with a specified Id. The user may specify an If-Match propety in the HTTP request header to ensure that they are deleting the asset only if the version matches.
+Delete an asset with a specified Id. You may specify an If-Match propety in the HTTP request header to ensure that they are deleting the asset only if the version matches.
 
 ### Request 
 
