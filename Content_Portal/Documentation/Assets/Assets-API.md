@@ -41,7 +41,7 @@ The tenant identifier
 
 The namespace identifier
 
-`string assetID`
+`string assetId`
 
 The asset identifier
 
@@ -123,7 +123,7 @@ The response includes a status code and a body.
 ***
 
 ## `Create Asset` 
-Create a new asset with a specified ID. 
+Create a new asset with a specified Id. 
 
 If the asset the user is trying to create references an asset type (via the AssetTypeId property) and if there is the corresponding asset type has a metadatum with the same id, then the name and sds type code of the metadatum on the asset must be null. If the asset type does not have metadatum with a corresponding id, name and sds type code may not be null.
 
@@ -141,7 +141,7 @@ The tenant identifier
 
 The namespace identifier
 
-`string assetID`
+`string assetId`
 
 The asset identifier
 
@@ -150,7 +150,7 @@ The asset identifier
 An `asset` object
 
 #### Example request body 
-NOTE: To create an asset with a specific ID, use the API route with ID. If this is used, the user must specify a matching ID field for the asset object in the JSON object below.
+NOTE: To create an asset with a specific Id, use the API route with Id. If this is used, the user must specify a matching Id field for the asset object in the JSON object below.
 
 ```json 
 {
@@ -228,7 +228,7 @@ The response includes a status code and a body.
 
 ## `Create or Update Asset` 
 
-Create or update an asset with a specified ID.  If asset already exists, the user may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches. 
+Create or update an asset with a specified Id.  If asset already exists, the user may specify an If-Match propety in the HTTP request header to ensure that they are modifying the asset only if the version matches. 
 
 ### Request 
 
@@ -247,7 +247,7 @@ The tenant identifier
 
 The namespace identifier
 
-`string assetID`
+`string assetId`
 
 The asset identifier
 
@@ -257,9 +257,9 @@ The newly created or updated `asset` object.
 
 #### Asset Type Concordance
 
-If an asset type ID is specified for an asset, then the following is true:
-- The stream references name of an asset is set to null if the stream reference ID matches the stream reference ID of the asset type.
-- The name of a metadata value is set to null for those metadata values whose IDs match the asset type metadata value IDs.
+If an asset type Id is specified for an asset, then the following is true:
+- The stream references name of an asset is set to null if the stream reference Id matches the stream reference Id of the asset type.
+- The name of a metadata value is set to null for those metadata values whose Ids match the asset type metadata value Ids.
 
 ### Response 
 
@@ -278,7 +278,7 @@ The response includes a status code, a body as well as the Etag version in the H
 
 ## `Delete Asset` 
 
-Delete an asset with a specified ID. The user may specify an If-Match propety in the HTTP request header to ensure that they are deleting the asset only if the version matches.
+Delete an asset with a specified Id. The user may specify an If-Match propety in the HTTP request header to ensure that they are deleting the asset only if the version matches.
 
 ### Request 
 
@@ -297,7 +297,7 @@ The tenant identifier
 
 The namespace identifier
 
-`string assetID`
+`string assetId`
 
 The asset identifier
 
@@ -311,8 +311,8 @@ The response includes a status code and a body.
 
 | Status Code               | Body Type | Description                                     |
 | ------------------------- | --------- | ----------------------------------------------- |
-| 204 No Content            | none  | The asset with the specified ID is deleted.                              |
+| 204 No Content            | none  | The asset with the specified Id is deleted.                              |
 | 400 Bad Request           | error     | The request is not valid. The response will include which asset failed validation checks. See the response body for additional details.       |
 | 403 Forbidden             | error     | You are not authorized to delete this asset.       |
-| 404 Not Found             | error     | The asset with the specified ID could not be found. 
+| 404 Not Found             | error     | The asset with the specified Id could not be found. 
 | 412 Pre-Condition Failed  | error     | The asset failed to update due to If-Match condition failing. |

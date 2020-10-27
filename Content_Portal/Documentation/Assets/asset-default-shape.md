@@ -67,7 +67,7 @@ The tenant identifier
 
 The namespace identifier
 
-`string assetID`
+`string assetId`
 
 The asset identifier
 
