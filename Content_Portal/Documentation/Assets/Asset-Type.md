@@ -231,7 +231,7 @@ Create or update an asset type with a specified `Id`.
 When updating an asset type which is referenced by assets, the following behaviors may apply:
 - Deleting a metadata value on the asset type removes the metadata value on the default shape of any referenced asset​s.
 - Deleting the type reference on the asset type deletes the measurements on the default shape of any referenced assets​.
-- Renaming a metadata value on the asset type renames the metadata value on the default shape of any referenced assets​.
+- Renaming metadata value name on the asset type renames the metadata value name on the default shape of any referenced assets​.
 - Renaming the stream reference name on the asset type on default shape of referenced assets
 
 ### Request 
