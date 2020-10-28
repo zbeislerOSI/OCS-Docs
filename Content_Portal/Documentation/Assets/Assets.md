@@ -18,7 +18,7 @@ In this situation, an asset type can be used to create multiple similar assets. 
 | Id            | String            | Required | Yes         | Id for referencing this asset. If you do not provide an Id, OCS will copy the name as the Id. If you do not provide a name, OCS assigns a random GUID for the Id.| Yes  | Yes            |
 | Name          | String            | Required only if Id not specified | Yes         | User-friendly name. Required if Id is not provided. If Name is used as the Id, it must be unique within a given namespace. | Yes  | Yes            |
 | Description   | String            | Optional  | Yes         | User-provided description.                                   | Yes  | Yes            |
-| AssetTypeId   | String            | Optional  | No          | Identifier for the asset type that this asset is derived from. To get the merged view of the asset, get the default shape through the /Assets/{assetId}/Shape route. | Yes  | No            |
+| AssetTypeId   | String            | Optional  | No          | Id for the asset type that this asset is derived from. To get the merged view of the asset, get the default shape through the /Assets/{assetId}/Shape route. | Yes  | No            |
 | Metadata      | Metadata List     | Optional  | Yes*       | Asset and AssetType Metadata                               | Yes  | Yes            |
 | StreamReferences   | Stream Reference List | Optional  | No *       | Asset Stream References                                             | Yes  | No            |
 | TypeReferences | Type Reference List | Optional  | No*        | Asset Type Type References                                     | No | Yes            |
@@ -44,7 +44,7 @@ An asset reference represents dynamic stream data associated with an asset. The 
 
 | Property      | Type   | Required? | Searchable? | Description                                                  |
 | ------------- | ------ | --------- | ----------- | ------------------------------------------------------------ |
-| Id            | String | Required  | No          | Id for this stream reference object.  This identifier must be unique within the asset.                    |
+| Id            | String | Required  | No          | Id for this stream reference object.  This Id must be unique within the asset.                    |
 | Name          | String | Required  | No          | User-friendly name for the stream reference object. If not null, must be unique within an asset. |
 | Description   | String | Optional  | No          | Description text.                                            |
 | StreamId      | String | Required  | No          | The SDS stream Id of this stream reference. This SDS stream must exist at the time the asset is created. |
