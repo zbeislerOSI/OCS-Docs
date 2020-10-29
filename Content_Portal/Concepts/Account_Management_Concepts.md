@@ -18,7 +18,7 @@ Any data stored within a namespace is tied to that namespace, along with the reg
 
 Authentication of individuals is performed by the identity provider associated with the tenant. When a user logs in to OCS, they authenticate themselves with an identity provider such as Google or Azure Active Directory. The identity provider authenticates the user against the credentials in its database. Upon successful authentication, it passes a token back to OCS granting the user access.
 
-A user’s access to an OCS object is determined by the roles they are assigned and the corresponding Access Control Lists.  See [Roles](#roles) for more information.
+A user’s access to an OCS object is determined by the roles they are assigned and the corresponding Access Control Lists.  See [Roles](#roles) for more information...
 
 ## Client
 
